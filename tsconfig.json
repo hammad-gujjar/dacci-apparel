@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/admin/components/UploadMedia.tsx", "routes/adminroutes.js", "app/admin/components/Media.tsx"  ],
   "exclude": ["node_modules"]
 }
