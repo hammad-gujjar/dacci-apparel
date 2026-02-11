@@ -1,5 +1,5 @@
 'use client';
-import BreadCrumb from '@/app/admin/components/BreadCrumb';
+import BreadCrumb from '@/app/(root)/(admin)/admin/components/BreadCrumb';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import useFetch from '@/hooks/editCallfunction';
 import Link from 'next/link';

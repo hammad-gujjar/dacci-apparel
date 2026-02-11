@@ -8,7 +8,7 @@ type Params = { id: string };
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: Params }
+    { params }: { params: Promise<Params> }
 ) {
     try {
         const isAdmin = await adminAuth();
