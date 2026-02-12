@@ -32,10 +32,21 @@ const BreadCrumbData = [
   }
 ]
 
+interface MediaResponse {
+  success: boolean;
+  data: {
+    _id: string;
+    secure_url: string;
+    alt?: string;
+    title?: string;
+  };
+  message?: string;
+}
+
 const MediaEdit: React.FC<MediaEditProps> = ({ params }) => {
 
   const { id } = use(params);
-  const { data: mediaData, loading, error } = useFetch(`/api/media/get/${id}`);
+  const { data: mediaData, loading, error } = useFetch<MediaResponse>(`/api/media/get/${id}`);
 
 
   const formSchema = zSchema.pick({

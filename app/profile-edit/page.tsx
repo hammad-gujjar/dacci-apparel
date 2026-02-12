@@ -12,6 +12,17 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+interface ProfileResponse {
+    success: boolean;
+    data: {
+        _id: string;
+        image?: string;
+        name?: string;
+        phone?: string | number;
+    };
+    message?: string;
+}
+
 const ProfileEdit = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -19,7 +30,7 @@ const ProfileEdit = () => {
     const [previewImage, setPreviewImage] = useState<string>('');
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-    const { data: user } = useFetch('/api/customers/get');
+    const { data: user } = useFetch<ProfileResponse>('/api/customers/get');
 
     const formSchema = zSchema.pick({
         image: true,

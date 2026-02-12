@@ -18,11 +18,14 @@ const DataTableWrapper: React.FC<DataTableProps> = ({
 }) => {
 
   const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    (onStoreChange) => {
+      // No-op subscribe since we only care about initial mount
+      return () => {};
+    },
+    () => true, // Client-side: mounted
+    () => false // Server-side: not mounted
+  );
 
   if (!mounted) return null;
 

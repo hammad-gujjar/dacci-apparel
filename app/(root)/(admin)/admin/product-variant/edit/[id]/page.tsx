@@ -31,19 +31,39 @@ const breadcrumbData: BreadcrumbItem[] = [
   { label: "Edit variant", href: "" },
 ];
 
+interface ProductResponse {
+  success: boolean;
+  data: any[];
+}
+
+interface VariantResponse {
+  success: boolean;
+  data: {
+    _id: string;
+    product: string;
+    color: string;
+    sku: string;
+    size: string;
+    mrp: number;
+    sellingPrice: number;
+    discountPercentage: number;
+    media: any[];
+  };
+}
+
 const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
   const { id } = use(params);
 
   const [loading, setloading] = useState<boolean>(false);
-  const [Products, setProducts] = useState<string[]>([]);
+  const [Products, setProducts] = useState<{ label: string, value: string }[]>([]);
 
   // editor states
   const [open, setOpen] = useState<boolean>(false);
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
 
-  const { data: Product } = useFetch('/api/product?deleteType=SD');
-  const { data: getProductVariant } = useFetch(`/api/product-variant/get/${id}`);
+  const { data: Product } = useFetch<ProductResponse>('/api/product?deleteType=SD');
+  const { data: getProductVariant } = useFetch<VariantResponse>(`/api/product-variant/get/${id}`);
 
   useEffect(() => {
     if (Product && Product.success) {

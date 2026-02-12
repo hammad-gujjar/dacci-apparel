@@ -26,10 +26,15 @@ const breadcrumbData: BreadcrumbItem[] = [
   { label: "Add product", href: "" },
 ];
 
+interface CategoryResponse {
+  success: boolean;
+  data: any[];
+}
+
 const AddProduct = () => {
   const [loading, setloading] = useState(false);
-  const [Categories, setCategories] = useState([]);
-  const [productTypes, setProductTypes] = useState([]);
+  const [Categories, setCategories] = useState<{ label: string, value: string, types: string[] }[]>([]);
+  const [productTypes, setProductTypes] = useState<{ label: string, value: string }[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
 
 
@@ -38,7 +43,7 @@ const AddProduct = () => {
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
 
 
-  const { data: Category } = useFetch('/api/category?deleteType=SD&&size=1000');
+  const { data: Category } = useFetch<CategoryResponse>('/api/category?deleteType=SD&&size=1000');
 
   useEffect(() => {
     if (Category && Category.success) {

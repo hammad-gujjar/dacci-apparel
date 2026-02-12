@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 type DeleteActionProps = {
     handleDelete: (ids: string[], deleteType: string) => void;
-    row: { original: { _id: string;[key: string]: any } };
+    row: { original: { _id: string;[key: string]: unknown } };
     deleteType: string;
 };
 

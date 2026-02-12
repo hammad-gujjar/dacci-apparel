@@ -1,10 +1,12 @@
-import { createTheme } from "@mui/material";
+import { createTheme, Shadows } from "@mui/material";
 import { Assistant } from "next/font/google";
 const assistantFont = Assistant({
   weight: ["400", "500", "600", "700", "800"],
   display: "swap",
   subsets: ["latin"],
 });
+
+const defaultShadows = createTheme().shadows;
 
 export const lightTheme = createTheme({
   colorSchemes: {
@@ -41,12 +43,12 @@ export const lightTheme = createTheme({
   typography: {
     fontFamily: assistantFont.style.fontFamily,
   },
-  shadows: {
-    0: "none",
-    1: "0px 2px 1px -1px rgba(0,0,0,0.150),0px 1px 1px 0px rgba(0,0,0,0.150),0px 1px 3px 0px rgba(0,0,0,0.150)",
-    2: "none",
-    8: "0 5px 5px rgba(0, 0,0,0.15)",
-  },
+  shadows: defaultShadows.map((shadow, index) => {
+    if (index === 1) return "0px 2px 1px -1px rgba(0,0,0,0.150),0px 1px 1px 0px rgba(0,0,0,0.150),0px 1px 3px 0px rgba(0,0,0,0.150)";
+    if (index === 2) return "none";
+    if (index === 8) return "0 5px 5px rgba(0, 0, 0, 0.15)";
+    return shadow;
+  }) as Shadows,
 });
 
 export const darkTheme = createTheme({
@@ -77,10 +79,10 @@ export const darkTheme = createTheme({
   typography: {
     fontFamily: assistantFont.style.fontFamily,
   },
-  shadows: {
-    0: "none",
-    1: "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)",
-    2: "none",
-    8: "0 5px 5px rgba(0, 0,0,0.15)",
-  },
+  shadows: defaultShadows.map((shadow, index) => {
+    if (index === 1) return "0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)";
+    if (index === 2) return "none";
+    if (index === 8) return "0 5px 5px rgba(0, 0, 0, 0.15)";
+    return shadow;
+  }) as Shadows,
 });

@@ -1,5 +1,6 @@
 import { Chip } from "@mui/material"
 import dayjs from "dayjs"
+import Image from "next/image"
 
 export const DT_CATEGORY_COLUMN = [
     {
@@ -86,11 +87,11 @@ export const DT_COUPON_COLUMN = [
     {
         accessorKey: 'validity',
         header: 'Validity',
-        Cell: ({ renderedCellValue }: { renderedCellValue: any }) =>
-            new Date() > new Date(renderedCellValue) ?
-                <Chip label={dayjs(renderedCellValue).format('DD/MM/YYYY')} color="error" />
+        Cell: ({ renderedCellValue }: { renderedCellValue: unknown }) =>
+            new Date() > new Date(String(renderedCellValue)) ?
+                <Chip label={dayjs(renderedCellValue as string).format('DD/MM/YYYY')} color="error" />
                 :
-                <Chip label={dayjs(renderedCellValue).format('DD/MM/YYYY')} color="success" />
+                <Chip label={dayjs(renderedCellValue as string).format('DD/MM/YYYY')} color="success" />
     },
 ]
 
@@ -98,8 +99,14 @@ export const DT_CUSTOMER_COLUMN = [
     {
         accessorKey: 'image',
         header: 'Avatar',
-        Cell: ({ renderedCellValue }: { renderedCellValue: any }) =>
-            <img src={renderedCellValue || "https://i.pinimg.com/736x/4c/6f/12/4c6f1205a136d44eb22c4edfaa0603d2.jpg"} alt="avatar" className='w-10 h-10 rounded-full' />
+        Cell: ({ renderedCellValue }: { renderedCellValue: unknown }) =>
+            <Image 
+                src={(renderedCellValue as string) || "https://i.pinimg.com/736x/4c/6f/12/4c6f1205a136d44eb22c4edfaa0603d2.jpg"} 
+                alt="avatar" 
+                width={40} 
+                height={40} 
+                className='w-10 h-10 rounded-full' 
+            />
     },
     {
         accessorKey: 'name',
@@ -116,7 +123,7 @@ export const DT_CUSTOMER_COLUMN = [
     {
         accessorKey: 'emailVerified',
         header: 'Email Verified',
-        Cell: ({ renderedCellValue }: { renderedCellValue: any }) =>
+        Cell: ({ renderedCellValue }: { renderedCellValue: unknown }) =>
             renderedCellValue ?
                 <Chip label="Verified" color="success" />
                 :
@@ -148,7 +155,7 @@ export const DT_REVIEW_COLUMN = [
     {
         accessorKey: 'createdAt',
         header: 'Created At',
-        Cell: ({ renderedCellValue }: { renderedCellValue: any }) =>
-            dayjs(renderedCellValue).format('DD/MM/YYYY'),
+        Cell: ({ renderedCellValue }: { renderedCellValue: unknown }) =>
+            dayjs(renderedCellValue as string).format('DD/MM/YYYY'),
     },
 ]

@@ -11,7 +11,12 @@ import {
     MRT_ToggleFullScreenButton,
     MRT_ToggleGlobalFilterButton,
     useMaterialReactTable,
+    type MRT_ColumnDef,
+    type MRT_ColumnFiltersState,
+    type MRT_PaginationState,
     type MRT_Row,
+    type MRT_RowSelectionState,
+    type MRT_SortingState,
     type MRT_TableInstance,
 } from 'material-react-table';
 import Link from 'next/link';
@@ -32,7 +37,7 @@ type DataRow = {
 export interface DataTableProps {
     queryKey: string;
     fetchUrl: string;
-    columnsConfig: any[]; // You may provide a stricter type for column definitions if available
+    columnsConfig: MRT_ColumnDef<DataRow>[];
     initialPageSize?: number;
     exportEndPoint: string;
     deleteEndPoint: string;
@@ -57,14 +62,14 @@ const DataTable: React.FC<DataTableProps> = ({
     createAction
 }) => {
     // State hooks
-    const [columnFilters, setColumnFilters] = useState<any[]>([]);
+    const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([]);
     const [globalFilter, setGlobalFilter] = useState<string>('');
-    const [sorting, setSorting] = useState<any[]>([]);
-    const [pagination, setPagination] = useState<{ pageIndex: number; pageSize: number }>({
+    const [sorting, setSorting] = useState<MRT_SortingState>([]);
+    const [pagination, setPagination] = useState<MRT_PaginationState>({
         pageIndex: 0,
         pageSize: initialPageSize,
     });
-    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+    const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
     const [exportLoading, setExportLoading] = useState<boolean>(false);
 
     // Delete mutation hook
@@ -110,12 +115,11 @@ const DataTable: React.FC<DataTableProps> = ({
                 csv = generateCsv(csvConfig)(rowData);
             }
             download(csvConfig)(csv);
-        } catch (error: any) {
-            // `any` used for error to access error.message
-            // In production, better error type handling is encouraged.
+        } catch (error) {
             // eslint-disable-next-line no-console
             console.log(error);
-            toast.error(error?.message || 'An error occurred during export');
+            const errorMessage = error instanceof Error ? error.message : 'An error occurred during export';
+            toast.error(errorMessage);
         } finally {
             setExportLoading(false);
         }
@@ -186,7 +190,7 @@ const DataTable: React.FC<DataTableProps> = ({
         },
         getRowId: (originalRow: DataRow) => originalRow._id,
 
-        renderToolbarInternalActions: ({ table }: { table: any }) => (
+        renderToolbarInternalActions: ({ table }: { table: MRT_TableInstance<DataRow> }) => (
             <>
                 {/* Built in table toolbar actions */}
                 <MRT_ToggleGlobalFilterButton table={table} />

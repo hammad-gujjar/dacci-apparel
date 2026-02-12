@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-interface UseFetchReturn<T = any> {
+interface UseFetchReturn<T = unknown> {
     data: T | null;
     loading: boolean;
     error: string | null;
@@ -14,10 +14,10 @@ interface UseFetchReturn<T = any> {
     setError: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const useFetch = <T = any>(
+const useFetch = <T = unknown>(
     url: string,
     method: Method = 'GET',
-    options: Record<string, any> = {}
+    options: Record<string, unknown> = {}
 ): UseFetchReturn<T> => {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -56,9 +56,10 @@ const useFetch = <T = any>(
                 if (!canceled) {
                     setData(response);
                 }
-            } catch (err: any) {
+            } catch (err) {
                 if (!canceled) {
-                    setError(err?.message ?? 'Request failed in apiCall');
+                    const errorMessage = err instanceof Error ? err.message : 'Request failed in apiCall';
+                    setError(errorMessage);
                 }
             } finally {
                 setLoading(false);

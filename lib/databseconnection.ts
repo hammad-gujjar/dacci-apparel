@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL_APPLICATION;
 
+// @ts-ignore
 let cached = (global as any).mongoose;
 
 if (!cached) {
+    // @ts-ignore
     cached = (global as any).mongoose = { conn: null, promise: null };
 }
 

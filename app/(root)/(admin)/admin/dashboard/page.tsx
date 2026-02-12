@@ -61,7 +61,7 @@ const AdminDashboard = () => {
     });
 
     const calculateGrowth = () => {
-        if (!stats) return 0;
+        if (!stats || stats.totalUsers === 0) return "0.0";
         const growth = (stats.recentUsers / stats.totalUsers) * 100;
         return growth.toFixed(1);
     };

@@ -30,19 +30,39 @@ const breadcrumbData: BreadcrumbItem[] = [
   { label: "Edit product", href: "" },
 ];
 
+interface CategoryResponse {
+  success: boolean;
+  data: any[];
+}
+
+interface ProductResponse {
+  success: boolean;
+  data: {
+    _id: string;
+    name: string;
+    slug: string;
+    category: string;
+    mrp: number;
+    sellingPrice: number;
+    discountPercentage: number;
+    description: string;
+    media: any[];
+  };
+}
+
 const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
   const { id } = use(params);
 
   const [loading, setloading] = useState<boolean>(false);
-  const [Categories, setCategories] = useState<string[]>([]);
+  const [Categories, setCategories] = useState<{ label: string, value: string }[]>([]);
 
   // editor states
   const [open, setOpen] = useState<boolean>(false);
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
 
-  const { data: Category } = useFetch('/api/category?deleteType=SD&&size=1000');
-  const { data: getProduct } = useFetch(`/api/product/get/${id}`);
+  const { data: Category } = useFetch<CategoryResponse>('/api/category?deleteType=SD&&size=1000');
+  const { data: getProduct } = useFetch<ProductResponse>(`/api/product/get/${id}`);
 
   useEffect(() => {
     if (Category && Category.success) {

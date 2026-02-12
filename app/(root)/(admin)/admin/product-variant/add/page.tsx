@@ -27,9 +27,14 @@ const breadcrumbData: BreadcrumbItem[] = [
   { label: "Add variant", href: "" },
 ];
 
+interface ProductResponse {
+  success: boolean;
+  data: any[];
+}
+
 const AddProduct = () => {
   const [loading, setloading] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<{ label: string, value: string }[]>([]);
 
 
   // editor states
@@ -37,7 +42,7 @@ const AddProduct = () => {
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
 
 
-  const { data: getProduct } = useFetch('/api/product?deleteType=SD&&size=10000');
+  const { data: getProduct } = useFetch<ProductResponse>('/api/product?deleteType=SD&&size=10000');
 
   useEffect(() => {
     if (getProduct && getProduct.success) {

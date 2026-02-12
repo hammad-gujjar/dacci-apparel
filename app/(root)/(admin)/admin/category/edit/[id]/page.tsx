@@ -29,11 +29,22 @@ const breadcrumbData: BreadcrumbItem[] = [
 ];
 
 
+interface CategoryResponse {
+    success: boolean;
+    data: {
+        _id: string;
+        name: string;
+        slug: string;
+        types: string[];
+    };
+    message?: string;
+}
+
 const EditCategory: React.FC<CategoryEditProps> = ({ params }) => {
 
 
     const { id } = use(params);
-    const { data: categoryData } = useFetch(`/api/category/get/${id}`)
+    const { data: categoryData } = useFetch<CategoryResponse>(`/api/category/get/${id}`)
 
 
     const [loading, setloading] = useState(false);

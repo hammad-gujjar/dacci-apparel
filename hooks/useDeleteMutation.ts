@@ -1,4 +1,4 @@
-import { QueryClient, useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useMutation, UseMutationResult, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -8,10 +8,10 @@ interface DeleteMutationVariables {
 }
 
 const useDeleteMutation = (
-    queryKey: any,
+    queryKey: string | string[],
     deleteEndpoint: string
-): UseMutationResult<any, unknown, DeleteMutationVariables> => {
-    const queryClient = new QueryClient();
+): UseMutationResult<unknown, unknown, DeleteMutationVariables> => {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: async ({ ids, deleteType }: DeleteMutationVariables) => {
             const { data: response } = await axios({
@@ -25,11 +25,12 @@ const useDeleteMutation = (
             return response;
         },
 
-        onSuccess: (data: any) => {
-            toast.success(data.message);
+        onSuccess: (data: unknown) => {
+            const message = (data as { message?: string })?.message || "Deleted successfully";
+            toast.success(message);
             queryClient.invalidateQueries({ queryKey: [queryKey] });
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
             let errorMessage = "Something went wrong.";
             if (error && typeof error === 'object' && 'message' in error) {
                 errorMessage = (error as { message: string }).message;

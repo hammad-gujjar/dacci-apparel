@@ -26,13 +26,25 @@ const breadcrumbData: BreadcrumbItem[] = [
   { label: "Edit coupon", href: "" },
 ];
 
+interface CouponResponse {
+  success: boolean;
+  data: {
+    _id: string;
+    code: string;
+    discountPercentage: number;
+    minShoppingAmount: number;
+    validity: string | Date;
+  };
+  message?: string;
+}
+
 const EditCoupon: React.FC<CategoryEditProps> = ({ params }) => {
 
   const { id } = use(params);
 
   const [loading, setloading] = useState<boolean>(false);
 
-  const { data: getCoupon } = useFetch(`/api/coupon/get/${id}`);
+  const { data: getCoupon } = useFetch<CouponResponse>(`/api/coupon/get/${id}`);
 
   // 1. Define the schema
   const formSchema = zSchema.pick({
