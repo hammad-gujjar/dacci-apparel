@@ -4,7 +4,6 @@ import BreadCrumb from '../components/BreadCrumb';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import DataTableWrapper from '@/components/application/DataTableWrapper';
 import { columnConfig } from '@/lib/columnConfig';
-import DeleteAction from '@/components/application/DeleteAction';
 import { DT_CUSTOMER_COLUMN } from '@/lib/column';
 
 interface BreadcrumbItem {

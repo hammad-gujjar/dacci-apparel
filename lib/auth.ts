@@ -11,6 +11,7 @@ const db = client.db();
 
 export const auth = betterAuth({
     database: mongodbAdapter(db, { client }),
+    baseURL: process.env.BETTER_AUTH_URL,
 
     plugins: [myPlugin()],
 
