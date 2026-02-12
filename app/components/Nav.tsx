@@ -18,7 +18,7 @@ const Nav = () => {
             <Link href="/auth/signup">signup</Link>
             <Link href="/dashboard">dashboard</Link>
             <Link href="/admin/dashboard">Admin-dashboard</Link>
-            <Link href="/admin/users">Admin-users</Link>
+            <Link href="/admin/customers">Admin-users</Link>
             <Logout />
         </ul>
     )
