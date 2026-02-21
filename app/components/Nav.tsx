@@ -15,7 +15,7 @@ import Icon from './Icon';
 
 const Nav = () => {
     const pathname = usePathname();
-    const { isLoading, setIsReady } = useLoader();
+    const { isLoading, setIsReady, transitionTo } = useLoader();
     const [navData, setNavData] = useState<any[]>([]);
     const navRef = useRef<HTMLDivElement>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -315,10 +315,13 @@ const Nav = () => {
                         {/* Right: Featured Images */}
                         <div className="hidden md:flex w-1/2 gap-6">
                             {activeCategory?.sampleProducts?.map((product: any, i: number) => (
-                                <Link
+                                <div
                                     key={product._id}
-                                    href={`/product/${product.slug}`}
-                                    className="megamenu-item flex-1 relative h-full rounded-[1.5vw] overflow-hidden group/product"
+                                    onClick={() => {
+                                        setActiveCategory(null);
+                                        transitionTo(`/product/${product.slug}`);
+                                    }}
+                                    className="megamenu-item flex-1 relative h-full rounded-[1.5vw] overflow-hidden group/product cursor-pointer"
                                 >
                                     <Image
                                         src={product.media?.[0]?.secure_url || '/placeholder.png'}
@@ -331,7 +334,7 @@ const Nav = () => {
                                         <p className="text-[10px] uppercase tracking-widest opacity-70 mb-1">{activeCategory.name}</p>
                                         <p className="text-xl font-[main] leading-none uppercase">{product.name}</p>
                                     </div>
-                                </Link>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -421,11 +424,16 @@ const Nav = () => {
                     <nav className="flex flex-col items-center gap-8 md:gap-12">
                         {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'BLOGS'].map((item) => (
                             <div key={item} className="menu-content-item overflow-hidden">
-                                <TransitionButton
-                                    text={item}
-                                    url={item === 'HOME' ? '/' : `/${item.toLowerCase()}`}
-                                    className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight"
-                                />
+                                <button
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        const url = item === 'HOME' ? '/' : `/${item.toLowerCase()}`;
+                                        setTimeout(() => transitionTo(url), 650);
+                                    }}
+                                    className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight cursor-pointer"
+                                >
+                                    {item}
+                                </button>
                             </div>
                         ))}
 

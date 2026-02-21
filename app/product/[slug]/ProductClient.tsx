@@ -195,10 +195,10 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">Curated Affinity</span>
                                 <Heading title="Matches with this" className="text-5xl md:text-7xl font-medium tracking-tight leading-[0.9]" />
                             </div>
-                            <button onClick={() => transitionTo('/shop')} className="hidden lg:flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] font-bold group">
+                            <button onClick={() => transitionTo('/shop')} className="hidden lg:flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] font-bold group cursor-pointer hover:gap-2 transition-all duration-500">
                                 <span>Explore More</span>
-                                <div className="size-12 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all duration-500">
-                                    <Icon name="arrow" className="-rotate-45deg scale-75" />
+                                <div className="size-12 rounded-full border border-black/10 flex items-center justify-center group-hover:-rotate-45 group-hover:stroke-[#EDEEE7] transition-all duration-500">
+                                    <Icon name="arrow" className="arrow -rotate-45deg" />
                                 </div>
                             </button>
                         </div>
