@@ -25,6 +25,7 @@ export async function POST(req: Request) {
             discountPercentage: true,
             description: true,
             media: true,
+            tags: true,
         })
 
         const validate = Schema.safeParse(payload);
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
             discountPercentage: productData.discountPercentage,
             description: encode(productData.description),
             media: productData.media,
+            tags: productData.tags || [],
         })
 
         await newProduct.save()

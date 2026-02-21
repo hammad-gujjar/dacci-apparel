@@ -1,47 +1,77 @@
-import { adminAuth } from "@/lib/adminhelperfunction";
 import { databaseConnection } from "@/lib/databseconnection";
 import { zSchema } from "@/lib/zodSchema";
+import { Review } from "@/models/review.model";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { Coupon } from '@/models/Coupon.model';
 
 export async function POST(req: Request) {
     try {
-        const isAdmin = await adminAuth();
-        if (!isAdmin || !isAdmin.role) {
-            return NextResponse.json({ success: false, statusCode: 403, message: 'Unauthorized.' })
+        await databaseConnection();
+        
+        // Validate session via Better-Auth
+        const session = await auth.api.getSession({
+            headers: await headers()
+        });
+
+        if (!session) {
+            return NextResponse.json({ 
+                success: false, 
+                statusCode: 401, 
+                message: 'Unauthorized: Please login to leave a review.' 
+            });
         }
 
-        await databaseConnection()
-        const payload = await req.json()
+        const payload = await req.json();
 
+        // Validation using zSchema
         const Schema = zSchema.pick({
-            code: true,
-            discountPercentage: true,
-            minShoppingAmount: true,
-            validity: true,
-        })
+            product: true,
+            rating: true,
+            title: true,
+            review: true,
+        });
 
         const validate = Schema.safeParse(payload);
 
         if (!validate.success) {
-            return NextResponse.json({ success: false, statusCode: 404, message: 'Invalid or missing fields.' })
+            return NextResponse.json({ 
+                success: false, 
+                statusCode: 400, 
+                message: 'Invalid or missing fields.',
+            });
         }
 
+        const reviewData = validate.data;
 
-        const couponData = validate.data
+        const newReview = new Review({
+            product: reviewData.product,
+            user: session.user.id,
+            rating: reviewData.rating,
+            title: reviewData.title,
+            review: reviewData.review,
+        });
 
-        const newCoupon = new Coupon({
-            code: couponData.code,
-            discountPercentage: couponData.discountPercentage,
-            minShoppingAmount: couponData.minShoppingAmount,
-            validity: couponData.validity,
-        })
+        await newReview.save();
 
-        await newCoupon.save()
+        // Populate user for the UI to display immediately
+        const populatedReview = await Review.findById(newReview._id)
+            .populate("user", "name image")
+            .lean();
 
-        return NextResponse.json({ success: true, statusCode: 200, message: 'Coupon created successfully.' })
+        return NextResponse.json({ 
+            success: true, 
+            statusCode: 200, 
+            data: populatedReview,
+            message: 'Your thought has been captured successfully.' 
+        });
 
     } catch (err: any) {
-        return NextResponse.json({ success: false, statusCode: err?.code, message: err?.message })
+        console.error("Review creation error:", err);
+        return NextResponse.json({ 
+            success: false, 
+            statusCode: err?.code || 500, 
+            message: err?.message || 'Internal server error' 
+        });
     }
 }

@@ -3,6 +3,8 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Nav from "./components/Nav";
 import Providers from "@/components/globalprovider/provider";
+import { LoaderProvider } from "./context/LoaderContext";
+import SmoothScroll from "./components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Dacci",
@@ -20,11 +22,15 @@ export default async function RootLayout({
       <body
         className={`antialiased`}
       >
-        <Nav />
-        <Toaster />
-        <Providers>
-        {children}
-        </Providers>
+        <LoaderProvider>
+          <Nav />
+          <Toaster />
+          <SmoothScroll>
+            <Providers>
+              {children}
+            </Providers>
+          </SmoothScroll>
+        </LoaderProvider>
       </body>
     </html>
   );

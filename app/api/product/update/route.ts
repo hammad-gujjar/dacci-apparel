@@ -27,6 +27,7 @@ export async function PUT(request: Request) {
             discountPercentage: true,
             description: true,
             media: true,
+            tags: true, // Added tags to schema
         });
 
         const validate = Schema.safeParse(payload);

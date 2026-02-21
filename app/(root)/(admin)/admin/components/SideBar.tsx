@@ -21,7 +21,7 @@ const SideBar = () => {
     <Sidebar className='z-35'>
       <SidebarHeader className='h-14 p-3 border'>
         <div className='w-full h-full flex items-center justify-between'>
-          <h1>Admin Panel</h1>
+          <h1 className='text-[2vw]!'>Admin Panel</h1>
           <button className='md:hidden light-button'>
             <IoMdClose className='fill-white' />
           </button>

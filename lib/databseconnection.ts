@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import "@/models/product.model";
+import "@/models/category.model";
+import "@/models/Media.model";
 
 const MONGODB_URL = process.env.MONGODB_URL_APPLICATION;
 

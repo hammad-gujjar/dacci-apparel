@@ -14,6 +14,7 @@ import Select from '@/components/application/select';
 import Editor from '../../components/Editor';
 import MediaModal from '../../components/MediaModal';
 import Image from 'next/image';
+import { X } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;
@@ -42,6 +43,10 @@ const AddProduct = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedMedia, setSelectedMedia] = useState<string[]>([]);
 
+  // tag states
+  const [tags, setTags] = useState<string[]>([]);
+  const [currentTag, setCurrentTag] = useState("");
+
 
   const { data: Category } = useFetch<CategoryResponse>('/api/category?deleteType=SD&&size=1000');
 
@@ -64,6 +69,7 @@ const AddProduct = () => {
     discountPercentage: true,
     description: true,
     media: true,
+    tags: true,
   });
 
   // 2. Infer the type from the schema
@@ -81,6 +87,7 @@ const AddProduct = () => {
       discountPercentage: "" as unknown as number,
       description: "",
       media: [],
+      tags: [],
     },
   });
 
@@ -127,6 +134,24 @@ const AddProduct = () => {
     form.setValue('description', data)
   }
 
+  const addTag = () => {
+    if (currentTag.trim() && !tags.includes(currentTag.trim())) {
+      setTags([...tags, currentTag.trim()]);
+      setCurrentTag("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(t => t !== tagToRemove));
+  };
+
+  const handleTagKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addTag();
+    }
+  };
+
   const onSubmit = async (values: FormValues) => {
     setloading(true);
     try {
@@ -137,6 +162,7 @@ const AddProduct = () => {
 
       const mediaIds = selectedMedia.map((media: any) => media._id);
       values.media = mediaIds;
+      values.tags = tags;
 
       const { data: response } = await axios.post('/api/product/create', values);
       if (!response.success) {
@@ -144,6 +170,7 @@ const AddProduct = () => {
       } else {
         form.reset();
         setSelectedMedia([]);
+        setTags([]);
         toast.success(response.message);
       }
     } catch (err: any) {
@@ -300,6 +327,49 @@ const AddProduct = () => {
                 Select Media
               </div>
 
+            </div>
+
+            {/* Tags Input */}
+            <div className="ios-input col-span-2 space-y-2">
+              <label className="text-sm font-medium">Product Tags</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Add tag (e.g., New Arrival, Bestseller)"
+                  className="ios-input flex-1 !p-2"
+                  value={currentTag}
+                  onChange={(e) => setCurrentTag(e.target.value)}
+                  onKeyPress={handleTagKeyPress}
+                />
+                <button
+                  type="button"
+                  onClick={addTag}
+                  className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600"
+                >
+                  Add
+                </button>
+              </div>
+
+              {/* Display added tags */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {tags.map((tag, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-1 px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm"
+                    >
+                      <span>{tag}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeTag(tag)}
+                        className="hover:text-red-600 text-zinc-500 hover:text-red-500 transition-colors"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <button
               type="submit"

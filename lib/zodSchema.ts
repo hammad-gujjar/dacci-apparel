@@ -43,4 +43,10 @@ export const zSchema = z.object({
     validity: z.coerce.date(),
     image: z.string().min(3, { message: "image is required." }),
     phone: z.string().min(5, { message: "phone is required." }),
+    tags: z.array(z.string().trim().min(1)).optional(),
+    rating: z.union([
+        z.number().min(1).max(5),
+        z.string().transform((val) => Number(val)).refine((val) => !isNaN(val) && val >= 1 && val <= 5, 'rating must be between 1 and 5')
+    ]),
+    review: z.string().min(3, { message: "review content is required." }),  
 });

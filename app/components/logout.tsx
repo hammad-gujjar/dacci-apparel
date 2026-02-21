@@ -2,9 +2,8 @@
 import { authClient } from '@/lib/auth-client';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast'
-import React from 'react';
 
-const logout = () => {
+const logout = ({ className }: { className?: string }) => {
 
     async function handleLogout() {
         await authClient.signOut({
@@ -19,7 +18,7 @@ const logout = () => {
 
     return (
         <>
-            <button className='light-button' onClick={handleLogout}>logout</button>
+            <button className={className || ''} onClick={handleLogout}>logout</button>
         </>
     )
 }

@@ -35,5 +35,5 @@ const productVariantSchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });
 
-productVariantSchema.index({ category: 1 })
+productVariantSchema.index({ product: 1 })
 export const ProductVariant = mongoose.models.ProductVariant || mongoose.model("ProductVariant", productVariantSchema, "productvariants");
