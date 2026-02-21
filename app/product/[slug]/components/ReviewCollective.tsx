@@ -28,13 +28,14 @@ const ReviewCollective = ({
 
     return (
         <div className="mt-48 flex flex-col gap-24 py-10 border-t border-black/5 scroll-reveal">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-20 md:max-h-screen">
-                <div className="col-span-2 flex flex-col gap-6">
-                    <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">The Feedback</span>
-                    <Heading title="Customer Collective" className="text-5xl lg:text-6xl font-medium leading-[0.9]" />
-                </div>
+            <div className="flex flex-col lg:flex-row gap-20 md:max-h-screen">
                 {/* Rating Summary Card */}
                 <div className="lg:w-1/3 flex flex-col gap-12 sticky top-32 h-fit">
+                    <div className="flex flex-col gap-6">
+                        <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">The Feedback</span>
+                        <Heading title="Customer Collective" className="text-5xl lg:text-6xl font-medium leading-[0.9]" />
+                    </div>
+
                     <div className="flex flex-col gap-10 p-12 bg-white rounded-[2.5vw] border border-black/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)]">
                         <div className="flex flex-col items-center gap-4">
                             <span className="text-8xl font-bold tracking-tighter leading-none">{(product.averageRating || 0).toFixed(1)}</span>
@@ -72,18 +73,18 @@ const ReviewCollective = ({
                 </div>
 
                 {/* Individual Reviews List */}
-                <div
+                <div 
                     ref={listRef}
-                    className="lg:w-2/3 relative group/list flex max-h-[80vh] md:max-h-[700px] overflow-y-scroll flex-col gap-10 scrollbar-hide scroll-smooth pr-4"
+                    className="lg:w-2/3 relative group/list flex h-screen overflow-y-scroll flex-col gap-10 scrollbar-hide scroll-smooth md:mt-38"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     {product.reviews?.length > 0 ? (
-                        <div className="flex flex-col gap-10">
+                        <div className="flex flex-col gap-10 h-full">
                             {[...product.reviews]
                                 .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                                 .map((rev: any, i: number) => (
-                                    <div
-                                        key={rev._id || i}
+                                    <div 
+                                        key={rev._id || i} 
                                         className="group p-10 bg-white/40 backdrop-blur-md rounded-[2vw] border border-white/20 hover:border-black/10 transition-all flex flex-col gap-8 opacity-0 translate-y-10 animate-reveal"
                                         style={{ animationDelay: `${i * 0.1}s`, animationFillMode: 'forwards' }}
                                     >
@@ -109,7 +110,7 @@ const ReviewCollective = ({
                                                 {renderStars(rev.rating, "text-sm")}
                                             </div>
                                         </div>
-
+                                        
                                         <div className="flex flex-col gap-4">
                                             <h4 className="text-lg font-bold tracking-tight leading-tight">— {rev.title}</h4>
                                             <p className="text-base text-black/60 leading-relaxed max-w-2xl italic">
@@ -133,7 +134,7 @@ const ReviewCollective = ({
 
                     {/* Scroll Button */}
                     {product.reviews?.length > 3 && (
-                        <button
+                        <button 
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if (listRef.current) {

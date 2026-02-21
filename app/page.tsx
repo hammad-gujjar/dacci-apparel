@@ -184,7 +184,6 @@ const HomePage = () => {
           trigger: scrollContainer,
           containerAnimation: horizAnim,
           start: "top top%",
-          markers: true,
           toggleActions: "play none none reverse",
         }
       });
