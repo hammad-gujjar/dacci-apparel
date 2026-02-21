@@ -159,7 +159,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
     };
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-[#EDEEE7] pt-24 pb-20 px-4 md:px-12 selection:bg-black selection:text-white overflow-hidden">
+        <div ref={containerRef} className="min-h-screen pt-24 pb-20 px-3 md:px-10 selection:bg-black selection:text-white overflow-hidden">
             <div className="max-w-full mx-auto">
                 <div className="flex flex-col lg:flex-row gap-10 lg:gap-15">
                     <ProductGallery 
@@ -189,7 +189,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                 />
 
                 {product.relatedProducts?.length > 0 && (
-                    <div className="mt-48 flex flex-col gap-20 py-32 border-t border-black/5 scroll-reveal">
+                    <div className="mt-10 flex flex-col gap-20 py-32 border-t border-black/5 scroll-reveal">
                         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
                             <div className="flex flex-col gap-4">
                                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">Curated Affinity</span>

@@ -27,7 +27,7 @@ const ReviewCollective = ({
     }, [product.reviews]);
 
     return (
-        <div className="mt-48 flex flex-col gap-24 py-10 border-t border-black/5 scroll-reveal">
+        <div className="mt-10 flex flex-col gap-24 py-10 border-t border-black/5 scroll-reveal">
             <div className="flex flex-col lg:flex-row gap-20 md:max-h-screen">
                 {/* Rating Summary Card */}
                 <div className="lg:w-1/3 flex flex-col gap-12 sticky top-32 h-fit">

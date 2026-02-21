@@ -10,17 +10,19 @@ import TransitionButton from './components/TransitionButton';
 import axios from 'axios';
 import HomeMiddle from './components/HomeMiddle';
 import HomeContact from './components/HomeContact';
+import { IoStar, IoStarOutline } from 'react-icons/io5';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HomePage = () => {
-  const { isLoading, setIsReady } = useLoader();
+  const { isLoading, setIsReady, transitionTo } = useLoader();
   const [newArrivals, setNewArrivals] = useRef<any[]>([]).current; // We'll manage this in state for re-render
   const [arrivalData, setArrivalData] = useState<any[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImageRef = useRef<HTMLImageElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const productCardRef = useRef<HTMLDivElement>(null);
 
   // Helper to split text into words, then characters
   const splitText = (text: string) => {
@@ -34,31 +36,6 @@ const HomePage = () => {
       </div>
     ));
   };
-
-  useGSAP(() => {
-    const fetchAllData = async () => {
-      try {
-        const { data: response } = await axios.get('/api/products/new-arrivals');
-        if (response.success) {
-          setArrivalData(response.data);
-        }
-      } catch (err) {
-        console.error("Error fetching homepage data:", err);
-      } finally {
-        setIsReady(true);
-      }
-    };
-    fetchAllData();
-  }, [setIsReady]);
-
-  useGSAP(() => {
-    if (!isLoading) {
-      // Refresh ScrollTrigger after loader finishes and layout is settled
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 500);
-    }
-  }, { dependencies: [isLoading] });
 
   const SERVICES = [
     {
@@ -119,6 +96,40 @@ const HomePage = () => {
       url: "#"
     }
   ]
+
+  useGSAP(() => {
+    if (!isLoading && arrivalData.length > 0 && productCardRef.current) {
+      gsap.to(
+        productCardRef.current,
+        { x: '0%', opacity: 1, duration: 1, delay: 0.7, ease: 'power2.out' }
+      );
+    }
+  }, { dependencies: [isLoading, arrivalData] });
+
+  useGSAP(() => {
+    const fetchAllData = async () => {
+      try {
+        const { data: response } = await axios.get('/api/products/new-arrivals');
+        if (response.success) {
+          setArrivalData(response.data);
+        }
+      } catch (err) {
+        console.error("Error fetching homepage data:", err);
+      } finally {
+        setIsReady(true);
+      }
+    };
+    fetchAllData();
+  }, [setIsReady]);
+
+  useGSAP(() => {
+    if (!isLoading) {
+      // Refresh ScrollTrigger after loader finishes and layout is settled
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+    }
+  }, { dependencies: [isLoading] });
 
   useGSAP(() => {
     if (!isLoading) {
@@ -219,16 +230,77 @@ const HomePage = () => {
             </h1>
           </div>
           <div className="w-full md:w-[90%] md:mt-4 mt-2">
-            <p className='text-[#ffff] tracking-[0.2em] w-full flex flex-wrap gap-x-[0.2em]'>
-              {splitText("tha classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website")}
-            </p>
+            <li className='text-[#EDEEE7]! tracking-[0.2em] w-full flex flex-wrap gap-x-[0.2em]'>
+              {splitText("Daccia Apparel is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website")}
+            </li>
           </div>
         </div>
+
+        {/* Latest Product Card — right side center, horizontal parallelogram shape */}
+        {arrivalData.length > 0 && (() => {
+          const latest = arrivalData[0];
+          const rating = latest.averageRating || 0;
+          const img = latest.media?.[0]?.secure_url;
+          return (
+            <div
+              ref={productCardRef}
+              onClick={() => transitionTo(`/product/${latest.slug}`)}
+              className="absolute right-10 top-1/2 -translate-y-3/3 z-10 translate-x-1/2 hidden md:flex border border-white/20 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
+              style={{
+                clipPath: 'polygon(18px 0%, 100% 0%, calc(100% - 18px) 100%, 0% 100%)',
+                width: '280px',
+                background: 'rgba(237, 238, 231, 0.08)',
+                backdropFilter: 'blur(10px) saturate(1)',
+                WebkitBackdropFilter: 'blur(10px) saturate(1)',
+                transform: 'translateX(120%)', // start off-screen; GSAP will animate
+              }}
+            >
+              <div
+                className="w-full flex items-center gap-4 px-8 py-5"
+              >
+                {/* Product Image */}
+                {img && (
+                  <div className="shrink-0 w-16 h-20 rounded-xl overflow-hidden border border-white/10">
+                    <img src={img} alt={latest.name} className="w-full h-full object-cover" />
+                  </div>
+                )}
+
+                {/* Info */}
+                <div className="flex flex-col gap-1.5 min-w-0">
+                  {/* NEW badge */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#EDEEE7] opacity-70 shrink-0" />
+                    <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#EDEEE7]/60">New</span>
+                  </div>
+
+                  {/* Name */}
+                  <p className="text-[#EDEEE7] text-sm font-bold leading-tight truncate">
+                    {latest.name}
+                  </p>
+
+                  {/* Stars */}
+                  <div className="flex items-center gap-0.5 mt-0.5">
+                    {[1, 2, 3, 4, 5].map((star) =>
+                      star <= Math.round(rating)
+                        ? <IoStar key={star} className="text-[#EDEEE7] text-xs" />
+                        : <IoStarOutline key={star} className="text-[#EDEEE7]/40 text-xs" />
+                    )}
+                    {rating > 0 && (
+                      <span className="text-[9px] text-[#EDEEE7]/40 ml-1 font-medium">
+                        {rating.toFixed(1)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
-      <div className='pt-5 flex flex-col md:flex-row justify-between md:items-start items-center gap-2'>
+      <div className='pt-10 flex flex-col md:flex-row justify-between md:items-start items-center gap-2 px-3 md:px-10'>
         <Heading title='SORT  BY  CATEGORIES' className="w-full md:w-1/2" />
-        <p className='w-full md:w-1/3 md:text-left text-center'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis voluptatem et dolorem inventore, libero unde. Sint ad vel obcaecati consequatur?</p>
+        <p className='w-full md:w-1/3 md:text-left text-center'>Explore our curated selection of categories, featuring the latest trends and timeless classics for every style.</p>
       </div>
 
       <div ref={sectionRef} className='h-[95vh] md:h-screen w-full overflow-hidden'>

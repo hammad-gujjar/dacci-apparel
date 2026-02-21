@@ -9,11 +9,11 @@ import ShopBreadcrumb from './ShopBreadcrumb';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 
-const ShopClient = ({ 
-    initialCategories, 
-    initialProducts, 
-    initialMeta 
-}: { 
+const ShopClient = ({
+    initialCategories,
+    initialProducts,
+    initialMeta
+}: {
     initialCategories: any[],
     initialProducts: any[],
     initialMeta: any
@@ -61,7 +61,7 @@ const ShopClient = ({
 
     useGSAP(() => {
         if (!loading && products.length > 0) {
-            gsap.fromTo('.shop-product-card', 
+            gsap.fromTo('.shop-product-card',
                 { y: 30, opacity: 0 },
                 { y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power2.out" }
             );
@@ -77,10 +77,10 @@ const ShopClient = ({
     return (
         <div className="w-full min-h-screen bg-[#EDEEE7] flex flex-col text-black">
             <ShopHero />
-            
+
             <div className="px-5 md:px-10">
                 <ShopBreadcrumb />
-                
+
                 <div className="flex flex-col lg:flex-row gap-10 py-10">
                     {/* Sidebar Filters */}
                     <ShopFilters categories={initialCategories} />
@@ -104,7 +104,7 @@ const ShopClient = ({
                             </div>
                         ) : products.length > 0 ? (
                             <>
-                                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                                <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
                                     {products.map((product) => (
                                         <div key={product._id} className="shop-product-card">
                                             <ProductItem product={product} />
@@ -119,11 +119,10 @@ const ShopClient = ({
                                             <button
                                                 key={i}
                                                 onClick={() => handlePageChange(i + 1)}
-                                                className={`size-12 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all ${
-                                                    meta.currentPage === i + 1
-                                                    ? 'bg-black text-white border-black'
-                                                    : 'text-black/40 border-black/10 hover:border-black'
-                                                }`}
+                                                className={`size-12 rounded-full flex items-center justify-center text-[10px] font-bold border transition-all ${meta.currentPage === i + 1
+                                                        ? 'bg-black text-white border-black'
+                                                        : 'text-black/40 border-black/10 hover:border-black'
+                                                    }`}
                                             >
                                                 {String(i + 1).padStart(2, '0')}
                                             </button>
@@ -134,7 +133,7 @@ const ShopClient = ({
                         ) : (
                             <div className="w-full h-[50vh] flex items-center justify-center flex-col gap-6 bg-black/5 rounded-[2vw]">
                                 <p className="text-black/40 uppercase tracking-widest text-[10px] font-bold">No items match your criteria.</p>
-                                <button 
+                                <button
                                     onClick={() => router.push('/shop')}
                                     className="px-8 py-3 bg-black text-white text-[10px] uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
                                 >
@@ -151,10 +150,10 @@ const ShopClient = ({
                 <div className="max-w-5xl mx-auto flex flex-col gap-16">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
                         <div className="flex flex-col gap-6 max-w-2xl">
-                             <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-[0.5em]">Vision of Excellence</span>
-                             <h3 className="text-[#EDEEE7] text-4xl md:text-7xl font-[main] uppercase tracking-tighter leading-none">
+                            <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-[0.5em]">Vision of Excellence</span>
+                            <h3 className="text-[#EDEEE7] text-4xl md:text-7xl font-[main] uppercase tracking-tighter leading-none">
                                 Uncompromising <br /> Quality Control.
-                             </h3>
+                            </h3>
                         </div>
                         <p className="text-[#EDEEE7]/50 text-base font-light leading-relaxed max-w-sm">
                             Behind every Dacci garment lies a rigorous process of selection and refinement. We don't just follow trends; we set the standard for durability and aesthetic longevity.

@@ -26,27 +26,19 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
 
     gsap.registerPlugin(useGSAP);
 
-    // Progress counter logic
-    useEffect(() => {
-        if (isLoading) {
-            let start = 0;
-            const end = 100;
-            const duration = 2000;
-            const increment = end / (duration / 16);
-            
-            const timer = setInterval(() => {
-                start += increment;
-                if (start >= end) {
-                    setProgress(100);
-                    clearInterval(timer);
-                } else {
-                    setProgress(Math.floor(start));
-                }
-            }, 16);
 
-            return () => clearInterval(timer);
-        }
-    }, [isLoading]);
+    // GSAP-driven progress animation — called from animateIn/animateOut directly
+    const animateProgress = (from: number, to: number, duration: number, onDone?: () => void) => {
+        const obj = { val: from };
+        gsap.to(obj, {
+            val: to,
+            duration,
+            ease: 'none',
+            onUpdate: () => setProgress(Math.round(obj.val)),
+            onComplete: onDone,
+        });
+    };
+
 
     const { contextSafe } = useGSAP(() => {
         // Continuous Marquee Animation
@@ -64,9 +56,11 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
             gsap.set(loaderRef.current, { display: 'flex' });
             const cols = columnsRef.current.filter(Boolean);
             gsap.set(cols, { yPercent: 0 }); // Cover the screen immediately
-            
+
             const needsCoordination = pathname === '/';
             if (isReady || !needsCoordination) {
+                // Count 0→100 over 1.8s to match the 1800ms delay
+                animateProgress(0, 100, 1.8);
                 const delay = setTimeout(() => {
                     animateOut();
                     isFirstLoad.current = false;
@@ -74,6 +68,8 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
                 return () => clearTimeout(delay);
             }
 
+            // Fallback: count 0→100 over 4s
+            animateProgress(0, 100, 4);
             const fallback = setTimeout(() => {
                 if (isFirstLoad.current) {
                     animateOut();
@@ -87,13 +83,15 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
     const animateIn = contextSafe((onComplete: () => void) => {
         if (!loaderRef.current) return;
 
-        // Start animation but keep isLoading false to show current page until covered
         gsap.set(loaderRef.current, { display: 'flex' });
-        
+        setProgress(0);
+
         const cols = columnsRef.current.filter(Boolean);
-        // Start from bottom (Rise up)
         gsap.set(cols, { yPercent: 100 });
-        
+
+        // Count 0→100 over the exact same 0.8s the columns rise
+        animateProgress(0, 100, 0.8);
+
         gsap.to(cols, {
             yPercent: 0,
             duration: 0.8,
@@ -103,8 +101,7 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
                 from: "random"
             },
             onComplete: () => {
-                setIsLoading(true); // Hide background once covered
-                setProgress(0);
+                setIsLoading(true);
                 onComplete();
             }
         });
@@ -120,12 +117,11 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
         if (!loaderRef.current) return;
 
         const cols = columnsRef.current.filter(Boolean);
-        
+
         gsap.to('.loader-content', {
             opacity: 0,
             duration: 0.3,
             onComplete: () => {
-                setProgress(100);
                 setIsLoading(false); // Reveal next page
             }
         });

@@ -8,9 +8,10 @@ interface TransitionButtonProps {
     url: string;
     className?: string;
     arrow?: boolean;
+    icon?: any;
 }
 
-const TransitionButton = ({ text, url, className, arrow }: TransitionButtonProps) => {
+const TransitionButton = ({ text, url, className, arrow, icon }: TransitionButtonProps) => {
     const { transitionTo } = useLoader();
 
     const handleClick = () => {
@@ -21,6 +22,7 @@ const TransitionButton = ({ text, url, className, arrow }: TransitionButtonProps
         <button className={className} onClick={handleClick}>
             {text}
             {arrow && <IoMdArrowForward className='arrow-button' />}
+            {icon && { icon }}
         </button>
     );
 };
