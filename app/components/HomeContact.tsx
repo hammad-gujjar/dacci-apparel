@@ -77,7 +77,7 @@ const HomeContact = () => {
     const contactInfo = [
         { label: "General Inquiries", value: "hello@dacciapparel.com" },
         { label: "Customer Support", value: "support@dacciapparel.com" },
-        { label: "Collaborations", value: "press@dacciapparel.com" },
+        { label: "Telephone", value: "92+ 3086762402" },
         { label: "Visit our Showroom", value: "123 Fashion Ave, NY 10001" }
     ];
 
@@ -89,15 +89,14 @@ const HomeContact = () => {
     ];
 
     return (
-        <section ref={containerRef} className="w-full bg-black py-24 px-5 md:px-10 overflow-hidden">
-            <div className="max-w-[1400px] mx-auto flex flex-col gap-20">
+        <section ref={containerRef} className="w-full py-10 px-5 md:px-10 overflow-hidden">
+            <div className="max-w-full mx-auto flex flex-col gap-10">
                 
                 {/* Header */}
                 <div className="flex flex-col gap-6 max-w-2xl">
-                    <span className="contact-animate-smooth text-[#EDEEE7]/40 text-xs uppercase tracking-[0.5em] font-bold">Get In Touch</span>
+                    <span className="contact-animate-smooth text-black/40 text-xs uppercase tracking-[0.5em] font-bold">Get In Touch</span>
                     <Heading 
-                        title="STAY CONNECTED WITH DACCI." 
-                        className="text-4xl md:text-7xl font-[main] text-[#EDEEE7]! uppercase tracking-tighter leading-none"
+                        title="STAY CONNECTED WITH DACCI."
                     />
                 </div>
 
@@ -109,8 +108,8 @@ const HomeContact = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                             {contactInfo.map((item, i) => (
                                 <div key={i} className="contact-animate-smooth flex flex-col gap-2">
-                                    <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-widest">{item.label}</span>
-                                    <p className="text-[#EDEEE7] text-lg font-light hover:text-[#EDEEE7]/60 transition-colors cursor-pointer">
+                                    <p className="text-black/30 uppercase font-bold tracking-widest">{item.label}</p>
+                                    <p className="hover:text-black/60 transition-colors cursor-pointer">
                                         {item.value}
                                     </p>
                                 </div>
@@ -119,13 +118,13 @@ const HomeContact = () => {
 
                         {/* Social Links */}
                         <div className="flex flex-col gap-8 social-links-container">
-                            <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-widest">Follow Us</span>
+                            <p className="text-black/30 uppercase font-bold tracking-widest">Follow Us</p>
                             <div className="flex flex-wrap gap-x-12 gap-y-6">
                                 {socials.map((social, i) => (
-                                    <a key={i} href={social.url} className="social-link text-[#EDEEE7] text-2xl font-[main] uppercase tracking-tight group flex items-center gap-2">
+                                    <a key={i} href={social.url} className="social-link text-[15px] font-[main] uppercase tracking-tight group flex items-center gap-2">
                                         {social.name}
-                                        <div className="size-4 -rotate-45 group-hover:rotate-0 transition-transform duration-300">
-                                            {/* <Icon name="ArrorRight" /> */}
+                                        <div className="size-4 group-hover:-rotate-45 transition-transform duration-300 ease-inOut">
+                                            <Icon name="arrow" />
                                         </div>
                                     </a>
                                 ))}
@@ -135,11 +134,11 @@ const HomeContact = () => {
 
                     {/* Image Placeholder Reveal */}
                     <div className="w-full aspect-4/5 md:aspect-square relative group rounded-[2vw] overflow-hidden">
-                        <div className="contact-image-reveal h-full border border-[#EDEEE7]/10 relative overflow-hidden">
+                        <div className="contact-image-reveal h-full border border-black/10 relative overflow-hidden">
                             <div className="w-[calc(100vw-3rem)] md:w-[600px] h-full absolute top-0 left-0">
                                 <div className="absolute inset-2 border border-[#EDEEE7]/5 rounded-[1.5vw] overflow-hidden">
                                      <img 
-                                        src="https://i.pinimg.com/1200x/c1/96/63/c1966373b8893118cf507a7e8ea6c75b.jpg" 
+                                        src="https://i.pinimg.com/1200x/9c/66/1d/9c661df82fe72ff3ecee1160d8f0bc60.jpg" 
                                         alt="Contact Visual" 
                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100"
                                     />

@@ -48,13 +48,6 @@ const GalleryMarquee = ({
             onClick={() => setIsMarqueeOpen(false)}
             className="fixed inset-0 z-200 bg-black/90 flex flex-col justify-center items-center overflow-hidden cursor-pointer"
         >
-            <button 
-                onClick={(e) => { e.stopPropagation(); setIsMarqueeOpen(false); }}
-                className="absolute top-12 right-12 z-210 p-8 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white"
-            >
-                <IoCloseOutline size={40} />
-            </button>
-
             <div className="w-full overflow-hidden whitespace-nowrap pointer-events-none">
                 <div ref={marqueeContentRef} className="flex gap-10 md:gap-20 px-20 md:px-40 w-fit">
                     {[...Array(2)].map((_, groupIdx) => (
@@ -74,13 +67,13 @@ const GalleryMarquee = ({
                 </div>
             </div>
             
-            <h3 className="w-full text-center absolute bottom-10 left-0 text-white/10 uppercase font-bold pointer-events-none animate-pulse">
-                <button
-                    onClick={(e) => { e.stopPropagation(); setIsMarqueeOpen(false); }}
-                    className="absolute bottom-15 right-1/3 z-210 p-8 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white pointer-events-auto"
+            <button
+            onClick={(e) => { e.stopPropagation(); setIsMarqueeOpen(false); }}
+            className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-210 p-8 hover:bg-white/10 rounded-full transition-all text-white/50 hover:text-white pointer-events-auto"
                 >
-                    <IoCloseOutline size={32} />
-                </button>
+                <IoCloseOutline size={32} />
+            </button>
+            <h3 className="w-full text-center absolute bottom-10 left-0 text-white/10 uppercase font-bold pointer-events-none animate-pulse">
                 Endless Inspiration
             </h3>
         </div>

@@ -10,7 +10,8 @@ import TransitionButton from './components/TransitionButton';
 import axios from 'axios';
 import HomeMiddle from './components/HomeMiddle';
 import HomeContact from './components/HomeContact';
-import { IoStar, IoStarOutline } from 'react-icons/io5';
+import { IoStar, IoStarOutline, IoStarHalf } from 'react-icons/io5';
+import { cn } from '@/lib/utils';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -35,6 +36,34 @@ const HomePage = () => {
         ))}
       </div>
     ));
+  };
+
+  // Rating helper
+  const renderStars = (rating: number, size: string = "text-xl", interactive: boolean = false, onSelect?: (r: number) => void) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      const isFull = i <= Math.floor(rating);
+      const isHalf = i === Math.ceil(rating) && rating % 1 !== 0;
+
+      stars.push(
+        <button
+          key={i}
+          type="button"
+          disabled={!interactive}
+          onClick={() => onSelect?.(i)}
+          className={cn(interactive ? "cursor-pointer hover:scale-110 transition-transform" : "cursor-default")}
+        >
+          {isFull ? (
+            <IoStar className={cn("text-black", size)} />
+          ) : isHalf ? (
+            <IoStarHalf className={cn("text-black", size)} />
+          ) : (
+            <IoStarOutline className={cn("text-black/10", size)} />
+          )}
+        </button>
+      );
+    }
+    return stars;
   };
 
   const SERVICES = [
@@ -222,7 +251,18 @@ const HomePage = () => {
   return (
     <>
       <div ref={heroRef} className='w-screen h-[92vh] md:h-screen relative overflow-hidden'>
-        <img ref={heroImageRef} className='absolute top-0 left-0 size-full object-cover z-1 scale-[1.3]' src="https://res.cloudinary.com/dhrfua4wp/image/upload/v1771056602/generated_image_8b848485-5cab-4a43-8489-1a6663bf165a_yvayc3.webp" alt="" />
+      {/* <img
+      ref={heroImageRef}
+      src='/images/generated_image_69b69ec1-dada-494a-a6e2-924bfd57e805.png'
+      className='object-cover size-full absolute top-0 left-0 scale-[1.3]'
+      /> */}
+      <video
+      src="/videos/hero.mp4"
+      autoPlay
+      muted
+      loop
+      className='bg-[red] absolute top-[-46vh] left-0 w-full h-[207%] -rotate-90'
+    />
         <div className='absolute top-0 left-0 size-full flex flex-col justify-end p-5 md:p-10 gap-2 z-2'>
           <div className="w-full md:w-[90%]">
             <h1 className='text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em]'>
@@ -230,28 +270,27 @@ const HomePage = () => {
             </h1>
           </div>
           <div className="w-full md:w-[90%] md:mt-4 mt-2">
-            <li className='text-[#EDEEE7]! tracking-[0.2em] w-full flex flex-wrap gap-x-[0.2em]'>
+            <p className='text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]'>
               {splitText("Daccia Apparel is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website")}
-            </li>
+            </p>
           </div>
         </div>
 
         {/* Latest Product Card — right side center, horizontal parallelogram shape */}
         {arrivalData.length > 0 && (() => {
           const latest = arrivalData[0];
-          const rating = latest.averageRating || 0;
           const img = latest.media?.[0]?.secure_url;
           return (
             <div
               ref={productCardRef}
               onClick={() => transitionTo(`/product/${latest.slug}`)}
-              className="absolute right-10 top-1/2 -translate-y-3/3 z-10 translate-x-1/2 hidden md:flex border border-white/20 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
+              className="absolute right-10 top-2/5 z-10 translate-x-1/2 hidden md:flex border border-white/20 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
               style={{
                 clipPath: 'polygon(18px 0%, 100% 0%, calc(100% - 18px) 100%, 0% 100%)',
                 width: '280px',
                 background: 'rgba(237, 238, 231, 0.08)',
-                backdropFilter: 'blur(10px) saturate(1)',
-                WebkitBackdropFilter: 'blur(10px) saturate(1)',
+                backdropFilter: 'blur(15px) saturate(1)',
+                WebkitBackdropFilter: 'blur(15px) saturate(1)',
                 transform: 'translateX(120%)', // start off-screen; GSAP will animate
               }}
             >
@@ -274,22 +313,13 @@ const HomePage = () => {
                   </div>
 
                   {/* Name */}
-                  <p className="text-[#EDEEE7] text-sm font-bold leading-tight truncate">
+                  <p className="text-[#EDEEE7] font-bold leading-tight truncate">
                     {latest.name}
                   </p>
 
                   {/* Stars */}
                   <div className="flex items-center gap-0.5 mt-0.5">
-                    {[1, 2, 3, 4, 5].map((star) =>
-                      star <= Math.round(rating)
-                        ? <IoStar key={star} className="text-[#EDEEE7] text-xs" />
-                        : <IoStarOutline key={star} className="text-[#EDEEE7]/40 text-xs" />
-                    )}
-                    {rating > 0 && (
-                      <span className="text-[9px] text-[#EDEEE7]/40 ml-1 font-medium">
-                        {rating.toFixed(1)}
-                      </span>
-                    )}
+                    {renderStars(latest.averageRating || 0, "text-lg")}
                   </div>
                 </div>
               </div>

@@ -35,9 +35,9 @@ const ProductInfo = ({
                     <div className="flex items-center gap-1">
                         {renderStars(product.averageRating || 0, "text-lg")}
                     </div>
-                    <p className="uppercase font-bold opacity-30 hover:opacity-100 transition-opacity cursor-pointer underline underline-offset-4">
+                    <a href='#review' className="uppercase font-bold opacity-30 hover:opacity-100 transition-opacity cursor-pointer underline underline-offset-4">
                         {product.reviews?.length || 0} Verified Reviews
-                    </p>
+                    </a>
                 </div>
             </div>
 
@@ -49,7 +49,7 @@ const ProductInfo = ({
                         <span className="text-2xl text-black/20 line-through mb-1 font-medium italic">₹{currentMrp.toLocaleString()}</span>
                     )}
                 </div>
-                <p className="uppercase font-bold text-green-600/60">Taxes Included • Express Delivery Available</p>
+                <p className="uppercase text-green-500">Taxes Included • Express Delivery Available</p>
             </div>
 
             {/* Variants Selection */}

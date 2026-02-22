@@ -25,17 +25,16 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    // Custom fields from plugin
     phone: {
         type: Number,
     },
     // better-auth fields
     sessions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Session' }],
     accounts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }],
-}, { 
+}, {
     timestamps: true,
     collection: 'user' // Explicitly map to 'user' collection used by better-auth
 });
 
 // Prevent overwrite if compiled
-export const User = mongoose.models.User || mongoose.model("User", UserSchema);
+export const User = mongoose.models.User || mongoose.model("User", UserSchema,"users");

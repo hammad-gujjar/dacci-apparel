@@ -41,8 +41,10 @@ const ReviewCollective = ({
         }
     }, [product.reviews]);
 
+    console.log(product.reviews);
+
     return (
-        <div className="mt-10 flex flex-col gap-10 py-10 border-t border-black/5 scroll-reveal">
+        <div id='review' className="mt-10 flex flex-col gap-10 py-10 border-t border-black/5 scroll-reveal">
             <div className="flex flex-col gap-6">
                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">The Feedback</span>
                 <Heading title="Customer Collective" className="" />
@@ -135,7 +137,7 @@ const ReviewCollective = ({
                                 ))}
                         </div>
                     ) : (
-                        <div className="h-full min-h-[400px] flex flex-col items-center justify-center gap-6 bg-white/20 border border-black/5 rounded-[3vw] p-20 text-center">
+                        <div className="h-full mt-10 flex flex-col items-center justify-center gap-6 bg-white/20 border border-black/5 rounded-[3vw] p-20 text-center">
                             <div className="size-24 rounded-full bg-black/5 flex items-center justify-center opacity-30">
                                 <IoStarOutline size={40} />
                             </div>

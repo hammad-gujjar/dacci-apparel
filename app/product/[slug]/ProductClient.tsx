@@ -36,7 +36,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
     const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || null);
     const [isMarqueeOpen, setIsMarqueeOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    
+
     // Review Modal State
     const [isReviewOpen, setIsReviewOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,13 +70,13 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
             duration: 1.5,
             ease: "expo.out"
         })
-        .from(".product-info-section > *", {
-            y: 40,
-            opacity: 0,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "power4.out"
-        }, "-=1.2");
+            .from(".product-info-section > *", {
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power4.out"
+            }, "-=1.2");
 
         // Scroll Reveal Animations
         gsap.utils.toArray<HTMLElement>(".scroll-reveal").forEach((el) => {
@@ -136,7 +136,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
         for (let i = 1; i <= 5; i++) {
             const isFull = i <= Math.floor(rating);
             const isHalf = i === Math.ceil(rating) && rating % 1 !== 0;
-            
+
             stars.push(
                 <button
                     key={i}
@@ -162,7 +162,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
         <div ref={containerRef} className="min-h-screen pt-24 pb-20 px-3 md:px-10 selection:bg-black selection:text-white overflow-hidden">
             <div className="max-w-full mx-auto">
                 <div className="flex flex-col lg:flex-row gap-10 lg:gap-15">
-                    <ProductGallery 
+                    <ProductGallery
                         productName={product.name}
                         mainImage={mainImage}
                         currentMedia={currentMedia}
@@ -172,7 +172,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                         setIsMarqueeOpen={setIsMarqueeOpen}
                     />
 
-                    <ProductInfo 
+                    <ProductInfo
                         product={product}
                         selectedVariant={selectedVariant}
                         handleVariantSelect={handleVariantSelect}
@@ -182,7 +182,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                     />
                 </div>
 
-                <ReviewCollective 
+                <ReviewCollective
                     product={product}
                     renderStars={renderStars}
                     setIsReviewOpen={setIsReviewOpen}
@@ -213,7 +213,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                 )}
             </div>
 
-            <ReviewModal 
+            <ReviewModal
                 isReviewOpen={isReviewOpen}
                 setIsReviewOpen={setIsReviewOpen}
                 reviewForm={reviewForm}
@@ -223,7 +223,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                 renderStars={renderStars}
             />
 
-            <GalleryMarquee 
+            <GalleryMarquee
                 isMarqueeOpen={isMarqueeOpen}
                 setIsMarqueeOpen={setIsMarqueeOpen}
                 allImages={allImages}

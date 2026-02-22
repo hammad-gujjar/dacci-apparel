@@ -40,7 +40,7 @@ const getProductData = cache(async (slug: string) => {
                 _id: { $ne: product._id },
                 deletedAt: null,
             })
-                .limit(4)
+                .limit(12)
                 .populate("media", "secure_url")
                 .lean(),
         ]);
