@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Logout from './logout';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import TransitionButton from './TransitionButton';
 import { useState, useEffect, useRef } from 'react';
 import { useLoader } from '../context/LoaderContext';
@@ -15,6 +15,7 @@ import Icon from './Icon';
 
 const Nav = () => {
     const pathname = usePathname();
+    const router = useRouter();
     const { isLoading, setIsReady, transitionTo } = useLoader();
     const [navData, setNavData] = useState<any[]>([]);
     const navRef = useRef<HTMLDivElement>(null);
@@ -362,6 +363,12 @@ const Nav = () => {
                             className="w-full bg-transparent border-b-2 border-black/10 py-6 text-[5vw] md:text-[4vw] font-[main] uppercase tracking-tighter focus:border-black outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && searchQuery.trim()) {
+                                    setIsSearchOpen(false);
+                                    router.push(`/shop?searchQuery=${searchQuery.trim()}`);
+                                }
+                            }}
                             autoFocus
                         />
                         <Icon name="search" className="absolute top-1/2 -translate-y-1/2 right-4" />

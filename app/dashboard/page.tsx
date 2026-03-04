@@ -1,10 +1,8 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { FiEdit2 } from 'react-icons/fi';
 import { IoShirtOutline, IoStorefrontOutline } from 'react-icons/io5';
-import { HiOutlinePencil } from "react-icons/hi";
 import TransitionButton from '../components/TransitionButton';
 
 const Dashboard = async () => {
@@ -16,9 +14,9 @@ const Dashboard = async () => {
     const initials = session.user.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || 'DA';
 
     const QUICK_LINKS = [
-        { label: "Shop Collection", href: "/shop", Icon: IoStorefrontOutline },
-        { label: "Admin Dashboard", href: "/admin/dashboard", Icon: IoShirtOutline },
-        { label: "Edit Profile", href: "/profile-edit", Icon: <FiEdit2/> },
+        { label: "Shop Collection", href: "/shop", Icon: <IoStorefrontOutline /> },
+        { label: "Admin Dashboard", href: "/admin/dashboard", Icon: <IoShirtOutline /> },
+        { label: "Edit Profile", href: "/profile-edit", Icon: <FiEdit2 /> },
     ];
 
     return (

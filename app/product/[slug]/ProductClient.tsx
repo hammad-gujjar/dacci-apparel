@@ -189,7 +189,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                 />
 
                 {product.relatedProducts?.length > 0 && (
-                    <div className="mt-10 flex flex-col gap-20 py-32 border-t border-black/5 scroll-reveal">
+                    <div className="mt-5 flex flex-col gap-20 py-10 border-t border-black/5 scroll-reveal">
                         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
                             <div className="flex flex-col gap-4">
                                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">Curated Affinity</span>

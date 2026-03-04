@@ -19,6 +19,7 @@ const HomePage = () => {
   const { isLoading, setIsReady, transitionTo } = useLoader();
   const [newArrivals, setNewArrivals] = useRef<any[]>([]).current; // We'll manage this in state for re-render
   const [arrivalData, setArrivalData] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState<number>(0);
   const heroRef = useRef<HTMLDivElement>(null);
   const heroImageRef = useRef<HTMLImageElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -209,43 +210,6 @@ const HomePage = () => {
         anticipatePin: 1,
       }
     });
-
-    // Add entry animations for category content with stagger
-    const categories = scrollContainer.querySelectorAll('.category-item');
-    categories.forEach((cat, i) => {
-      // Animate the main card reveal
-      gsap.from(cat, {
-        y: '50%',
-        opacity: 0,
-        duration: 1,
-        stagger: 0.5,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: scrollContainer,
-          containerAnimation: horizAnim,
-          start: "top top%",
-          toggleActions: "play none none reverse",
-        }
-      });
-
-      // Animate the text content inside with a slight delay relative to the card
-      const content = cat.querySelector('.category-content');
-      if (content) {
-        gsap.from(content, {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2, // Small stagger effect
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cat,
-            containerAnimation: horizAnim,
-            start: "left 80%",
-            toggleActions: "play none none reverse",
-          }
-        });
-      }
-    });
   }, { scope: sectionRef });
 
   return (
@@ -261,7 +225,8 @@ const HomePage = () => {
       autoPlay
       muted
       loop
-      className='bg-[red] absolute top-[-46vh] left-0 w-full h-[207%] -rotate-90'
+      // className='bg-[red] absolute top-[-46vh] left-0 w-full h-[207%] -rotate-90'
+      className='bg-[red] absolute top-0 left-0 w-full'
     />
         <div className='absolute top-0 left-0 size-full flex flex-col justify-end p-5 md:p-10 gap-2 z-2'>
           <div className="w-full md:w-[90%]">
@@ -334,17 +299,60 @@ const HomePage = () => {
       </div>
 
       <div ref={sectionRef} className='h-[95vh] md:h-screen w-full overflow-hidden'>
-        <div ref={scrollContainerRef} className='h-full flex w-fit p-[5vw] gap-[5vw]'>
-          {CATEGORIES.map((cat, index) => (
-            <div key={index} className='category-item w-screen md:w-[50vw] h-full relative flex flex-col gap-2 justify-end shrink-0 rounded-[2vw] overflow-hidden'>
-              <img className='absolute inset-0 size-full object-cover z-[-1]' src={cat.img} alt={cat.title} />
-              <div className="category-content flex flex-col gap-2 p-5 size-full justify-end bg-linear-to-t from-black/70 via-black/30 to-transparent">
-                <h2 className='text-[#EDEEE7]!'>{cat.title}</h2>
-                <p className='text-[#EDEEE7] tracking-[0.2em]'>{cat.description}</p>
-                <TransitionButton text='collection' url={cat.url} className='light-button w-fit' arrow={true} />
+        <div ref={scrollContainerRef} className='h-full flex w-fit p-[5vw] gap-3 md:gap-4'>
+          {CATEGORIES.map((cat, index) => {
+            const isActive = activeCategory === index;
+            return (
+              <div 
+                key={index} 
+                onMouseEnter={() => setActiveCategory(index)}
+                className={cn(
+                  'category-item group h-full relative flex flex-col gap-2 justify-end shrink-0 rounded-[2vw] overflow-hidden transition-all duration-700 ease-in-out cursor-pointer',
+                  isActive ? 'w-screen md:w-[50vw]' : 'w-screen md:w-[25vw]'
+                )}
+              >
+                {/* Background Image Container - decoupled from parent shrinking */}
+                <div className="absolute inset-0 size-full z-[-1] overflow-hidden">
+                  <img 
+                    className={cn(
+                      'absolute top-0 left-1/2 -translate-x-1/2 h-full min-w-[100vw] md:min-w-[50vw] object-cover transition-transform duration-2000 ease-out',
+                      isActive ? 'scale-115' : 'scale-100'
+                    )} 
+                    src={cat.img} 
+                    alt={cat.title} 
+                  />
+                </div>
+
+                <div className={cn(
+                  "category-content flex flex-col gap-4 p-6 md:p-12 size-full justify-end transition-all duration-700",
+                  isActive ? "bg-black/40" : "bg-black/20"
+                )}>
+                  <div className="bg-linear-to-t from-black/80 via-black/20 to-transparent absolute inset-0 z-0 pointer-events-none" />
+                  
+                  <div className="relative z-10">
+                    <h2 className={cn(
+                      'text-[#EDEEE7]! text-2xl md:text-5xl font-bold transition-all duration-500',
+                      isActive ? "translate-y-0 opacity-100 mt-4" : "translate-y-[100%] opacity-0 h-0"
+                    )}>
+                      {cat.title}
+                    </h2>
+                    
+                    <div className="overflow-hidden">
+                      <div className={cn(
+                        "transition-all duration-700 ease-in-out",
+                        isActive ? "translate-y-0 opacity-100 mt-4" : "translate-y-[100%] opacity-0 h-0"
+                      )}>
+                        <p className='text-[#EDEEE7] tracking-wider line-clamp-3 md:line-clamp-none text-sm md:text-lg'>
+                          {cat.description}
+                        </p>
+                        <TransitionButton text='collection' url={cat.url} className='light-button w-fit mt-6' arrow={true} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

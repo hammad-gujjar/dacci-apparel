@@ -7,7 +7,7 @@ import { useLoader } from '../context/LoaderContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Heading = ({ title, className, delay }: { title?: string, className?: string, delay?: number }) => {
+const Heading = ({ title, className, delay, padding }: { title?: string, className?: string, delay?: number, padding?: string }) => {
     const containerRef = useRef<HTMLHeadingElement>(null);
     const { isLoading } = useLoader();
 
@@ -39,7 +39,7 @@ const Heading = ({ title, className, delay }: { title?: string, className?: stri
     return (
         <div ref={containerRef} className={`${className || ''} flex flex-wrap gap-x-[0.3em]`}>
             {words.map((word, wordIndex) => (
-                <div key={wordIndex} className="flex overflow-hidden">
+                <div key={wordIndex} className={`flex overflow-hidden ${padding ? padding : ''}`}>
                     {/* Split word into characters */}
                     {word.split('').map((char, charIndex) => (
                         <h1

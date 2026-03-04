@@ -5,6 +5,7 @@ import Nav from "./components/Nav";
 import Providers from "@/components/globalprovider/provider";
 import { LoaderProvider } from "./context/LoaderContext";
 import SmoothScroll from "./components/SmoothScroll";
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "Dacci",
@@ -29,6 +30,7 @@ export default async function RootLayout({
             <Providers>
               {children}
             </Providers>
+            <Footer />
           </SmoothScroll>
         </LoaderProvider>
       </body>

@@ -37,4 +37,4 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Prevent overwrite if compiled
-export const User = mongoose.models.User || mongoose.model("User", UserSchema,"users");
+export const User = mongoose.models.User || mongoose.model("User", UserSchema, "user");

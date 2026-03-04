@@ -12,11 +12,22 @@ export async function GET() {
             .sort({ createdAt: -1 })
             .limit(6)
             .populate("media")
-            .populate("category", "name");
+            .populate("category", "name")
+            .lean();
+
+        // Calculate averageRating for each product
+        const { Review } = await import("@/models/review.model");
+        const productsWithRating = await Promise.all(newArrivals.map(async (product: any) => {
+            const reviews = await Review.find({ product: product._id, deletedAt: null });
+            const averageRating = reviews.length > 0
+                ? reviews.reduce((acc: number, rev: any) => acc + rev.rating, 0) / reviews.length
+                : 0;
+            return { ...product, averageRating };
+        }));
 
         return NextResponse.json({
             success: true,
-            data: newArrivals
+            data: productsWithRating
         });
 
     } catch (err: any) {

@@ -24,13 +24,30 @@ const ReviewCollective = ({
     useEffect(() => {
         const el = listRef.current;
         if (!el) return;
+
         const handleScroll = () => {
             const threshold = 40;
             const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
             setAtBottom(isAtBottom);
         };
+
+        // Smooth Momentum Scrolling logic
+        const handleWheel = (e: WheelEvent) => {
+            if (Math.abs(e.deltaY) < 10) return; // Ignore micro-scrolls
+            e.preventDefault();
+            el.scrollBy({
+                top: e.deltaY * 1.5, // Slightly amplified for premium feel
+                behavior: 'smooth'
+            });
+        };
+
         el.addEventListener('scroll', handleScroll, { passive: true });
-        return () => el.removeEventListener('scroll', handleScroll);
+        el.addEventListener('wheel', handleWheel, { passive: false });
+        
+        return () => {
+            el.removeEventListener('scroll', handleScroll);
+            el.removeEventListener('wheel', handleWheel);
+        };
     }, []);
 
     // Initial Scroll to Top when reviews change (ensures new review is seen)
@@ -44,7 +61,7 @@ const ReviewCollective = ({
     console.log(product.reviews);
 
     return (
-        <div id='review' className="mt-10 flex flex-col gap-10 py-10 border-t border-black/5 scroll-reveal">
+        <div id='review' className="mt-15 flex flex-col gap-10 py-10 border-t border-black/5 scroll-reveal">
             <div className="flex flex-col gap-6">
                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">The Feedback</span>
                 <Heading title="Customer Collective" className="" />

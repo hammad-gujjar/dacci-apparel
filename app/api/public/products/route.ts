@@ -11,6 +11,9 @@ export async function GET(req: NextRequest) {
         const category = searchParams.get('category'); // Slug
         const type = searchParams.get('type');
         const tags = searchParams.get('tags');
+        const searchQuery = searchParams.get('searchQuery');
+        const sort = searchParams.get('sort') || 'newest';
+        const onSale = searchParams.get('onSale') === 'true';
         const page = parseInt(searchParams.get('page') || '1', 10);
         const limit = parseInt(searchParams.get('limit') || '20', 10);
         const skip = (page - 1) * limit;
@@ -24,6 +27,10 @@ export async function GET(req: NextRequest) {
             }
         }
 
+        if (onSale) {
+            query.discountPercentage = { $gt: 0 };
+        }
+
         if (type) {
             query.productType = type;
         }
@@ -33,9 +40,19 @@ export async function GET(req: NextRequest) {
             query.tags = { $in: tagArray };
         }
 
+        if (searchQuery) {
+            query.name = { $regex: searchQuery, $options: 'i' };
+        }
+
+        // Sorting Logic
+        let sortOption: any = { createdAt: -1 };
+        if (sort === 'price-asc') sortOption = { sellingPrice: 1 };
+        else if (sort === 'price-desc') sortOption = { sellingPrice: -1 };
+        else if (sort === 'sale-desc') sortOption = { discountPercentage: -1 };
+
         const [products, totalProducts] = await Promise.all([
             Product.find(query)
-                .sort({ createdAt: -1 })
+                .sort(sortOption)
                 .skip(skip)
                 .limit(limit)
                 .populate('media', 'secure_url')

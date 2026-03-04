@@ -12,11 +12,13 @@ import gsap from 'gsap';
 const ShopClient = ({
     initialCategories,
     initialProducts,
-    initialMeta
+    initialMeta,
+    brandingTags
 }: {
     initialCategories: any[],
     initialProducts: any[],
-    initialMeta: any
+    initialMeta: any,
+    brandingTags: string[]
 }) => {
     const [products, setProducts] = useState<any[]>(initialProducts);
     const [loading, setLoading] = useState(false); // Start as false since we have initial data
@@ -29,13 +31,16 @@ const ShopClient = ({
     const category = searchParams.get('category') || '';
     const type = searchParams.get('type') || '';
     const tags = searchParams.get('tags') || '';
+    const searchQuery = searchParams.get('searchQuery') || '';
+    const sort = searchParams.get('sort') || '';
+    const onSale = searchParams.get('onSale') || '';
     const page = searchParams.get('page') || '1';
 
     const fetchProducts = async () => {
         setLoading(true);
         try {
             const { data } = await axios.get('/api/public/products', {
-                params: { category, type, tags, page, limit: 20 }
+                params: { category, type, tags, searchQuery, sort, onSale, page, limit: 20 }
             });
             if (data.success) {
                 setProducts(data.data);
@@ -52,12 +57,12 @@ const ShopClient = ({
         // Skip fetch on first render if no filters are present
         if (isFirstRender.current) {
             isFirstRender.current = false;
-            if (!category && !type && !tags && page === '1') {
+            if (!category && !type && !tags && !searchQuery && !sort && !onSale && page === '1') {
                 return;
             }
         }
         fetchProducts();
-    }, [category, type, tags, page]);
+    }, [category, type, tags, searchQuery, sort, onSale, page]);
 
     useGSAP(() => {
         if (!loading && products.length > 0) {
@@ -83,14 +88,14 @@ const ShopClient = ({
 
                 <div className="flex flex-col lg:flex-row gap-10 py-10">
                     {/* Sidebar Filters */}
-                    <ShopFilters categories={initialCategories} />
+                    <ShopFilters categories={initialCategories} brandingTags={brandingTags} />
 
                     {/* Main Content Area */}
                     <main className="flex-1">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                             <div className="flex flex-col gap-1">
                                 <p className="text-black/40 uppercase tracking-widest font-bold">
-                                    Displaying {products.length} of {meta.totalProducts || 0} Products
+                                    Displaying {products.length} Products
                                 </p>
                                 <h2 className="text-black text-4xl md:text-5xl font-[main] uppercase tracking-tighter">
                                     {category ? category.replace('-', ' ') : 'All Collections'}
@@ -132,7 +137,7 @@ const ShopClient = ({
                             </>
                         ) : (
                             <div className="w-full h-[50vh] flex items-center justify-center flex-col gap-6 bg-black/5 rounded-[2vw]">
-                                <p className="text-black/40 uppercase tracking-widest text-[10px] font-bold">No items match your criteria.</p>
+                                <p className="text-black/40 uppercase tracking-widest text-[10px] font-bold">No items match your criteria{`: '${searchQuery}'`}</p>
                                 <button
                                     onClick={() => router.push('/shop')}
                                     className="px-8 py-3 bg-black text-white text-[10px] uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
