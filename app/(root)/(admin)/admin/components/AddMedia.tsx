@@ -28,9 +28,10 @@ const AddMedia = ({
     }
 
     return (
-        <label htmlFor={media} className='border border-white/40 relative group rounded cursor-pointer'>
+        <label htmlFor={media} className='group ios-card !p-0 h-[40vh]'>
             <div className='absolute top-2 left-2 z-20'>
                 <Checkbox
+                className="ios-card flex items-center justify-center shadow-2xl cursor-pointer"
                     id={media._id}
                     checked={selectedMedia.find((m: any) => m._id === media._id) ? true : false}
                     onCheckedChange={handleCheck}

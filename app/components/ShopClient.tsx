@@ -76,7 +76,7 @@ const ShopClient = ({
     const handlePageChange = (newPage: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('page', newPage.toString());
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
     return (
@@ -139,7 +139,7 @@ const ShopClient = ({
                             <div className="w-full h-[50vh] flex items-center justify-center flex-col gap-6 bg-black/5 rounded-[2vw]">
                                 <p className="text-black/40 uppercase tracking-widest text-[10px] font-bold">No items match your criteria{`: '${searchQuery}'`}</p>
                                 <button
-                                    onClick={() => router.push('/shop')}
+                                    onClick={() => router.push('/shop', { scroll: false })}
                                     className="px-8 py-3 bg-black text-white text-[10px] uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
                                 >
                                     View All Products

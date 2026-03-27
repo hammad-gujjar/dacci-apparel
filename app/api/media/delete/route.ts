@@ -1,6 +1,6 @@
 import { adminAuth } from "@/lib/adminhelperfunction";
 import cloudinary from "@/lib/cloudinary";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Media } from "@/models/Media.model";
 import { NextResponse } from "next/server";
 

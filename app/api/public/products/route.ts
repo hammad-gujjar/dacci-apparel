@@ -1,6 +1,7 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
 import { Category } from "@/models/category.model";
+import { Media } from "@/models/Media.model";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -55,8 +56,8 @@ export async function GET(req: NextRequest) {
                 .sort(sortOption)
                 .skip(skip)
                 .limit(limit)
-                .populate('media', 'secure_url')
-                .populate('category', 'name slug')
+                .populate({ path: 'media', model: Media, select: 'secure_url' })
+                .populate({ path: 'category', model: Category, select: 'name slug' })
                 .lean(),
             Product.countDocuments(query)
         ]);

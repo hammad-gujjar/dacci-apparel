@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const CouponSchema = new mongoose.Schema({
     code: {
@@ -26,4 +27,12 @@ const CouponSchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });
 
-export const Coupon = mongoose.models.Coupon || mongoose.model("Coupon", CouponSchema, "coupons");
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const Coupon = conn.models.Coupon || conn.model("Coupon", CouponSchema, "coupons");

@@ -1,6 +1,7 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Category } from "@/models/category.model";
 import { Product } from "@/models/product.model";
+import { Media } from "@/models/Media.model";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest) {
         const categoriesWithProducts = await Promise.all(categories.map(async (cat: any) => {
             const products = await Product.find({ category: cat._id, deletedAt: null })
                 .limit(2)
-                .populate('media')
+                .populate({ path: 'media', model: Media })
                 .lean();
             
             return {

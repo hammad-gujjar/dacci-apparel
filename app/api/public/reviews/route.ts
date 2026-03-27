@@ -1,6 +1,7 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Review } from "@/models/review.model";
 import { auth } from "@/lib/auth";
+import { User } from "@/models/User.model";
 import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -41,7 +42,7 @@ export async function POST(req: NextRequest) {
 
         // Populate user for the response
         const populatedReview = await Review.findById(newReview._id)
-            .populate("user", "name image")
+            .populate({ path: "user", model: User, select: "name image" })
             .lean();
 
         return NextResponse.json({

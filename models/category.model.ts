@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const categorySchema = new mongoose.Schema({
     name: { type: String, required:true, unique:true },
@@ -7,4 +8,12 @@ const categorySchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });
 
-export const Category = mongoose.models.Category || mongoose.model("Category", categorySchema, "categories");
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const Category = conn.models.Category || conn.model("Category", categorySchema, "categories");

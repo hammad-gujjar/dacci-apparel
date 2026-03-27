@@ -9,20 +9,21 @@ interface TransitionButtonProps {
     className?: string;
     arrow?: boolean;
     icon?: any;
+    scroll?: boolean;
 }
 
-const TransitionButton = ({ text, url, className, arrow, icon }: TransitionButtonProps) => {
+const TransitionButton = ({ text, url, className, arrow, icon, scroll = true }: TransitionButtonProps) => {
     const { transitionTo } = useLoader();
 
     const handleClick = () => {
-        transitionTo(url);
+        transitionTo(url, { scroll });
     };
 
     return (
         <button className={className} onClick={handleClick}>
             {text}
             {arrow && <IoMdArrowForward className='arrow-button' />}
-            {icon && { icon }}
+            {icon && icon}
         </button>
     );
 };

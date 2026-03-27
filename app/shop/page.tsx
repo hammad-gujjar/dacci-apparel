@@ -1,6 +1,7 @@
 import { Category } from "@/models/category.model";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
+import { Media } from "@/models/Media.model";
 import ShopClient from "../components/ShopClient";
 
 export const metadata = {
@@ -17,8 +18,8 @@ const ShopPage = async () => {
         Product.find({ deletedAt: null })
             .sort({ createdAt: -1 })
             .limit(20)
-            .populate('media', 'secure_url')
-            .populate('category', 'name slug')
+            .populate({ path: 'media', model: Media, select: 'secure_url' })
+            .populate({ path: 'category', model: Category, select: 'name slug' })
             .lean(),
         Product.find({ deletedAt: null, tags: { $exists: true, $not: { $size: 0 } } })
             .sort({ createdAt: -1 })

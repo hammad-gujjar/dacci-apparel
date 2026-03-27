@@ -1,6 +1,6 @@
 import { Media } from '@/models/Media.model';
 import { adminAuth } from "@/lib/adminhelperfunction";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {

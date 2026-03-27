@@ -94,7 +94,7 @@ const ProfileEdit = () => {
     const currentImage = previewImage || user?.data?.image || "https://i.pinimg.com/736x/4c/6f/12/4c6f1205a136d44eb22c4edfaa0603d2.jpg";
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-[#EDEEE7] flex flex-col">
+        <div ref={containerRef} className="min-h-screen flex flex-col">
             {/* Top nav */}
             <nav className="w-full px-6 md:px-12 py-5 flex items-center gap-4 border-b border-black/5">
                 <Link href="/dashboard" className="p-2 hover:bg-black/5 transition-colors">
@@ -104,20 +104,18 @@ const ProfileEdit = () => {
             </nav>
 
             <div className="flex-1 flex items-start justify-center py-16 px-4">
-                <div className="edit-card w-full max-w-2xl border border-black/8 bg-white/60">
+                <div className="edit-card w-full max-w-2xl border border-black/8">
 
                     {/* Avatar Section */}
-                    <div className="edit-field relative bg-black p-8 flex flex-col items-center gap-5 overflow-hidden">
-                        <div className="absolute inset-0 opacity-5" style={{
-                            backgroundImage: 'repeating-linear-gradient(45deg, #EDEEE7 0px, #EDEEE7 1px, transparent 1px, transparent 40px)',
-                        }} />
+                    <div className="edit-field relative p-8 flex flex-col items-center gap-5 overflow-hidden">
+                        <div className="absolute inset-0 opacity-5" />
                         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
 
                         <div
                             className="relative group cursor-pointer z-10"
                             onClick={() => fileInputRef.current?.click()}
                         >
-                            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-[#EDEEE7]/20">
+                            <div className="w-28 h-28 rounded-full overflow-hidden border-1 border-black/20 bg-white">
                                 <img src={currentImage} alt="Profile" className="w-full h-full object-cover" />
                             </div>
                             <div className={`absolute inset-0 rounded-full bg-black/50 flex items-center justify-center transition-opacity ${uploading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
@@ -183,7 +181,7 @@ const ProfileEdit = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="dark-button flex items-center gap-3 px-8 py-4 text-[11px] tracking-[0.4em] uppercase font-bold disabled:opacity-50"
+                                    className="light-button !rounded-none !w-full"
                                 >
                                     {loading
                                         ? <><div className="w-4 h-4 border-2 border-[#EDEEE7]/30 border-t-[#EDEEE7] rounded-full animate-spin" /> Saving...</>
@@ -191,7 +189,7 @@ const ProfileEdit = () => {
                                     }
                                 </button>
                                 <Link href="/dashboard">
-                                    <button type="button" className="light-button px-8 py-4 text-[11px] tracking-[0.4em] uppercase font-bold">
+                                    <button type="button" className="light-button !rounded-none">
                                         Cancel
                                     </button>
                                 </Link>

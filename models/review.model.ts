@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const ReviewSchema = new mongoose.Schema({
     product: {
@@ -26,4 +27,12 @@ const ReviewSchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });
 
-export const Review = mongoose.models.Review || mongoose.model("Review", ReviewSchema, "reviews");
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const Review = conn.models.Review || conn.model("Review", ReviewSchema, "reviews");

@@ -37,7 +37,7 @@ const Heading = ({ title, className, delay, padding }: { title?: string, classNa
     }, { dependencies: [isLoading], scope: containerRef });
 
     return (
-        <div ref={containerRef} className={`${className || ''} flex flex-wrap gap-x-[0.3em]`}>
+        <div ref={containerRef} className={`${className || ''} flex flex-wrap gap-x-[0.9em]`}>
             {words.map((word, wordIndex) => (
                 <div key={wordIndex} className={`flex overflow-hidden ${padding ? padding : ''}`}>
                     {/* Split word into characters */}

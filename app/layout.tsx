@@ -25,7 +25,17 @@ export default async function RootLayout({
       >
         <LoaderProvider>
           <Nav />
-          <Toaster />
+          <Toaster
+            position="top-right"
+            reverseOrder={false}
+            toastOptions={{
+              className: 'macos-toast',
+              duration: 4000,
+              style: {
+                // Base styles are handled by CSS class .macos-toast
+              },
+            }}
+          />
           <SmoothScroll>
             <Providers>
               {children}

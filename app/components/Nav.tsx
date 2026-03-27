@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import Logout from './logout';
+import Logout from './Log-out';
 import { usePathname, useRouter } from 'next/navigation';
 import TransitionButton from './TransitionButton';
 import { useState, useEffect, useRef } from 'react';
@@ -31,6 +31,26 @@ const Nav = () => {
     const menuColumnsRef = useRef<(HTMLDivElement | null)[]>([]);
     const searchOverlayRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const scrollPositionRef = useRef(0);
+
+    // Stop scrolling when search or menu is open
+    useEffect(() => {
+        if (isSearchOpen || isMenuOpen) {
+            // Save current scroll position
+            scrollPositionRef.current = window.scrollY;
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollPositionRef.current}px`;
+            document.body.style.width = '100%';
+        } else {
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            // Restore scroll position
+            window.scrollTo(0, scrollPositionRef.current);
+        }
+    }, [isSearchOpen, isMenuOpen]);
 
     // Fetch Nav Data
     useEffect(() => {
@@ -226,7 +246,7 @@ const Nav = () => {
                 {/* Main Nav Bar */}
                 <div className="w-full h-fit md:h-[9vh] flex justify-between md:items-center transition-all duration-300 gap-2">
                     {/* Left: Categories (Hidden on mobile/tablet) */}
-                    <div className="w-1/3 h-[7.5vh] hidden md:flex items-center justify-center gap-5 px-4 py-2 pointer-events-auto bg-[#EDEEE7]/90 backdrop-blur-md rounded-[2vw] border border-black/5 mt-2">
+                    <div className="w-1/3 h-[8vh] hidden md:flex items-center justify-center gap-5 px-4 py-2 pointer-events-auto bg-[#EDEEE7]/90 backdrop-blur-md rounded-[2vw] border border-black/5 mt-2">
                         {navData.map((cat) => (
                             <div
                                 key={cat._id}
@@ -243,14 +263,14 @@ const Nav = () => {
 
                     {/* Logo (Centered) */}
                     <div className="lg:flex-none lg:w-1/3 flex justify-center">
-                        <TransitionButton text={<ul className="w-fit md:h-full">
+                        <TransitionButton text={<ul className="w-fit h-[7vh] md:h-full">
                             <img className='size-full object-contain' src='/images/daccilogosvg.png' alt='logo' />
                             <span className='font-serif text-2xl tracking-tighter uppercase font-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>Dacci</span>
                         </ul>} url='/' className="relative md:h-[9vh] pointer-events-auto z-101 cursor-pointer" />
                     </div>
 
                     {/* Right Side Icons */}
-                    <div className="h-[5vh] md:h-[7.5vh] md:w-1/3 justify-center flex items-center gap-2 md:gap-6 bg-[#EDEEE7]/90 backdrop-blur-md px-4 py-2 rounded-[2vw] border border-black/5 mt-1 md:mt-2">
+                    <div className="h-[6vh] md:h-[8vh] md:w-1/3 justify-center flex items-center gap-2 md:gap-6 bg-[#EDEEE7]/90 backdrop-blur-md px-4 py-2 rounded-[2vw] border border-black/5 mt-1 md:mt-2">
                         <button onClick={() => setIsSearchOpen(true)} className="p-2 hover:bg-black/5 rounded-full transition-colors cursor-pointer">
                             <Icon name="search" className="" />
                         </button>
@@ -306,7 +326,8 @@ const Nav = () => {
                                         <TransitionButton
                                             text={type}
                                             url={`/shop?category=${activeCategory.slug}&type=${type}`}
-                                            className="text-2xl md:text-4xl font-[main] hover:translate-x-4 transition-transform duration-300 uppercase tracking-tighter block w-fit"
+                                            scroll={false}
+                                            className="text-2xl md:text-3xl font-[main] hover:translate-x-4 transition-transform duration-300 uppercase tracking-tighter block w-fit text-left cursor-pointer"
                                         />
                                     </div>
                                 ))}
@@ -366,7 +387,7 @@ const Nav = () => {
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && searchQuery.trim()) {
                                     setIsSearchOpen(false);
-                                    router.push(`/shop?searchQuery=${searchQuery.trim()}`);
+                                    router.push(`/shop?searchQuery=${searchQuery.trim()}`, { scroll: false });
                                 }
                             }}
                             autoFocus
@@ -375,31 +396,34 @@ const Nav = () => {
                     </div>
 
                     {/* Suggestions */}
-                    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
-                        {suggestions.map((item, i) => (
-                            <Link
-                                key={i}
-                                href={`/shop?tag=${item.tag}`}
-                                onClick={() => setIsSearchOpen(false)}
-                                className="flex items-center gap-6 p-4 hover:bg-black/5 rounded-[1.5vw] transition-all group"
-                            >
-                                <div className="size-20 relative rounded-lg overflow-hidden shrink-0 border border-black/5">
-                                    <Image
-                                        src={item.sampleProduct.media?.[0]?.secure_url || '/placeholder.png'}
-                                        alt={item.tag}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                                <div className="flex flex-col gap-1">
-                                    <div className="flex items-center gap-2">
-                                        <Icon name="search" className="" />
-                                        <h4 className="text-xl font-[main] uppercase tracking-tight">{item.tag}</h4>
+                    <div className="w-full max-h-[50vh] overflow-y-scroll mt-8 scrollbar-hide">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {suggestions.map((item, i) => (
+                                <Link
+                                    key={i}
+                                    href={`/shop?tag=${item.tag}`}
+                                    onClick={() => setIsSearchOpen(false)}
+                                    scroll={false}
+                                    className="flex items-center gap-6 p-4 hover:bg-black/5 rounded-[1.5vw] transition-all group"
+                                >
+                                    <div className="size-20 relative rounded-lg overflow-hidden shrink-0 border border-black/5">
+                                        <Image
+                                            src={item.sampleProduct.media?.[0]?.secure_url || '/placeholder.png'}
+                                            alt={item.tag}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
-                                    <p className="text-[10px] uppercase tracking-widest opacity-40">View in Shop</p>
-                                </div>
-                            </Link>
-                        ))}
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-center gap-2">
+                                            <Icon name="search" className="" />
+                                            <h4 className="text-xl font-[main] uppercase tracking-tight">{item.tag}</h4>
+                                        </div>
+                                        <p className="text-[10px] uppercase tracking-widest opacity-40">View in Shop</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,10 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
 import { ProductVariant } from "@/models/productVariant.model";
 import { Review } from "@/models/review.model";
 import { Category } from "@/models/category.model";
 import { Media } from "@/models/Media.model";
+import { User } from "@/models/User.model";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
@@ -15,8 +16,8 @@ export async function GET(
     const { slug } = await params;
 
     const product = await Product.findOne({ slug, deletedAt: null })
-      .populate("media", "secure_url")
-      .populate("category", "name slug")
+      .populate({ path: "media", model: Media, select: "secure_url" })
+      .populate({ path: "category", model: Category, select: "name slug" })
       .lean();
 
     if (!product) {
@@ -29,10 +30,10 @@ export async function GET(
     // Fetch related data in parallel
     const [variants, reviews, relatedProducts] = await Promise.all([
       ProductVariant.find({ product: product._id, deletedAt: null })
-        .populate("media", "secure_url")
+        .populate({ path: "media", model: Media, select: "secure_url" })
         .lean(),
       Review.find({ product: product._id, deletedAt: null })
-        .populate("user", "name image")
+        .populate({ path: "user", model: User, select: "name image" })
         .lean(),
       Product.find({
         category: product.category._id,
@@ -40,7 +41,7 @@ export async function GET(
         deletedAt: null,
       })
         .limit(4)
-        .populate("media", "secure_url")
+        .populate({ path: "media", model: Media, select: "secure_url" })
         .lean(),
     ]);
 

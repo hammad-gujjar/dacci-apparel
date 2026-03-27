@@ -1,42 +1,50 @@
 'use client';
 
-import { useGSAP } from '@gsap/react';
+import { useEffect, ReactNode } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
-import { ReactNode } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const SmoothScroll = ({ children }: { children: ReactNode }) => {
-  useGSAP(() => {
-    const lenis = new Lenis({
-      duration: 2,
-      lerp: 0.005, // Increased smoothness (lower value = more smoothing)
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
-    });
+  useEffect(() => {
+    let locomotiveScroll: any;
 
-    lenis.on('scroll', ScrollTrigger.update);
+    const initLocomotive = async () => {
+      // Import dynamically to avoid SSR issues
+      const LocomotiveScroll = (await import('locomotive-scroll')).default;
+      
+      locomotiveScroll = new LocomotiveScroll({
+        lenisOptions: {
+          wrapper: window,
+          content: document.documentElement,
+          lerp: 0.001, // Adjusted for smooth lerpness (0.1 is standard smooth, lower is smoother)
+          duration: 1.2,
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 2,
+          infinite: false,
+        },
+      });
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+      // Locomotive v5 uses Lenis under the hood for smoothness
+      // and automatically syncs with ScrollTrigger and others.
+      // We can access the lenis instance if needed:
+      // locomotiveScroll.lenis
+    };
 
-    gsap.ticker.lagSmoothing(0);
+    initLocomotive();
 
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove(lenis.raf as any);
+      if (locomotiveScroll) {
+        locomotiveScroll.destroy();
+      }
     };
   }, []);
 
-  return <>{children}</>;
+  return <div data-scroll-container>{children}</div>;
 };
 
 export default SmoothScroll;

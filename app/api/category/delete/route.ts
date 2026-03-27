@@ -1,5 +1,5 @@
 import { adminAuth } from "@/lib/adminhelperfunction";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { NextResponse } from "next/server";
 import { Category } from '@/models/category.model'
 

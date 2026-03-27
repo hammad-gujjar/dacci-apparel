@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const MediaSchema = new mongoose.Schema({
     asset_id: { type: String, required: true, trim: true },
@@ -11,4 +12,12 @@ const MediaSchema = new mongoose.Schema({
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });
 
-export const Media = mongoose.models.Media || mongoose.model("Media", MediaSchema, "medias");
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const Media = conn.models.Media || conn.model("Media", MediaSchema, "medias");

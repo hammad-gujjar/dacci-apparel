@@ -3,7 +3,7 @@ import { authClient } from '@/lib/auth-client';
 import { redirect } from 'next/navigation';
 import toast from 'react-hot-toast'
 
-const logout = ({ className }: { className?: string }) => {
+const Logout = ({ className }: { className?: string }) => {
 
     async function handleLogout() {
         await authClient.signOut({
@@ -23,4 +23,4 @@ const logout = ({ className }: { className?: string }) => {
     )
 }
 
-export default logout
+export default Logout;

@@ -54,39 +54,33 @@ export default function SignUp() {
   return (
     <div ref={containerRef} className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-[#EDEEE7]">
       {/* Background grid */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
+      <div className="absolute inset-0 opacity-[0.07]" style={{
         backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 59px, black 59px, black 60px), repeating-linear-gradient(90deg, transparent, transparent 59px, black 59px, black 60px)',
       }} />
 
-      <Link href="/" className="absolute top-8 left-8 z-10">
-        <h3 className="text-black opacity-80 hover:opacity-100 transition-opacity tracking-[0.3em]">DACCI</h3>
-      </Link>
-
       <div
         ref={cardRef}
-        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden"
-        style={{ background: 'rgba(237,238,231,0.6)', backdropFilter: 'blur(40px)' }}
+        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden rounded-[2vw] shadow-2xl"
+        style={{ background: '#edeee788', backdropFilter: 'blur(40px)' }}
       >
         {/* LEFT — Steps */}
         <div
           ref={leftRef}
-          className="hidden md:flex flex-col justify-between p-12 bg-black text-[#EDEEE7] relative overflow-hidden"
+          className="hidden md:flex flex-col justify-between p-10 bg-black text-[#EDEEE7] relative overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, #EDEEE7 0px, #EDEEE7 1px, transparent 1px, transparent 60px)',
-          }} />
+          <div className="absolute inset-0 opacity-5 pointer-events-none" />
 
           <div className="relative z-10">
-            <span className="text-[10px] uppercase tracking-[0.6em] text-[#EDEEE7]/40 font-bold">New Member</span>
-            <h1 className="text-[#EDEEE7]! mt-4 leading-none text-5xl">Join<br />Dacci<br />Today.</h1>
+            <p className="uppercase text-[#EDEEE7]/40 font-bold">New Member</p>
+            <h1 className="text-[#EDEEE7]! mt-4">Join Dacci Today.</h1>
             <p className="mt-6 text-[#EDEEE7]/50 max-w-xs">
               Become part of an exclusive community that values craftsmanship, quality, and timeless style.
             </p>
           </div>
 
-          <div className="relative z-10 flex flex-col gap-4">
+          <div className="relative z-10 flex flex-col gap-1 mt-4">
             {STEPS.map((step, i) => (
-              <div key={i} className={`flex items-center gap-4 px-5 py-4 border transition-all ${i === 0 ? 'border-[#EDEEE7]/20 bg-[#EDEEE7]/5' : 'border-transparent'}`}>
+              <div key={i} className={`flex items-center gap-4 px-5 py-2 border transition-all ${i === 0 ? 'border-[#EDEEE7]/20 bg-[#EDEEE7]/5' : 'border-transparent'}`}>
                 <span className="w-7 h-7 shrink-0 rounded-full border border-[#EDEEE7]/20 flex items-center justify-center text-[10px] font-bold text-[#EDEEE7]/50">
                   {String(i + 1).padStart(2, '0')}
                 </span>
@@ -97,9 +91,9 @@ export default function SignUp() {
         </div>
 
         {/* RIGHT — Form */}
-        <div ref={rightRef} className="p-8 md:p-12 flex flex-col justify-center gap-8 bg-[#EDEEE7]">
+        <div ref={rightRef} className="p-10 flex flex-col justify-center gap-8 bg-[#EDEEE7]">
           <div className="auth-field">
-            <span className="text-[10px] uppercase tracking-[0.5em] text-black/30 font-bold">New Account</span>
+            <p className="uppercase text-black/30 font-bold">New Account</p>
             <h2 className="mt-2">Create Account</h2>
           </div>
 
@@ -165,7 +159,7 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="auth-field dark-button w-full justify-center py-5 text-[11px] tracking-[0.5em] uppercase font-bold disabled:opacity-50 mt-2"
+              className="light-button !rounded-none !w-full !border-[black]/15"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>

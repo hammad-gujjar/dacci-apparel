@@ -217,25 +217,19 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
             {/* size */}
             <div className="flex flex-col gap-2">
+              <label className="text-white/60 text-xs uppercase tracking-widest">Size <span className="opacity-50">(Optional)</span></label>
               <Controller
                 control={form.control}
                 name="size"
                 render={({ field }) => (
                   <Select
                     options={sizes}
-                    selected={field.value}
-                    // When the user selects an item, we update the form form value
+                    selected={field.value || ''}
                     setSelected={(val: any) => field.onChange(val)}
                     isMulti={false}
                   />
                 )}
               />
-              {/* Show error for category if validation fails */}
-              {form.formState.errors.size && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.size.message}
-                </p>
-              )}
             </div>
 
             {/* color */}

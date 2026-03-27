@@ -20,9 +20,9 @@ const ShopHero = () => {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img 
-                    src="https://i.pinimg.com/1200x/78/64/93/78649376b9a7d9e1861584a023ff6241.jpg" 
+                    src="https://i.pinimg.com/1200x/04/c5/09/04c5096da839fda9f22f05446f7ca061.jpg" 
                     alt="Shop Hero" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover position-center"
                 />
                 {/* <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black"></div> */}
             </div>

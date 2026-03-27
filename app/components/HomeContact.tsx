@@ -6,6 +6,8 @@ import { useRef } from 'react';
 import Heading from './Heading';
 import { useLoader } from '../context/LoaderContext';
 import Icon from './Icon';
+import { IoLogoInstagram, IoLogoFacebook, IoLogoPinterest } from 'react-icons/io5';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,27 +84,26 @@ const HomeContact = () => {
     ];
 
     const socials = [
-        { name: "Instagram", url: "#" },
-        { name: "Pinterest", url: "#" },
-        { name: "LinkedIn", url: "#" },
-        { name: "TikTok", url: "#" }
+        { name: "Instagram", url: "#", icon: <IoLogoInstagram /> },
+        { name: "Pinterest", url: "#", icon: <IoLogoPinterest /> },
+        { name: "Facebook", url: "#", icon: <IoLogoFacebook /> },
     ];
 
     return (
         <section ref={containerRef} className="w-full py-10 px-5 md:px-10 overflow-hidden">
             <div className="max-w-full mx-auto flex flex-col gap-10">
-                
+
                 {/* Header */}
                 <div className="flex flex-col gap-6 max-w-2xl">
                     <span className="contact-animate-smooth text-black/40 text-xs uppercase tracking-[0.5em] font-bold">Get In Touch</span>
-                    <Heading 
+                    <Heading
                         title="STAY CONNECTED WITH DACCI."
                     />
                 </div>
 
                 {/* Content Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
-                    
+
                     {/* Contact Details */}
                     <div className="flex flex-col gap-16">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
@@ -122,8 +123,9 @@ const HomeContact = () => {
                             <div className="flex flex-wrap gap-x-12 gap-y-6">
                                 {socials.map((social, i) => (
                                     <a key={i} href={social.url} className="social-link text-[15px] font-[main] uppercase tracking-tight group flex items-center gap-2">
+                                        {social.icon}
                                         {social.name}
-                                        <div className="size-4 group-hover:-rotate-45 transition-transform duration-300 ease-inOut">
+                                        <div className="size-4 opacity-0 -rotate-45 transform -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-in">
                                             <Icon name="arrow" />
                                         </div>
                                     </a>
@@ -137,9 +139,9 @@ const HomeContact = () => {
                         <div className="contact-image-reveal h-full border border-black/10 relative overflow-hidden">
                             <div className="w-[calc(100vw-3rem)] md:w-[600px] h-full absolute top-0 left-0">
                                 <div className="absolute inset-2 border border-[#EDEEE7]/5 rounded-[1.5vw] overflow-hidden">
-                                     <img 
-                                        src="https://i.pinimg.com/1200x/9c/66/1d/9c661df82fe72ff3ecee1160d8f0bc60.jpg" 
-                                        alt="Contact Visual" 
+                                    <img
+                                        src="https://i.pinimg.com/1200x/9c/66/1d/9c661df82fe72ff3ecee1160d8f0bc60.jpg"
+                                        alt="Contact Visual"
                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-110 group-hover:scale-100"
                                     />
                                 </div>
@@ -156,7 +158,7 @@ const HomeContact = () => {
 
                 {/* Footer Style Divider */}
                 <div className="w-full h-px bg-[#EDEEE7]/10 contact-animate-smooth mt-10"></div>
-                
+
                 <div className="flex flex-col md:flex-row justify-between items-center gap-6 contact-animate-smooth text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-[0.3em]">
                     <p>© 2024 Dacci Apparel. All rights reserved.</p>
                     <div className="flex gap-8">

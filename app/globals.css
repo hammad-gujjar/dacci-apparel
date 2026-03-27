@@ -149,6 +149,7 @@ body {
 h1 {
   font-family: 'main';
   font-size: 55px;
+  font-weight: 500;
   text-transform: uppercase;
   color: black;
 }
@@ -176,26 +177,12 @@ h2 {
 
 .ios-card {
   position: relative;
-  border-radius: 24px;
+  border-radius: 2vw;
   overflow: hidden;
-
-  /* Glass background */
-  background: linear-gradient(135deg,
-      #ffffff59,
-      #ffffff14);
-
-  /* Blur magic */
-  backdrop-filter: blur(25px) saturate(130%);
-  /* -webkit-backdrop-filter: blur(25px) saturate(130%); */
-
-  /* Soft border like iOS */
-  border: 1px solid #ffffff50;
-
-  /* Elevation */
+  border: 1px solid #000000a0;
   box-shadow:
-    0 8px 30px #0000001f,
-    inset 0 1px 0 #ffffff66;
-
+    0 5px 5px #00000015,
+    inset 0 1.5px 0 #ffffff20;
   padding: 15px;
 }
 
@@ -204,14 +191,12 @@ h2 {
   height: fit-content;
   display: flex;
   gap: 10px;
-  font-size: 1.5vw;
+  font-size: 15px;
   align-items: center;
   padding: 12px 15px;
-  background-color: #EDEEE7;
-  backdrop-filter: blur(10px);
-  border: 1px solid #0000009a;
-  backdrop-filter: saturate(100%);
+  border-radius: 5vw;
   cursor: pointer;
+  border: 1px solid #00000020 !important;
   color: black;
   transition: all 0.5s ease;
   overflow: hidden;
@@ -221,22 +206,23 @@ h2 {
 .light-button::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 100%;
   left: 0;
-  width: 0%;
+  width: 100%;
   height: 100%;
-  background-color: black;
-  transition: all 0.5s ease-in-out;
+  border-radius: 100%;
+  background-color: black !important;
+  transition: all 0.3s ease-in-out;
   z-index: -1;
 }
 
 .light-button:hover::before {
-  width: 100%;
+  top: 0;
+  border-radius: 0;
 }
 
 .light-button:hover {
   color: #EDEEE7;
-  padding: 12px 22px;
 }
 
 .arrow-button {
@@ -248,39 +234,42 @@ h2 {
 }
 
 .dark-button {
+  width: fit-content;
+  height: fit-content;
   display: flex;
   gap: 10px;
+  font-size: 15px;
   align-items: center;
   padding: 12px 15px;
+  border-radius: 5vw;
   border: 1px solid #EDEEE7;
-  background-color: black;
   cursor: pointer;
   color: #EDEEE7;
-  overflow: hidden;
   transition: all 0.5s ease;
+  overflow: hidden;
   position: relative;
 }
 
 .dark-button::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 100%;
   left: 0;
-  width: 0%;
+  width: 100%;
   height: 100%;
-  background-color: #EDEEE7;
+  border-radius: 100%;
+  background-color: #EDEEE7 !important;
   z-index: -1;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .dark-button:hover::before {
-  width: 100%;
+  top: 0;
+  border-radius: 0;
 }
 
 .dark-button:hover {
-  background-color: transparent;
   color: black;
-  padding: 12px 22px;
 }
 
 .dark-button:hover .arrow-button {
@@ -307,9 +296,11 @@ input:focus {
   font-weight: 400;
 
   color: #ffffff !important;
-  background-color: #000000e7;
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
 
-  border: 1px solid #f0f0f5cb;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
 
   outline: none;
@@ -370,6 +361,8 @@ input:focus {
 /* Ensure Logo and Nav items are crisp */
 .nav-blur-bg {
   backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 255, 0.7) !important;
 }
 
 @media (max-width:500px) {
@@ -401,11 +394,69 @@ input:focus {
     transform: translateY(0);
   }
 }
-
 .animate-reveal {
   animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* macOS Notification Toast Styles */
+.macos-toast {
+  background: #ffffff87 !important;
+  backdrop-filter: blur(20px) saturate(130%) !important;
+  border: 1px solid #ffffff73 !important;
+  box-shadow: 0 8px 32px 0 #0000001f, 
+              0 1px 2px 0 #0000000f,
+              inset 0 0 0 1px #ffffff33 !important;
+  border-radius: 18px !important;
+  padding: 14px 20px !important;
+  color: #1d1d1f !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  max-width: 380px !important;
+}
+
+.dark .macos-toast {
+  background: #1e1e1ea9 !important;
+  border: 1px solid #ffffff2a !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 8px 32px 0 #00000033, 0 1px 2px 0 #0000001a !important;
+}
+
+.macos-toast-success-icon {
+  color: #34c759 !important;
+}
+
+.macos-toast-error-icon {
+  color: #ff3b30 !important;
+}
+
+/* Locomotive Scroll v5 / Lenis Base Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

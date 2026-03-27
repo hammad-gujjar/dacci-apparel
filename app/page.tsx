@@ -1,369 +1,69 @@
 'use client';
-import Heading from './components/Heading';
-import NewArrival from './components/NewArrival';
-import { useLoader } from './context/LoaderContext';
-import { useRef, useState } from 'react';
+
+import { useState } from 'react';
 import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import TransitionButton from './components/TransitionButton';
 import axios from 'axios';
-import HomeMiddle from './components/HomeMiddle';
-import HomeContact from './components/HomeContact';
-import { IoStar, IoStarOutline, IoStarHalf } from 'react-icons/io5';
-import { cn } from '@/lib/utils';
+import { useLoader } from '@/app/context/LoaderContext';
 
-gsap.registerPlugin(ScrollTrigger);
+import Heading from '@/app/components/Heading';
+import NewArrival from '@/app/components/NewArrival';
+import HomeMiddle from '@/app/components/HomeMiddle';
+import HomeContact from '@/app/components/HomeContact';
+import HeroSection from '@/app/components/HeroSection';
+import PopularCategories from '@/app/components/PopularCategories';
+import HorizontalCategories from '@/app/components/HorizontalCategories';
+import CompanyStats from '@/app/components/CompanyStats';
+import OurServices from '@/app/components/OurServices';
 
+// ─── HomePage ─────────────────────────────────────────────────────────────
 const HomePage = () => {
-  const { isLoading, setIsReady, transitionTo } = useLoader();
-  const [newArrivals, setNewArrivals] = useRef<any[]>([]).current; // We'll manage this in state for re-render
+  const { setIsReady } = useLoader();
+
   const [arrivalData, setArrivalData] = useState<any[]>([]);
-  const [activeCategory, setActiveCategory] = useState<number>(0);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroImageRef = useRef<HTMLImageElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const productCardRef = useRef<HTMLDivElement>(null);
 
-  // Helper to split text into words, then characters
-  const splitText = (text: string) => {
-    return text.split(' ').map((word, wordIndex) => (
-      <div key={wordIndex} className="flex overflow-hidden">
-        {word.split('').map((char, charIndex) => (
-          <span key={charIndex} className="hero-char inline-block translate-y-full">
-            {char}
-          </span>
-        ))}
-      </div>
-    ));
-  };
-
-  // Rating helper
-  const renderStars = (rating: number, size: string = "text-xl", interactive: boolean = false, onSelect?: (r: number) => void) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      const isFull = i <= Math.floor(rating);
-      const isHalf = i === Math.ceil(rating) && rating % 1 !== 0;
-
-      stars.push(
-        <button
-          key={i}
-          type="button"
-          disabled={!interactive}
-          onClick={() => onSelect?.(i)}
-          className={cn(interactive ? "cursor-pointer hover:scale-110 transition-transform" : "cursor-default")}
-        >
-          {isFull ? (
-            <IoStar className={cn("text-black", size)} />
-          ) : isHalf ? (
-            <IoStarHalf className={cn("text-black", size)} />
-          ) : (
-            <IoStarOutline className={cn("text-black/10", size)} />
-          )}
-        </button>
-      );
-    }
-    return stars;
-  };
-
-  const SERVICES = [
-    {
-      title: "Core Product Creation",
-      subtitle: "Design. Craft. Quality.",
-      description: "We create thoughtfully designed clothing and accessories that balance contemporary style with enduring quality. From concept to final production, every piece is developed with precision, premium materials, and an uncompromising attention to detail.",
-    },
-    {
-      title: "Customization & Personalization",
-      subtitle: "Made to Feel Personal.",
-      description: "Our customization services allow clients to adapt pieces to their individual preferences — from tailored fits to personalized details. Each customization is handled with care, ensuring every item feels unique, intentional, and truly yours."
-    },
-    {
-      title: "Retail & Global Distribution",
-      subtitle: "Seamless Access, Anywhere.",
-      description: "We offer a streamlined shopping experience across digital and physical platforms, making our collections accessible worldwide. Through e-commerce, retail partners, and selective pop-ups, we ensure consistency, convenience, and brand integrity across every market."
-    },
-    {
-      title: "Customer Experience & Styling",
-      subtitle: "Beyond Shopping — A Relationship.",
-      description: "Our customer experience is built around guidance, support, and trust. From personalized styling advice to responsive after-sales care, we focus on creating meaningful, long-term relationships rather than one-time transactions."
-    },
-    {
-      title: "B2B & Private Label Solutions",
-      subtitle: "Your Vision, Our Expertise.",
-      description: "We partner with businesses, designers, and organizations to develop private label and collaborative collections. Our end-to-end capabilities ensure consistent quality, efficient production, and brand-aligned execution at every stage."
-    },
-    {
-      title: "Sustainability & Responsibility",
-      subtitle: "Designed with Purpose.",
-      description: "We are committed to responsible practices that respect both people and the planet. From mindful material sourcing to ethical production standards, sustainability is embedded into our decision-making — not as a trend, but as a responsibility."
-    },
-  ]
-
-  const CATEGORIES = [
-    {
-      title: "Women Collection",
-      description: "We create thoughtfully designed clothing and accessories for women that balance contemporary style with enduring quality.",
-      img: "https://i.pinimg.com/1200x/de/bc/97/debc97bb905d75568379e74b6f2f3bbb.jpg",
-      url: "#"
-    },
-    {
-      title: "Men Collection",
-      description: "We create thoughtfully designed clothing and accessories for men that balance contemporary style with enduring quality.",
-      img: "https://i.pinimg.com/1200x/7e/9a/26/7e9a262de7d4918a359a061a6b610584.jpg",
-      url: "#"
-    },
-    {
-      title: "Kids Collection",
-      description: "We create thoughtfully designed clothing and accessories for kids that balance contemporary style with enduring quality.",
-      img: "https://i.pinimg.com/736x/d2/d4/d8/d2d4d838bdd4db2456576fdf18ee6154.jpg",
-      url: "#"
-    },
-    {
-      title: "Accessories Collection",
-      description: "We create thoughtfully designed accessories for women, men and kids that balance contemporary style with enduring quality.",
-      img: "https://i.pinimg.com/1200x/74/c2/cc/74c2ccd48d1f8032e338ece75bd79453.jpg",
-      url: "#"
-    }
-  ]
-
+  // ── Fetch new arrivals ────────────────────────────────────────────────────
   useGSAP(() => {
-    if (!isLoading && arrivalData.length > 0 && productCardRef.current) {
-      gsap.to(
-        productCardRef.current,
-        { x: '0%', opacity: 1, duration: 1, delay: 0.7, ease: 'power2.out' }
-      );
-    }
-  }, { dependencies: [isLoading, arrivalData] });
-
-  useGSAP(() => {
-    const fetchAllData = async () => {
+    const fetchArrivals = async () => {
       try {
-        const { data: response } = await axios.get('/api/products/new-arrivals');
-        if (response.success) {
-          setArrivalData(response.data);
-        }
+        const { data } = await axios.get('/api/products/new-arrivals');
+        if (data.success) setArrivalData(data.data);
       } catch (err) {
-        console.error("Error fetching homepage data:", err);
+        console.error('Error fetching arrivals:', err);
       } finally {
         setIsReady(true);
       }
     };
-    fetchAllData();
+    fetchArrivals();
   }, [setIsReady]);
 
-  useGSAP(() => {
-    if (!isLoading) {
-      // Refresh ScrollTrigger after loader finishes and layout is settled
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 500);
-    }
-  }, { dependencies: [isLoading] });
-
-  useGSAP(() => {
-    if (!isLoading) {
-      const chars = heroRef.current?.querySelectorAll('.hero-char');
-
-      // Hero Image Scale Animation
-      if (heroImageRef.current) {
-        gsap.to(heroImageRef.current,
-          {
-            scale: 1,
-            duration: 2.5,
-            delay: 0.7,
-            ease: "power2.out",
-          }
-        );
-      }
-
-      if (chars && chars.length > 0) {
-        gsap.to(chars, {
-          y: "0%",
-          duration: 0.5,
-          delay: 1.1,
-          ease: "power2.out",
-          stagger: 0.02,
-        });
-      }
-    }
-  }, { dependencies: [isLoading], scope: heroRef });
-
-  useGSAP(() => {
-    const section = sectionRef.current;
-    const scrollContainer = scrollContainerRef.current;
-
-    if (!section || !scrollContainer) return;
-
-    const scrollWidth = scrollContainer.offsetWidth - window.innerWidth;
-
-    const horizAnim = gsap.to(scrollContainer, {
-      x: () => -scrollWidth,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${scrollWidth}`,
-        pin: true,
-        scrub: 3.5, // Balanced scrub for responsiveness
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      }
-    });
-  }, { scope: sectionRef });
-
+  // ─── Render ────────────────────────────────────────────────────────────────
   return (
     <>
-      <div ref={heroRef} className='w-screen h-[92vh] md:h-screen relative overflow-hidden'>
-      {/* <img
-      ref={heroImageRef}
-      src='/images/generated_image_69b69ec1-dada-494a-a6e2-924bfd57e805.png'
-      className='object-cover size-full absolute top-0 left-0 scale-[1.3]'
-      /> */}
-      <video
-      src="/videos/hero.mp4"
-      autoPlay
-      muted
-      loop
-      // className='bg-[red] absolute top-[-46vh] left-0 w-full h-[207%] -rotate-90'
-      className='bg-[red] absolute top-0 left-0 w-full'
-    />
-        <div className='absolute top-0 left-0 size-full flex flex-col justify-end p-5 md:p-10 gap-2 z-2'>
-          <div className="w-full md:w-[90%]">
-            <h1 className='text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em]'>
-              {splitText("Premium clothes and accessories collection")}
-            </h1>
-          </div>
-          <div className="w-full md:w-[90%] md:mt-4 mt-2">
-            <p className='text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]'>
-              {splitText("Daccia Apparel is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website")}
-            </p>
-          </div>
-        </div>
+      {/* Hero section — self-contained component */}
+      <HeroSection arrivalData={arrivalData} />
 
-        {/* Latest Product Card — right side center, horizontal parallelogram shape */}
-        {arrivalData.length > 0 && (() => {
-          const latest = arrivalData[0];
-          const img = latest.media?.[0]?.secure_url;
-          return (
-            <div
-              ref={productCardRef}
-              onClick={() => transitionTo(`/product/${latest.slug}`)}
-              className="absolute right-10 top-2/5 z-10 translate-x-1/2 hidden md:flex border border-white/20 cursor-pointer hover:scale-[1.03] transition-transform duration-300"
-              style={{
-                clipPath: 'polygon(18px 0%, 100% 0%, calc(100% - 18px) 100%, 0% 100%)',
-                width: '280px',
-                background: 'rgba(237, 238, 231, 0.08)',
-                backdropFilter: 'blur(15px) saturate(1)',
-                WebkitBackdropFilter: 'blur(15px) saturate(1)',
-                transform: 'translateX(120%)', // start off-screen; GSAP will animate
-              }}
-            >
-              <div
-                className="w-full flex items-center gap-4 px-8 py-5"
-              >
-                {/* Product Image */}
-                {img && (
-                  <div className="shrink-0 w-16 h-20 rounded-xl overflow-hidden border border-white/10">
-                    <img src={img} alt={latest.name} className="w-full h-full object-cover" />
-                  </div>
-                )}
+      {/* Company Performance Stats */}
+      <CompanyStats />
 
-                {/* Info */}
-                <div className="flex flex-col gap-1.5 min-w-0">
-                  {/* NEW badge */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EDEEE7] opacity-70 shrink-0" />
-                    <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-[#EDEEE7]/60">New</span>
-                  </div>
-
-                  {/* Name */}
-                  <p className="text-[#EDEEE7] font-bold leading-tight truncate">
-                    {latest.name}
-                  </p>
-
-                  {/* Stars */}
-                  <div className="flex items-center gap-0.5 mt-0.5">
-                    {renderStars(latest.averageRating || 0, "text-lg")}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
+      {/* Categories heading */}
+      <div className="flex flex-col md:flex-row justify-between md:items-end gap-2 px-5 pt-10">
+        <Heading title="SHOP BY CATEGORIES" className="w-full md:w-1/2" />
+        <p className="w-full md:w-1/3">
+          Explore our curated selection of categories, featuring the latest trends and timeless classics for every style.
+        </p>
       </div>
 
-      <div className='pt-10 flex flex-col md:flex-row justify-between md:items-start items-center gap-2 px-3 md:px-10'>
-        <Heading title='SORT  BY  CATEGORIES' className="w-full md:w-1/2" />
-        <p className='w-full md:w-1/3 md:text-left text-center'>Explore our curated selection of categories, featuring the latest trends and timeless classics for every style.</p>
-      </div>
+      {/* Horizontal scrolling categories */}
+      <HorizontalCategories />
 
-      <div ref={sectionRef} className='h-[95vh] md:h-screen w-full overflow-hidden'>
-        <div ref={scrollContainerRef} className='h-full flex w-fit p-[5vw] gap-3 md:gap-4'>
-          {CATEGORIES.map((cat, index) => {
-            const isActive = activeCategory === index;
-            return (
-              <div 
-                key={index} 
-                onMouseEnter={() => setActiveCategory(index)}
-                className={cn(
-                  'category-item group h-full relative flex flex-col gap-2 justify-end shrink-0 rounded-[2vw] overflow-hidden transition-all duration-700 ease-in-out cursor-pointer',
-                  isActive ? 'w-screen md:w-[50vw]' : 'w-screen md:w-[25vw]'
-                )}
-              >
-                {/* Background Image Container - decoupled from parent shrinking */}
-                <div className="absolute inset-0 size-full z-[-1] overflow-hidden">
-                  <img 
-                    className={cn(
-                      'absolute top-0 left-1/2 -translate-x-1/2 h-full min-w-[100vw] md:min-w-[50vw] object-cover transition-transform duration-2000 ease-out',
-                      isActive ? 'scale-115' : 'scale-100'
-                    )} 
-                    src={cat.img} 
-                    alt={cat.title} 
-                  />
-                </div>
-
-                <div className={cn(
-                  "category-content flex flex-col gap-4 p-6 md:p-12 size-full justify-end transition-all duration-700",
-                  isActive ? "bg-black/40" : "bg-black/20"
-                )}>
-                  <div className="bg-linear-to-t from-black/80 via-black/20 to-transparent absolute inset-0 z-0 pointer-events-none" />
-                  
-                  <div className="relative z-10">
-                    <h2 className={cn(
-                      'text-[#EDEEE7]! text-2xl md:text-5xl font-bold transition-all duration-500',
-                      isActive ? "translate-y-0 opacity-100 mt-4" : "translate-y-[100%] opacity-0 h-0"
-                    )}>
-                      {cat.title}
-                    </h2>
-                    
-                    <div className="overflow-hidden">
-                      <div className={cn(
-                        "transition-all duration-700 ease-in-out",
-                        isActive ? "translate-y-0 opacity-100 mt-4" : "translate-y-[100%] opacity-0 h-0"
-                      )}>
-                        <p className='text-[#EDEEE7] tracking-wider line-clamp-3 md:line-clamp-none text-sm md:text-lg'>
-                          {cat.description}
-                        </p>
-                        <TransitionButton text='collection' url={cat.url} className='light-button w-fit mt-6' arrow={true} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
+      {/* Remaining sections */}
       <NewArrival products={arrivalData} />
-
+      <PopularCategories />
+      <OurServices />
       <HomeMiddle />
-
       <HomeContact />
-
     </>
-  )
-}
+  );
+};
 
 export default HomePage;

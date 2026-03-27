@@ -48,7 +48,7 @@ export function getEmailVerifyHtml(email: string, name: string, verifyLink: stri
                 </p>
 
                 <!-- Button -->
-                <li style="
+                <a href=${verifyLink} style="
           display:inline-block;
           background-color:#000000;
           color:#ffffff;
@@ -58,8 +58,8 @@ export function getEmailVerifyHtml(email: string, name: string, verifyLink: stri
           letter-spacing:1px;
           text-transform:uppercase;
         ">
-                    ${verifyLink}
-                </li>
+                    Verify
+                </a>
 
             </td>
         </tr>

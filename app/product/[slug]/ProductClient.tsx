@@ -33,7 +33,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
     const { transitionTo } = useLoader();
     const { data: session } = authClient.useSession();
     const [product, setProduct] = useState(initialData);
-    const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || null);
+    const [selectedVariant, setSelectedVariant] = useState<any>(null);
     const [isMarqueeOpen, setIsMarqueeOpen] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
 
@@ -54,8 +54,10 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
     const currentDiscount = selectedVariant ? selectedVariant.discountPercentage : product.discountPercentage;
     const currentMedia = (selectedVariant?.media?.length > 0 ? selectedVariant.media : product.media) || [];
     const mainImage = currentMedia?.[activeImageIndex]?.secure_url || currentMedia?.[0]?.secure_url || '/placeholder.png';
-    const allImages = [...(product.media || []), ...(product.variants?.flatMap((v: any) => v.media) || [])]
-        .filter((v, i, a) => a.findIndex(t => t.secure_url === v.secure_url) === i);
+    // Show only selected variant images in marquee, or base product images if default
+    const marqueeImages = selectedVariant
+        ? (selectedVariant.media || [])
+        : (product.media || []);
 
     // --- GSAP PRE-TRANSITION ANIMATIONS ---
     useGSAP(() => {
@@ -94,7 +96,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
         });
     }, { scope: containerRef });
 
-    const handleVariantSelect = (v: any) => {
+    const handleVariantSelect = (v: any | null) => {
         setSelectedVariant(v);
         setActiveImageIndex(0);
     };
@@ -164,12 +166,12 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                 <div className="flex flex-col lg:flex-row gap-10 lg:gap-15">
                     <ProductGallery
                         productName={product.name}
-                        mainImage={mainImage}
                         currentMedia={currentMedia}
                         activeImageIndex={activeImageIndex}
                         setActiveImageIndex={setActiveImageIndex}
                         currentDiscount={currentDiscount}
                         setIsMarqueeOpen={setIsMarqueeOpen}
+                        mainImage={mainImage}
                     />
 
                     <ProductInfo
@@ -193,7 +195,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
                             <div className="flex flex-col gap-4">
                                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">Curated Affinity</span>
-                                <Heading title="Matches with this" className="text-5xl md:text-7xl font-medium tracking-tight leading-[0.9]" />
+                                <Heading title="Matches with this" className="" />
                             </div>
                             <button onClick={() => transitionTo('/shop')} className="hidden lg:flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] font-bold group cursor-pointer hover:gap-2 transition-all duration-500">
                                 <span>Explore More</span>
@@ -226,7 +228,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
             <GalleryMarquee
                 isMarqueeOpen={isMarqueeOpen}
                 setIsMarqueeOpen={setIsMarqueeOpen}
-                allImages={allImages}
+                allImages={marqueeImages}
             />
         </div>
     );

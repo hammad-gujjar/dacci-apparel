@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getUsersConnection } from "@/lib/database";
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -37,4 +38,12 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Prevent overwrite if compiled
-export const User = mongoose.models.User || mongoose.model("User", UserSchema, "user");
+const conn = await (async () => {
+    try {
+        return await getUsersConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const User = conn.models.User || conn.model("User", UserSchema, "user");

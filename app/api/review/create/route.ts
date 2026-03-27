@@ -1,6 +1,7 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection, userdatabaseConnection } from "@/lib/database";
 import { zSchema } from "@/lib/zodSchema";
 import { Review } from "@/models/review.model";
+import { User } from "@/models/User.model";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -54,15 +55,19 @@ export async function POST(req: Request) {
 
         await newReview.save();
 
-        // Populate user for the UI to display immediately
-        const populatedReview = await Review.findById(newReview._id)
-            .populate("user", "name image")
-            .lean();
+        await userdatabaseConnection();
+        const user = await User.findById(session.user.id, "name image").lean();
+
+        const populatedReview = await Review.findById(newReview._id).lean();
+        const finalReview = {
+            ...populatedReview,
+            user: user || { name: 'Unknown User' }
+        };
 
         return NextResponse.json({ 
             success: true, 
             statusCode: 200, 
-            data: populatedReview,
+            data: finalReview,
             message: 'Your thought has been captured successfully.' 
         });
 

@@ -62,7 +62,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
             }
         }
         params.delete('page'); // Reset to page 1 on filter
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
     const handleSortClick = (sort: string) => {
@@ -72,7 +72,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         } else {
             params.set('sort', sort);
         }
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
     const handleTypeClick = (type: string) => {
@@ -82,7 +82,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         } else {
             params.set('type', type);
         }
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
     const handleTagClick = (tag: string) => {
@@ -92,7 +92,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         } else {
             params.set('tags', tag);
         }
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
     const SORT_OPTIONS = [
@@ -154,9 +154,9 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
             <div className="flex">
                 <button 
                     onClick={() => setIsSortOpen(true)}
-                    className="flex items-center justify-between px-6 py-4 bg-black text-white rounded-2xl shadow-xl active:scale-95 transition-all text-xs uppercase tracking-[0.3em] font-black hover:bg-black/90 group"
+                    className="flex items-center justify-between px-4 py-2 bg-black text-white rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.3em] font-black gap-4 hover:bg-black/90 cursor-pointer group"
                 >
-                    Sort By Logic
+                    Sort By
                     <div className="size-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
                         <Icon name="menu" className="size-4 text-white" />
                     </div>
@@ -165,7 +165,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
 
             {/* Contextual Architecture (Types) */}
             <div className={`flex flex-col gap-3 overflow-hidden transition-all duration-700 ${activeCategory ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Architecture</span>
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Select Type</span>
                 <div className="flex flex-wrap gap-2.5">
                     {activeCategory?.types.map((type) => (
                         <button
@@ -181,7 +181,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
 
             {/* Designer Taxonomy (Tags) */}
             <div className="flex flex-col gap-6">
-                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Taxonomy</span>
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Brand & tags</span>
                 <div className="flex flex-wrap gap-2.5">
                     {brandingTags.map((tag) => (
                         <button
@@ -200,7 +200,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
     return (
         <>
             {/* Desktop Sidebar Container */}
-            <aside className="hidden lg:block w-80 h-fit sticky top-[100px] pr-12 border-r border-black/5 max-h-[calc(100vh-100px)] overflow-y-auto scrollbar-hide hover:scrollbar-default transition-all">
+            <aside className="hidden lg:block w-80 h-fit sticky top-[80px] pr-12 border-r border-black/5 max-h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide hover:scrollbar-default transition-all">
                 <FilterContent />
             </aside>
 

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const productVariantSchema = new mongoose.Schema({
     product: {
@@ -7,7 +8,7 @@ const productVariantSchema = new mongoose.Schema({
         required: true,
     },
     color: { type: String, required: true, trim: true },
-    size: { type: String, required: true, trim: true },
+    size: { type: String, required: false, trim: true, default: null },
     mrp: {
         type: Number,
         required: true,
@@ -36,4 +37,13 @@ const productVariantSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 productVariantSchema.index({ product: 1 })
-export const ProductVariant = mongoose.models.ProductVariant || mongoose.model("ProductVariant", productVariantSchema, "productvariants");
+
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const ProductVariant = conn.models.ProductVariant || conn.model("ProductVariant", productVariantSchema, "productvariants");

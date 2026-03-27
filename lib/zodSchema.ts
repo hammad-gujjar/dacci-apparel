@@ -38,7 +38,7 @@ export const zSchema = z.object({
     product: z.string().min(3, { message: "product is required." }),
     sku: z.string().min(3, { message: "sku is required." }),
     color: z.string().min(3, { message: "color is required." }),
-    size: z.string().min(1, { message: "size is required." }),
+    size: z.string().optional(),
     code: z.string().min(3, { message: "code is required." }),
     validity: z.coerce.date(),
     image: z.string().min(3, { message: "image is required." }),

@@ -1,5 +1,6 @@
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
+import { Media } from "@/models/Media.model"; 
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -18,7 +19,7 @@ export async function GET(req: NextRequest) {
             tags: { $regex: query, $options: 'i' },
             deletedAt: null
         })
-        .populate('media')
+        .populate({ path: 'media', model: Media })
         .lean();
 
         // Extract unique tags that match the query and pair them with the first product found for that tag

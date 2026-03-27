@@ -2,13 +2,13 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import ProductClient from './ProductClient';
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection, userdatabaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
 import { ProductVariant } from "@/models/productVariant.model";
 import { Review } from "@/models/review.model";
-import "@/models/User.model";
-import "@/models/Media.model";
-import "@/models/category.model";
+import { User } from "@/models/User.model";
+import { Media } from "@/models/Media.model";
+import { Category } from "@/models/category.model";
 
 interface ProductPageProps {
     params: Promise<{
@@ -21,19 +21,25 @@ const getProductData = cache(async (slug: string) => {
         await databaseConnection();
         
         const product = await Product.findOne({ slug, deletedAt: null })
-            .populate("media", "secure_url")
-            .populate("category", "name slug")
+            .populate({ path: "media", model: Media, select: "secure_url" })
+            .populate({ path: "category", model: Category, select: "name slug" })
             .lean();
 
         if (!product) return null;
 
-        // Fetch related data in parallel (same logic as API)
-        const [variants, reviews, relatedProducts] = await Promise.all([
+        await userdatabaseConnection();
+        const rawReviews = await Review.find({ product: product._id, deletedAt: null }).lean();
+        const userIds = rawReviews.map((r: any) => r.user).filter(Boolean);
+        const users = await User.find({ _id: { $in: userIds } }, 'name image').lean();
+        
+        const reviews = rawReviews.map((rev: any) => ({
+            ...rev,
+            user: users.find((u: any) => u._id.toString() === rev.user?.toString()) || null
+        }));
+
+        const [variants, relatedProducts] = await Promise.all([
             ProductVariant.find({ product: product._id, deletedAt: null })
-                .populate("media", "secure_url")
-                .lean(),
-            Review.find({ product: product._id, deletedAt: null })
-                .populate("user", "name image")
+                .populate({ path: "media", model: Media, select: "secure_url" })
                 .lean(),
             Product.find({
                 category: product.category._id,
@@ -41,7 +47,7 @@ const getProductData = cache(async (slug: string) => {
                 deletedAt: null,
             })
                 .limit(12)
-                .populate("media", "secure_url")
+                .populate({ path: "media", model: Media, select: "secure_url" })
                 .lean(),
         ]);
 

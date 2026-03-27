@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { getApplicationConnection } from "@/lib/database";
 
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
@@ -42,4 +43,13 @@ const productSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 productSchema.index({ category: 1 })
-export const Product = mongoose.models.Product || mongoose.model("Product", productSchema, "products");
+
+const conn = await (async () => {
+    try {
+        return await getApplicationConnection();
+    } catch (e) {
+        return mongoose;
+    }
+})();
+
+export const Product = conn.models.Product || conn.model("Product", productSchema, "products");

@@ -49,11 +49,11 @@ const GalleryMarquee = ({
             className="fixed inset-0 z-200 bg-black/90 flex flex-col justify-center items-center overflow-hidden cursor-pointer"
         >
             <div className="w-full overflow-hidden whitespace-nowrap pointer-events-none">
-                <div ref={marqueeContentRef} className="flex gap-10 md:gap-20 px-20 md:px-40 w-fit">
+                <div ref={marqueeContentRef} className="flex gap-10 px-20 w-fit">
                     {[...Array(2)].map((_, groupIdx) => (
-                        <div key={groupIdx} className="flex md:gap-20 gap-10">
+                        <div key={groupIdx} className="flex gap-10">
                             {allImages.map((img, i) => (
-                                <div key={i} className="w-[50vw] h-[50vh] md:h-[75vh] aspect-4/5 relative rounded-[3vw] overflow-hidden shrink-0 shadow-[0_100px_100px_-50px_rgba(0,0,0,0.8)] bg-zinc-900 border border-white/5">
+                                <div key={i} className="w-[70vw] md:w-[45vw] h-[60vh] md:h-[85vh] relative rounded-[2vw] overflow-hidden shrink-0 shadow-[0_100px_100px_-50px_rgba(0,0,0,0.8)] bg-zinc-900 border border-white/5">
                                     <Image 
                                         src={img.secure_url} 
                                         alt={`Overlay Image ${i}`} 

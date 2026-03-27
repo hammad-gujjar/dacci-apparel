@@ -8,7 +8,7 @@ import { useGSAP } from '@gsap/react';
 interface LoaderContextType {
     isLoading: boolean;
     setIsReady: (ready: boolean) => void;
-    transitionTo: (url: string) => void;
+    transitionTo: (url: string, options?: { scroll?: boolean }) => void;
 }
 
 const LoaderContext = createContext<LoaderContextType | undefined>(undefined);
@@ -144,10 +144,10 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
         });
     });
 
-    const transitionTo = (url: string) => {
+    const transitionTo = (url: string, options?: { scroll?: boolean }) => {
         if (pathname === url) return;
         animateIn(() => {
-            router.push(url);
+            router.push(url, { scroll: options?.scroll ?? true });
         });
     };
 

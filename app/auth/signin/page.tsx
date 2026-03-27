@@ -46,36 +46,29 @@ export default function SignIn() {
   };
 
   return (
-    <div ref={containerRef} className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-[#EDEEE7]">
+    <div ref={containerRef} className="min-h-screen w-full flex items-center justify-center relative overflow-hidden">
       {/* Subtle background texture */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
+      <div className="absolute inset-0 opacity-[0.07]" style={{
         backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 59px, black 59px, black 60px), repeating-linear-gradient(90deg, transparent, transparent 59px, black 59px, black 60px)',
       }} />
-
-      {/* Brand mark top-left */}
-      <Link href="/" className="absolute top-8 left-8 z-10">
-        <h3 className="text-black opacity-80 hover:opacity-100 transition-opacity tracking-[0.3em]">DACCI</h3>
-      </Link>
 
       {/* Main Card */}
       <div
         ref={cardRef}
-        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden"
-        style={{ background: 'rgba(237,238,231,0.6)', backdropFilter: 'blur(40px)' }}
+        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden rounded-[2vw] shadow-2xl"
+        style={{ background: '#edeee78e', backdropFilter: 'blur(40px)' }}
       >
+
         {/* LEFT — Brand Panel */}
         <div
           ref={leftRef}
-          className="hidden md:flex flex-col justify-between p-12 bg-black text-[#EDEEE7] relative overflow-hidden"
+          className="hidden md:flex flex-col justify-between p-10 bg-black text-[#EDEEE7] relative overflow-hidden"
         >
-          {/* Decorative diagonal lines */}
-          <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
-            backgroundImage: 'repeating-linear-gradient(45deg, #EDEEE7 0px, #EDEEE7 1px, transparent 1px, transparent 60px)',
-          }} />
+          <div className="absolute inset-0 opacity-5 pointer-events-none" />
 
           <div className="relative z-10">
-            <span className="text-[10px] uppercase tracking-[0.6em] text-[#EDEEE7]/40 font-bold">Welcome Back</span>
-            <h1 className="text-[#EDEEE7]! mt-4 leading-none text-5xl">Sign<br />Into<br />Dacci.</h1>
+            <p className="uppercase text-[#EDEEE7]/40 font-bold">Welcome Back</p>
+            <h1 className="text-[#EDEEE7]! mt-4">SignIn to Dacci.</h1>
             <p className="mt-6 text-[#EDEEE7]/50 max-w-xs">
               Premium clothing crafted with care. Access your account to continue your journey.
             </p>
@@ -85,16 +78,16 @@ export default function SignIn() {
             {["Curated Premium Collection", "Seamless Checkout", "Full Order History"].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <span className="w-1 h-1 rounded-full bg-[#EDEEE7]/40" />
-                <p className="text-[#EDEEE7]/50 text-[11px] tracking-[0.2em] uppercase">{item}</p>
+                <p className="text-[#EDEEE7]/50 uppercase">{item}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* RIGHT — Form */}
-        <div ref={rightRef} className="p-8 md:p-12 flex flex-col justify-center gap-8 bg-[#EDEEE7]">
+        <div ref={rightRef} className="p-10 flex flex-col justify-center gap-5">
           <div className="auth-field">
-            <span className="text-[10px] uppercase tracking-[0.5em] text-black/30 font-bold">Account Access</span>
+            <p className="uppercase text-black/30 font-bold">Account Access</p>
             <h2 className="mt-2">Sign In</h2>
           </div>
 
@@ -125,7 +118,7 @@ export default function SignIn() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-black/30 hover:text-black transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-black/30 hover:text-black transition-color"
                 >
                   {showPassword ? <IoEyeOffOutline size={18} /> : <IoEyeOutline size={18} />}
                 </button>
@@ -144,12 +137,12 @@ export default function SignIn() {
             <button
               type="submit"
               disabled={loading}
-              className="auth-field dark-button w-full justify-center py-5 text-[11px] tracking-[0.5em] uppercase font-bold disabled:opacity-50"
+              className="light-button !w-full !rounded-none !border-[black]/15"
             >
               {loading ? "Authenticating..." : "Sign In"}
             </button>
 
-            <p className="auth-field text-center text-[10px] uppercase tracking-[0.3em] text-black/30">
+            <p className="auth-field text-center uppercase text-black/30">
               New here?{" "}
               <Link href="/auth/signup" className="text-black underline underline-offset-4 hover:opacity-60 transition-opacity">
                 Create Account

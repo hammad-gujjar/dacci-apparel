@@ -1,5 +1,5 @@
 import { adminAuth } from "@/lib/adminhelperfunction";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
 import { isValidObjectId } from "mongoose";
 import { NextResponse, NextRequest } from "next/server";
@@ -32,7 +32,7 @@ export async function GET(
             _id: id
         };
 
-        const getProductVariant = await ProductVariant.findOne(filter).populate('media', 'secure_url').lean();
+        const getProductVariant = await ProductVariant.findOne(filter).populate({ path: 'media', model: Media, select: 'secure_url' }).lean();
 
         if (!getProductVariant) {
             return NextResponse.json({ success: false, statusCode: 404, message: 'product-variant not found.' });

@@ -1,5 +1,5 @@
 import { adminAuth } from "@/lib/adminhelperfunction";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Review } from "@/models/review.model";
 import { isValidObjectId } from "mongoose";
 import { NextResponse, NextRequest } from "next/server";

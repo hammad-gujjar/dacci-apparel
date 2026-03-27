@@ -1,5 +1,5 @@
 import { adminAuth } from "@/lib/adminhelperfunction";
-import { databaseConnection } from "@/lib/databseconnection";
+import { databaseConnection } from "@/lib/database";
 import { Media } from "@/models/Media.model";
 import { isValidObjectId } from "mongoose";
 import { NextResponse, NextRequest } from "next/server";

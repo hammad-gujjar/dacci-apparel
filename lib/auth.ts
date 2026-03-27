@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { getResetPasswordEmailHtml } from "./email-reset";
-import { EMAIL_FROM, resend } from "./resend";
+import { EMAIL_FROM, transporter } from "./nodemailer";
 import { getEmailVerifyHtml } from "./email-verify";
 import { myPlugin } from "./plugins";
 
@@ -22,8 +22,8 @@ export const auth = betterAuth({
             try {
                 const VerifyemailHtml = getEmailVerifyHtml(user.email!, user.name, url,);
 
-                // send email using resend
-                await resend.emails.send({
+                // send email using nodemailer
+                await transporter.sendMail({
                     from: EMAIL_FROM,
                     to: user.email!,
                     subject: 'Verify your email address',
@@ -45,19 +45,15 @@ export const auth = betterAuth({
             try {
                 const ResetemailHtml = getResetPasswordEmailHtml(user.email!, user.name, url);
 
-                // send email using resend
-                const { data, error } = await resend.emails.send({
+                // send email using nodemailer
+                const info = await transporter.sendMail({
                     from: EMAIL_FROM,
                     to: user.email!,
                     subject: 'Reset your password',
                     html: ResetemailHtml,
                 });
 
-                if (error) {
-                    console.log('Error sending reset password email:', error);
-                    throw new Error('Failed to send reset password email');
-                }
-                console.log('Reset password email sent:', data?.id);
+                console.log('Reset password email sent:', info.messageId);
 
                 if (process.env.NODE_ENV === 'development') {
                     console.log("Reset password link for", url);
@@ -69,4 +65,50 @@ export const auth = betterAuth({
             }
         },
     },
+
+    databaseHooks: {
+        user: {
+            create: {
+                after: async (user) => {
+                    try {
+                        const adminEmail = process.env.ADMIN_EMAIL;
+                        if (adminEmail) {
+                            await transporter.sendMail({
+                                from: EMAIL_FROM,
+                                to: adminEmail,
+                                subject: 'New User Registered - Dacci Apparel',
+                                html: `<p>A new user has registered on Dacci Apparel:</p><p>Name: ${user.name}</p><p>Email: ${user.email}</p>`,
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Failed to send registration admin email', err);
+                    }
+                }
+            }
+        },
+        session: {
+            create: {
+                after: async (session) => {
+                    try {
+                        const adminEmail = process.env.ADMIN_EMAIL;
+                        if (adminEmail) {
+                            // Fetch user details to send in login notification
+                            const dbUser = await db.collection('user').findOne({ id: session.userId });
+                            const userEmail = dbUser?.email || 'Unknown Email';
+                            const userName = dbUser?.name || 'Unknown User';
+                            
+                            await transporter.sendMail({
+                                from: EMAIL_FROM,
+                                to: adminEmail,
+                                subject: 'User Logged In - Dacci Apparel',
+                                html: `<p>A user just logged in.</p><p>Name: ${userName}</p><p>Email: ${userEmail}</p>`,
+                            });
+                        }
+                    } catch (err) {
+                        console.error('Failed to send login admin email', err);
+                    }
+                }
+            }
+        }
+    }
 });
