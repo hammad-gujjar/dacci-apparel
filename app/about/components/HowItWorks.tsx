@@ -33,139 +33,90 @@ const steps = [
 
 const HowItWorks = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const activeIndexRef = useRef(0);
     const bgRef = useRef<HTMLDivElement>(null);
 
-    // Initial pin scroll trigger
     useGSAP(() => {
-        if (!sectionRef.current) return;
+        if (!sectionRef.current || !bgRef.current) return;
 
         const items = gsap.utils.toArray('.hiw-item') as HTMLElement[];
         const headers = gsap.utils.toArray('.hiw-header') as HTMLElement[];
-
-        ScrollTrigger.create({
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: `+=${steps.length * 150}vh`, // Increased distance to slow down the scroll
-            pin: true,
-            scrub: 2, // Slightly more scrub for smoothness
-            snap: {
-                snapTo: 1 / (steps.length - 1),
-                duration: { min: 0.2, max: 0.8 },
-                delay: 0.1,
-                ease: "power2.inOut"
-            },
-            onUpdate: (self) => {
-                const progress = self.progress;
-                let index = Math.min(steps.length - 1, Math.floor(progress * (steps.length)));
-                if (progress >= 0.99) index = steps.length - 1;
-
-                if (index !== activeIndexRef.current) {
-                    activeIndexRef.current = index;
-                    setActiveIndex(index);
-                }
-
-                // Continuous background movement for extreme smoothness
-                if (bgRef.current && headers.length > 0) {
-                    const totalSteps = steps.length;
-                    const stepProgress = progress * (totalSteps - 1);
-                    const i = Math.floor(stepProgress);
-                    const f = stepProgress - i;
-
-                    if (i < totalSteps - 1) {
-                        const currentItem = items[i];
-                        const currentHeader = headers[i];
-                        const nextItem = items[i + 1];
-                        const nextHeader = headers[i + 1];
-
-                        if (currentItem && currentHeader && nextItem && nextHeader) {
-                            const currentTop = currentItem.offsetTop + currentHeader.offsetTop;
-                            const nextTop = nextItem.offsetTop + nextHeader.offsetTop;
-                            const currentHeight = currentHeader.offsetHeight;
-                            const nextHeight = nextHeader.offsetHeight;
-
-                            const interpolatedTop = currentTop + (nextTop - currentTop) * f;
-                            const interpolatedHeight = currentHeight + (nextHeight - currentHeight) * f;
-
-                            gsap.to(bgRef.current, {
-                                top: interpolatedTop,
-                                height: interpolatedHeight,
-                                duration: 0.1,
-                                overwrite: 'auto',
-                                ease: "none"
-                            });
-                        }
-                    } else {
-                        // Final step
-                        const lastItem = items[totalSteps - 1];
-                        const lastHeader = headers[totalSteps - 1];
-                        if (lastItem && lastHeader) {
-                            gsap.to(bgRef.current, {
-                                top: lastItem.offsetTop + lastHeader.offsetTop,
-                                height: lastHeader.offsetHeight,
-                                duration: 0.1,
-                                overwrite: 'auto'
-                            });
-                        }
-                    }
-                }
-            }
-        });
-
-        const rightImages = gsap.utils.toArray('.hiw-right-image') as HTMLElement[];
-        rightImages.forEach((img, i) => {
-            gsap.set(img, { 
-                clipPath: i === 0 ? 'inset(0% 0 0 0)' : 'inset(100% 0 0 0)', 
-                scale: i === 0 ? 1 : 1.1,
-                zIndex: i === 0 ? 10 : 0
-            });
-        });
-        
-    }, { scope: sectionRef });
-
-    // Handle animations driven by activeIndex
-    useGSAP(() => {
-        const rightImages = gsap.utils.toArray('.hiw-right-image') as HTMLElement[];
-        const descriptions = gsap.utils.toArray('.hiw-description') as HTMLElement[];
         const titles = gsap.utils.toArray('.hiw-title') as HTMLElement[];
-        const headers = gsap.utils.toArray('.hiw-header') as HTMLElement[];
+        const descriptions = gsap.utils.toArray('.hiw-description') as HTMLElement[];
+        const rightImages = gsap.utils.toArray('.hiw-right-image') as HTMLElement[];
 
-        // Animate images
-        rightImages.forEach((img, i) => {
-            gsap.killTweensOf(img);
-            if (i === activeIndex) {
-                gsap.set(img, { zIndex: 10 });
-                gsap.to(img, { clipPath: 'inset(0% 0 0 0)', scale: 1, duration: 1.2, ease: "expo.out", delay: 0.1 });
-            } else {
-                gsap.set(img, { zIndex: 0 });
-                gsap.to(img, { 
-                    clipPath: i < activeIndex ? 'inset(0 0 100% 0)' : 'inset(100% 0 0 0)', 
-                    scale: 1.1, 
-                    duration: 1.2, 
-                    ease: "expo.out"
-                });
+        // Master Timeline
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top top',
+                end: `+=${steps.length * 200}vh`, // Slower scroll for more dwell time
+                pin: true,
+                scrub: 1.5,
+                snap: {
+                    snapTo: 1 / (steps.length - 1),
+                    duration: { min: 0.5, max: 1.2 },
+                    delay: 0.1,
+                    ease: "power3.inOut"
+                }
             }
         });
 
-        // Expand/Collapse descriptions
-        descriptions.forEach((desc, i) => {
-            gsap.killTweensOf(desc);
-            gsap.killTweensOf(titles[i]);
-            gsap.killTweensOf(headers[i]);
-            
-            if (i === activeIndex) {
-                gsap.to(desc, { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24, duration: 1, ease: "expo.out" });
-                gsap.to(titles[i], { color: '#ffffff', duration: 0.5 });
-                gsap.to(headers[i], { color: '#ffffff', duration: 0.5 });
-            } else {
-                gsap.to(desc, { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, duration: 0.8, ease: "expo.out" });
-                gsap.to(titles[i], { color: '#000000', duration: 0.5 });
-                gsap.to(headers[i], { color: '#000000', duration: 0.5 });
-            }
+        // Initial setup for first item
+        gsap.set(bgRef.current, {
+            top: items[0].offsetTop + headers[0].offsetTop,
+            height: headers[0].offsetHeight
+        });
+        gsap.set(titles[0], { color: '#ffffff' });
+        gsap.set(headers[0], { color: '#ffffff' });
+        gsap.set(descriptions[0], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24 });
+        gsap.set(rightImages[0], { clipPath: 'inset(0% 0 0 0)', scale: 1, zIndex: 10 });
+
+        // Build the timeline steps
+        steps.forEach((_, i) => {
+            if (i === steps.length - 1) return;
+
+            const next = i + 1;
+            const currentItem = items[i];
+            const currentHeader = headers[i];
+            const nextItem = items[next];
+            const nextHeader = headers[next];
+
+            // 1. Dwell on current item (empty space in timeline)
+            tl.to({}, { duration: 1 }); // Empty gap for dwell time
+
+            // 2. Transition to next item
+            const transition = tl.to({}, { duration: 2 }); // Duration of the "wet" slide
+
+            // Background movement
+            transition.to(bgRef.current, {
+                top: nextItem.offsetTop + nextHeader.offsetTop,
+                height: nextHeader.offsetHeight,
+                ease: "expo.inOut"
+            }, "<");
+
+            // Text color & Description transitions
+            transition.to([titles[i], headers[i]], { color: '#000000', ease: "expo.inOut" }, "<")
+                      .to([titles[next], headers[next]], { color: '#ffffff', ease: "expo.inOut" }, "<")
+                      .to(descriptions[i], { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, ease: "expo.inOut" }, "<")
+                      .to(descriptions[next], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24, ease: "expo.inOut" }, "<");
+
+            // Right Image Transitions (Clip Path Reveal)
+            transition.set(rightImages[next], { zIndex: 10 }, "<")
+                      .to(rightImages[i], { 
+                          clipPath: 'inset(0 0 100% 0)', 
+                          scale: 1.1, 
+                          ease: "expo.inOut" 
+                      }, "<")
+                      .fromTo(rightImages[next], 
+                          { clipPath: 'inset(100% 0 0 0)', scale: 1.1 },
+                          { clipPath: 'inset(0% 0 0 0)', scale: 1, ease: "expo.inOut" }, 
+                      "<");
         });
 
-    }, [activeIndex]);
+        // Final dwell
+        tl.to({}, { duration: 1 });
+
+    }, { scope: sectionRef });
 
     return (
         <section ref={sectionRef} className="w-full h-screen flex overflow-hidden mt-20">
@@ -192,11 +143,10 @@ const HowItWorks = () => {
                             >
                                 <div 
                                     className="hiw-header flex items-center justify-between px-6 py-6 cursor-pointer"
-                                    style={{ color: index === 0 ? '#EDEEE7' : '#000000' }}
+                                    style={{ color: '#000000' }}
                                 >
                                     <h3 
                                         className="hiw-title text-xl md:text-2xl font-bold font-sf-pro"
-                                        style={{ color: index === 0 ? '#EDEEE7' : '#000000' }}
                                     >
                                         {step.title}
                                     </h3>
@@ -208,12 +158,7 @@ const HowItWorks = () => {
                                 </div>
                                 <div 
                                     className="hiw-description overflow-hidden text-sm md:text-base opacity-0 font-medium px-6"
-                                    style={{ 
-                                        height: index === 0 ? 'auto' : 0, 
-                                        opacity: index === 0 ? 1 : 0, 
-                                        paddingTop: index === 0 ? 16 : 0, 
-                                        paddingBottom: index === 0 ? 24 : 0 
-                                    }}
+                                    style={{ height: 0, opacity: 0 }}
                                 >
                                     {step.description}
                                 </div>
@@ -231,6 +176,7 @@ const HowItWorks = () => {
                                 src={step.image} 
                                 alt={step.title}
                                 className="hiw-right-image absolute inset-0 w-full h-full object-cover"
+                                style={{ clipPath: 'inset(100% 0 0 0)', zIndex: 0 }}
                             />
                         ))}
                     </div>

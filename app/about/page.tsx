@@ -16,7 +16,7 @@ const page = () => {
                 <div className='py-15 grid grid-cols-1 md:grid-cols-[1fr_2fr_2fr] gap-5'>
                     <img src="https://i.pinimg.com/originals/e9/a1/95/e9a195242f14c700aec400a3490b8d4b.jpg" alt="" className='object-cover rounded-[2vw]' />
                     <div className='flex flex-col gap-2'>
-                        <Heading title='Manufacturing Excellence from Pakistan' className='!text-[25px]' />
+                        <Heading title='Manufacturing Excellence from Pakistan' className='!text-[25px] font-semibold' />
                         <p>
                             Pakistan is one of the world's largest textile producers, with decades of expertise in cotton cultivation, knitting, dyeing, and garment construction. Our facilities leverage this heritage with modern equipment and global quality standards.
                         </p>
