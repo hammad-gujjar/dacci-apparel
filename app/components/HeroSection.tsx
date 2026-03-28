@@ -132,16 +132,10 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
   const latestImg = latest?.media?.[0]?.secure_url;
 
   return (
-    <div ref={heroRef} className="w-screen h-[92vh] md:h-screen relative overflow-hidden">
-      <div className='size-full absolute top-0 left-0 bg-linear-to-t from-black/80 via-black/20 to-transparent'></div>
+    <div ref={heroRef} className="w-screen h-[90vh] md:h-screen relative overflow-hidden">
+      <div className='size-full absolute top-0 left-0 bg-linear-to-t from-black/40 via-black/10 to-transparent'></div>
       {/* Background video */}
-      <video
-        src="/videos/hero.mp4"
-        autoPlay
-        muted
-        loop
-        className="absolute top-0 left-0 w-full -z-1"
-      />
+      <img src="/images/hero.jpg" alt="" />
 
       {/* Overlay content */}
       <div className="absolute top-0 left-0 size-full flex flex-col justify-end p-5 md:p-10 gap-2 z-[2]">

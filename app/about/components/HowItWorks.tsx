@@ -49,76 +49,88 @@ const HowItWorks = () => {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: 'top top',
-                end: `+=${steps.length * 250}vh`, // Even more distance for extreme dwell time
+                end: `+=${steps.length * 350}vh`, // Slower scroll for maximum dwell time
                 pin: true,
-                scrub: 1.2,
-                invalidateOnRefresh: true, // Crucial for dynamic layout
+                scrub: 2, // Heavier weight for a more professional, "premium" feel
                 snap: {
                     snapTo: 1 / (steps.length - 1),
-                    duration: { min: 0.6, max: 1.5 },
+                    duration: { min: 0.8, max: 2.0 },
                     delay: 0.1,
-                    ease: "power2.inOut"
+                    ease: "power3.inOut"
                 }
             }
         });
 
-        // Function to get current absolute top of a header relative to the container
+        const container = document.querySelector('.hiw-list-container');
+
+        // Robust function to get header position relative to the list container
         const getHeaderPos = (i: number) => {
-            const item = items[i];
             const header = headers[i];
-            if (!item || !header) return { top: 0, height: 0 };
+            if (!header || !container) return { top: 0, height: 0 };
+            const hRect = header.getBoundingClientRect();
+            const cRect = container.getBoundingClientRect();
             return {
-                top: item.offsetTop + header.offsetTop,
-                height: header.offsetHeight
+                top: hRect.top - cRect.top,
+                height: hRect.height
             };
         };
 
-        // Initial setup for first item
-        gsap.set(bgRef.current, {
-            top: () => getHeaderPos(0).top,
-            height: () => getHeaderPos(0).height
-        });
+        // Initial setup
+        const initialPos = getHeaderPos(0);
+        gsap.set(bgRef.current, { top: initialPos.top, height: initialPos.height });
         gsap.set(titles[0], { color: '#ffffff' });
         gsap.set(headers[0], { color: '#ffffff' });
         gsap.set(descriptions[0], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24 });
         gsap.set(rightImages[0], { clipPath: 'inset(0% 0 0 0)', scale: 1, zIndex: 10 });
 
-        // Build the timeline steps with longer dwells and "wet" transitions
+        // Build the timeline steps
         steps.forEach((_, i) => {
             if (i === steps.length - 1) return;
-
             const next = i + 1;
 
-            // 1. Dwell - High dwell time (3s in normalized timeline space)
-            tl.to({}, { duration: 2 }); 
+            // 1. Dwell - High pause time (long duration in timeline space)
+            tl.to({}, { duration: 4 }); 
 
-            // 2. Transition (2s in normalized timeline space)
-            const transition = tl.to({}, { duration: 1.5 }); 
+            // 2. Transition - Professional "wet" slide with continuous interpolation
+            const proxy = { p: 0 };
+            const transition = tl.to(proxy, { 
+                p: 1,
+                duration: 3, // Slower, more controlled transition
+                onUpdate: () => {
+                    if (!bgRef.current) return;
+                    const pos1 = getHeaderPos(i);
+                    const pos2 = getHeaderPos(next);
+                    const currentTop = pos1.top + (pos2.top - pos1.top) * proxy.p;
+                    const currentHeight = pos1.height + (pos2.height - pos1.height) * proxy.p;
+                    gsap.set(bgRef.current, { top: currentTop, height: currentHeight });
+                },
+                ease: "power3.inOut"
+            }); 
 
-            // Background movement using function values so it captures dynamic layout
-            transition.to(bgRef.current, {
-                top: () => getHeaderPos(next).top,
-                height: () => getHeaderPos(next).height,
-                ease: "expo.inOut"
-            }, "<");
+            // Text color & Description transitions (synchronized with slide)
+            transition.to([titles[i], headers[i]], { color: '#000000', ease: "power3.inOut" }, "<")
+                      .to([titles[next], headers[next]], { color: '#ffffff', ease: "power3.inOut" }, "<")
+                      .to(descriptions[i], { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, ease: "power3.inOut" }, "<")
+                      .to(descriptions[next], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24, ease: "power3.inOut" }, "<");
 
-            // Text color & Description transitions
-            transition.to([titles[i], headers[i]], { color: '#000000', ease: "expo.inOut" }, "<")
-                      .to([titles[next], headers[next]], { color: '#ffffff', ease: "expo.inOut" }, "<")
-                      .to(descriptions[i], { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, ease: "expo.inOut" }, "<")
-                      .to(descriptions[next], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24, ease: "expo.inOut" }, "<");
-
-            // Right Image Transitions
+            // Image Transitions
             transition.set(rightImages[next], { zIndex: 10 }, "<")
-                      .to(rightImages[i], { clipPath: 'inset(0 0 100% 0)', scale: 1.1, ease: "expo.inOut" }, "<")
+                      .to(rightImages[i], { clipPath: 'inset(0 0 100% 0)', scale: 1.1, ease: "power3.inOut" }, "<")
                       .fromTo(rightImages[next], 
                           { clipPath: 'inset(100% 0 0 0)', scale: 1.1 },
-                          { clipPath: 'inset(0% 0 0 0)', scale: 1, ease: "expo.inOut" }, 
+                          { clipPath: 'inset(0% 0 0 0)', scale: 1, ease: "power3.inOut" }, 
                       "<");
         });
 
-        // Final dwell
-        tl.to({}, { duration: 2 });
+        tl.to({}, { duration: 4 }); // Final dwell
+
+        // Ensure positions are perfectly recalculated on refresh
+        ScrollTrigger.addEventListener("refresh", () => {
+             const currentIdx = Math.round(tl.progress() * (steps.length - 1));
+             const pos = getHeaderPos(currentIdx);
+             gsap.set(bgRef.current, { top: pos.top, height: pos.height });
+        });
+        ScrollTrigger.refresh();
 
     }, { scope: sectionRef });
 
