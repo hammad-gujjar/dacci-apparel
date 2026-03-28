@@ -49,48 +49,56 @@ const HowItWorks = () => {
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: 'top top',
-                end: `+=${steps.length * 200}vh`, // Slower scroll for more dwell time
+                end: `+=${steps.length * 250}vh`, // Even more distance for extreme dwell time
                 pin: true,
-                scrub: 1.5,
+                scrub: 1.2,
+                invalidateOnRefresh: true, // Crucial for dynamic layout
                 snap: {
                     snapTo: 1 / (steps.length - 1),
-                    duration: { min: 0.5, max: 1.2 },
+                    duration: { min: 0.6, max: 1.5 },
                     delay: 0.1,
-                    ease: "power3.inOut"
+                    ease: "power2.inOut"
                 }
             }
         });
 
+        // Function to get current absolute top of a header relative to the container
+        const getHeaderPos = (i: number) => {
+            const item = items[i];
+            const header = headers[i];
+            if (!item || !header) return { top: 0, height: 0 };
+            return {
+                top: item.offsetTop + header.offsetTop,
+                height: header.offsetHeight
+            };
+        };
+
         // Initial setup for first item
         gsap.set(bgRef.current, {
-            top: items[0].offsetTop + headers[0].offsetTop,
-            height: headers[0].offsetHeight
+            top: () => getHeaderPos(0).top,
+            height: () => getHeaderPos(0).height
         });
         gsap.set(titles[0], { color: '#ffffff' });
         gsap.set(headers[0], { color: '#ffffff' });
         gsap.set(descriptions[0], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24 });
         gsap.set(rightImages[0], { clipPath: 'inset(0% 0 0 0)', scale: 1, zIndex: 10 });
 
-        // Build the timeline steps
+        // Build the timeline steps with longer dwells and "wet" transitions
         steps.forEach((_, i) => {
             if (i === steps.length - 1) return;
 
             const next = i + 1;
-            const currentItem = items[i];
-            const currentHeader = headers[i];
-            const nextItem = items[next];
-            const nextHeader = headers[next];
 
-            // 1. Dwell on current item (empty space in timeline)
-            tl.to({}, { duration: 1 }); // Empty gap for dwell time
+            // 1. Dwell - High dwell time (3s in normalized timeline space)
+            tl.to({}, { duration: 2 }); 
 
-            // 2. Transition to next item
-            const transition = tl.to({}, { duration: 2 }); // Duration of the "wet" slide
+            // 2. Transition (2s in normalized timeline space)
+            const transition = tl.to({}, { duration: 1.5 }); 
 
-            // Background movement
+            // Background movement using function values so it captures dynamic layout
             transition.to(bgRef.current, {
-                top: nextItem.offsetTop + nextHeader.offsetTop,
-                height: nextHeader.offsetHeight,
+                top: () => getHeaderPos(next).top,
+                height: () => getHeaderPos(next).height,
                 ease: "expo.inOut"
             }, "<");
 
@@ -100,13 +108,9 @@ const HowItWorks = () => {
                       .to(descriptions[i], { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, ease: "expo.inOut" }, "<")
                       .to(descriptions[next], { height: 'auto', opacity: 1, paddingTop: 16, paddingBottom: 24, ease: "expo.inOut" }, "<");
 
-            // Right Image Transitions (Clip Path Reveal)
+            // Right Image Transitions
             transition.set(rightImages[next], { zIndex: 10 }, "<")
-                      .to(rightImages[i], { 
-                          clipPath: 'inset(0 0 100% 0)', 
-                          scale: 1.1, 
-                          ease: "expo.inOut" 
-                      }, "<")
+                      .to(rightImages[i], { clipPath: 'inset(0 0 100% 0)', scale: 1.1, ease: "expo.inOut" }, "<")
                       .fromTo(rightImages[next], 
                           { clipPath: 'inset(100% 0 0 0)', scale: 1.1 },
                           { clipPath: 'inset(0% 0 0 0)', scale: 1, ease: "expo.inOut" }, 
@@ -114,7 +118,7 @@ const HowItWorks = () => {
         });
 
         // Final dwell
-        tl.to({}, { duration: 1 });
+        tl.to({}, { duration: 2 });
 
     }, { scope: sectionRef });
 
