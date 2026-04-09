@@ -10,7 +10,7 @@ export async function POST(req: Request) {
         }
 
         const mailOptions = {
-            from: process.env.NEXT_PUBLIC_EMAIL_ADDRESS || EMAIL_FROM,
+            from: EMAIL_FROM,
             to: process.env.ADMIN_EMAIL,
             replyTo: email,
             subject: `New Newsletter Subscription — Slots Sports Wear`,

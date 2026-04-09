@@ -71,7 +71,7 @@ const Media: React.FC<MediaProps> = ({
         <DropdownMenu>
           <DropdownMenuTrigger>
             <span className="ios-card w-8 h-8 rounded-full flex items-center justify-center p-0! cursor-pointer">
-              <HiOutlineDotsVertical color="#000000" />
+              <HiOutlineDotsVertical color="#111111" />
             </span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">

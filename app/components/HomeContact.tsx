@@ -81,7 +81,7 @@ const HomeContact = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email address" 
-                            className="w-full bg-transparent border-b border-black/20 py-4 text-sm focus:outline-none focus:border-black transition-colors uppercase tracking-widest font-medium placeholder:text-black/20 h-full"
+                            className="w-full bg-transparent border-b border-black/20 py-4 text-sm focus:outline-none focus:border-black transition-colors tracking-widest font-medium placeholder:text-black/20 h-full"
                         />
                     </div>
                     <button 

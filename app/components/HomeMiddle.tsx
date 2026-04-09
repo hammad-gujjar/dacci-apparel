@@ -33,7 +33,7 @@ const HomeMiddle = () => {
     }
 
     // 2. Story Section Reveal (excluding heading which has its own)
-    const storyParts = gsap.utils.toArray('.story-animate-smooth', containerRef.current);
+    const storyParts = gsap.utils.toArray('.story-animate-smooth', containerRef.current) as any[];
     storyParts.forEach((part: any) => {
       gsap.fromTo(part,
         { y: 100, opacity: 0 },
@@ -52,7 +52,7 @@ const HomeMiddle = () => {
     });
 
     // 3. Image Reveal Animation (Width 0 to 100%)
-    const imageReveals = gsap.utils.toArray('.image-reveal-container', containerRef.current);
+    const imageReveals = gsap.utils.toArray('.image-reveal-container', containerRef.current) as any[];
     imageReveals.forEach((reveal: any) => {
       gsap.fromTo(reveal,
         { width: "0%" },

@@ -23,7 +23,7 @@ export function getResetPasswordEmailHtml(email: string, name: string, resetLink
                 <h2 style="
         font-size:22px;
         font-weight:600;
-        color:#000000;
+        color:#111111;
         margin:0 0 12px;
       ">
                     Forgot your password ${name}?
@@ -50,7 +50,7 @@ export function getResetPasswordEmailHtml(email: string, name: string, resetLink
                 <!-- Button -->
                 <a href="${resetLink}" style="
           display:inline-block;
-          background-color:#000000;
+          background-color:#111111;
           color:#ffffff;
           text-decoration:none;
           padding:14px 28px;

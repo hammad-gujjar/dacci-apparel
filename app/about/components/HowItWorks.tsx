@@ -108,7 +108,7 @@ const HowItWorks = () => {
             });
 
             // Text color & Description transitions (synchronized with slide)
-            transition.to([titles[i], headers[i]], { color: '#000000', ease: "power3.inOut" }, "<")
+            transition.to([titles[i], headers[i]], { color: '#111111', ease: "power3.inOut" }, "<")
                 .to([titles[next], headers[next]], { color: '#ffffff', ease: "power3.inOut" }, "<")
                 .to(descriptions[i], { height: 0, duration: 0.5, opacity: 0, paddingTop: 0, paddingBottom: 0, ease: "power3.inOut" }, "<")
                 .to(descriptions[next], { height: 'auto', duration: 0.5, opacity: 1, paddingTop: 16, paddingBottom: 24, ease: "power3.inOut" }, "<");
@@ -162,7 +162,7 @@ const HowItWorks = () => {
                                 >
                                     <div
                                         className="hiw-header flex items-center justify-between px-6 py-6 cursor-pointer"
-                                        style={{ color: '#000000' }}
+                                        style={{ color: '#111111' }}
                                     >
                                         <h3
                                             className="hiw-title text-xl md:text-2xl font-bold font-sf-pro"

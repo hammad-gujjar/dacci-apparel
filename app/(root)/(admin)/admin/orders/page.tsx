@@ -109,7 +109,7 @@ export default function OrdersPage() {
         palette: {
             mode: 'light',
             primary: {
-                main: '#000000',
+                main: '#111111',
             },
             background: {
                 default: '#EDEEE7',
@@ -124,7 +124,7 @@ export default function OrdersPage() {
                 styleOverrides: {
                     root: {
                         boxShadow: 'none',
-                        border: '1px solid rgba(0,0,0,0.1)',
+                        border: '1px solid rgba(17,17,17,0.1)',
                         borderRadius: '12px',
                     }
                 }
@@ -140,9 +140,9 @@ export default function OrdersPage() {
             onClick: () => handleRowClick(row),
             sx: {
                 cursor: 'pointer',
-                backgroundColor: row.original.isNewStatus ? 'rgba(0,0,0,0.02)' : 'inherit',
+                backgroundColor: row.original.isNewStatus ? 'rgba(17,17,17,0.02)' : 'inherit',
                 '&:hover': {
-                    backgroundColor: 'rgba(0,0,0,0.05)',
+                    backgroundColor: 'rgba(17,17,17,0.05)',
                 },
             },
         }),

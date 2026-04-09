@@ -23,7 +23,7 @@ export function getEmailVerifyHtml(email: string, name: string, verifyLink: stri
                 <h2 style="
         font-size:22px;
         font-weight:600;
-        color:#000000;
+        color:#111111;
         margin:0 0 12px;
       ">
                     Verify your email ${name}?
@@ -50,7 +50,7 @@ export function getEmailVerifyHtml(email: string, name: string, verifyLink: stri
                 <!-- Button -->
                 <a href=${verifyLink} style="
           display:inline-block;
-          background-color:#000000;
+          background-color:#111111;
           color:#ffffff;
           text-decoration:none;
           padding:14px 28px;

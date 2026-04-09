@@ -67,9 +67,9 @@ const OurServices = () => {
         const section = sectionRef.current;
         if (!section) return;
 
-        const images = gsap.utils.toArray('.service-slide-image');
-        const contentSlides = gsap.utils.toArray('.service-content-slide');
-        const dotActive = gsap.utils.toArray('.service-dot-active');
+        const images = gsap.utils.toArray('.service-slide-image') as any[];
+        const contentSlides = gsap.utils.toArray('.service-content-slide') as any[];
+        const dotActive = gsap.utils.toArray('.service-dot-active') as any[];
 
         // Initial setup
         images.forEach((img, i) => {
@@ -201,7 +201,7 @@ const OurServices = () => {
 
     return (
         <>
-            <div className='mt-30 bg-black rounded-t-full'>
+            <div className='mt-30 bg-[#111111] rounded-t-full'>
                 <div className="w-full flex flex-col gap-25 items-center justify-between px-5 pt-30 pb-40">
                     <Heading title="Our Services" className='w-full md:w-1/2 !text-[#EDEEE7]' />
                     <p className='w-[80%] md:w-[60%] text-center !text-[#EDEEE7]'>We offer complete sportswear manufacturing solutions tailored to your brand. Whether you need custom designs, private labeling, or bulk production, we ensure top-tier quality, consistent results, and on-time delivery. Our goal is to help you bring high-performance apparel to market with confidence.</p>

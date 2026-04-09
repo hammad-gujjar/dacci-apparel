@@ -129,7 +129,6 @@ const PopularCategories = () => {
             </p>
           </div>
         </div>
-
         {/* 3. Autumn Edit (Vertical Top Right - 1x2) */}
         <div
           className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[300px] md:min-h-0 md:col-span-1 md:row-span-2"

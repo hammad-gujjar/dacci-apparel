@@ -48,8 +48,8 @@ const iconPaths: Record<IconName, React.ReactNode> = {
     ),
     'arrow': (
         <>
-            <path d="M14.4302 5.92969L20.5002 11.9997L14.4302 18.0697" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M3.5 12H20.33" stroke="#000000" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M14.4302 5.92969L20.5002 11.9997L14.4302 18.0697" stroke="#111111" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M3.5 12H20.33" stroke="#111111" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
         </>
     ),
     'chevron': (

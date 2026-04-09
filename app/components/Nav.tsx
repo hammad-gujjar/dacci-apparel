@@ -453,12 +453,12 @@ const Nav = () => {
                     </button>
 
                     <nav className="flex flex-col items-center gap-8 md:gap-12">
-                        {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'BLOGS'].map((item) => (
+                        {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'FAQS'].map((item) => (
                             <div key={item} className="menu-content-item overflow-hidden">
                                 <button
                                     onClick={() => {
                                         setIsMenuOpen(false);
-                                        const url = item === 'HOME' ? '/' : `/${item.toLowerCase()}`;
+                                        const url = item === 'HOME' ? '/' : item === 'FAQS' ? '/faq' : `/${item.toLowerCase()}`;
                                         setTimeout(() => transitionTo(url), 650);
                                     }}
                                     className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight cursor-pointer"
