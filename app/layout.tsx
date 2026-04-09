@@ -7,6 +7,7 @@ import { LoaderProvider } from "./context/LoaderContext";
 import SmoothScroll from "./components/SmoothScroll";
 import Footer from "./components/Footer";
 import JsonLd from "@/components/JsonLd";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://slotssportswear.com'),
@@ -114,6 +115,7 @@ export default async function RootLayout({
             </Providers>
             <Footer />
           </SmoothScroll>
+          <WhatsAppButton />
         </LoaderProvider>
       </body>
     </html>

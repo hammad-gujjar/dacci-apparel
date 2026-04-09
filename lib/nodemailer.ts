@@ -8,7 +8,7 @@ export const transporter = nodemailer.createTransport({
     },
 });
 
-export const EMAIL_FROM = process.env.ADMIN_EMAIL || 'info@dacciapparel.com';
+export const EMAIL_FROM = process.env.ADMIN_EMAIL || 'info@slotssportswear.com';
 
 // Verify the connection configuration
 transporter.verify(function (error: any, success: any) {

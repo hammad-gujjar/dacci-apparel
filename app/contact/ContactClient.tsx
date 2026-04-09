@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -8,9 +8,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Heading from '../components/Heading';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { cn } from '@/lib/utils';
 import Icon from '../components/Icon';
-import FormattedTitle from '../components/FormattedTitle';
+import { IoLogoInstagram, IoLogoFacebook, IoLogoPinterest } from 'react-icons/io5';
+import { FaMedium } from 'react-icons/fa';
+
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -38,6 +39,15 @@ export default function ContactClient({ categories }: ContactClientProps) {
         deadline: '',
         customizationDetails: ''
     });
+
+    const LINKS = {
+        quickLinks: [
+            { label: 'Instagram', href: '#', icon: <IoLogoInstagram /> },
+            { label: 'Facebook', href: '#', icon: <IoLogoFacebook /> },
+            { label: 'Medium', href: '#', icon: <FaMedium /> },
+            { label: 'Pinterest', href: '#', icon: <IoLogoPinterest /> },
+        ]
+    };
 
     useGSAP(() => {
         if (!containerRef.current) return;
@@ -106,27 +116,37 @@ export default function ContactClient({ categories }: ContactClientProps) {
                     <div className="space-y-5 fade-up py-20 px-15">
                         <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40">Say Hello</span>
                         <Heading title="Get In Touch" />
-                        <p>
+                        <p className='w-full md:w-[70%]'>
                             For bespoke collaborations, tech pack inquiries, or minimalist collections dialogue, we are at your disposal.
                         </p>
                         <div className="flex flex-col sm:flex-row lg:flex-col gap-10 fade-up lg:pb-5">
-                            <div className="space-y-1 group cursor-pointer">
+                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
                                 <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">New Projects</span>
-                                <p>
+                                <p className='pt-2'>
                                     info@slotssportswear.com
                                 </p>
                                 <p>
                                     +92 308 6762 402
                                 </p>
                             </div>
-                            <div className="space-y-1 group cursor-pointer">
+                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
                                 <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">Headquarters</span>
-                                <p>
+                                <p className='pt-2'>
                                     Slots Sports Wear Studio
                                 </p>
                                 <p>
                                     Punjab, Pakistan
                                 </p>
+                            </div>
+                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
+                                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">Headquarters</span>
+                                <div className="flex gap-4">
+                                    {LINKS.quickLinks.map((link, i) => (
+                                        <a key={i} href={link.href} aria-label={link.label} className="size-10 rounded-full border border-white/10 flex items-center justify-center text-lg hover:bg-white hover:text-black transition-all duration-500">
+                                            {link.icon}
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
