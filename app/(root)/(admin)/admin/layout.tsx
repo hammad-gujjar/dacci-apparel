@@ -34,7 +34,7 @@ export default async function AdminLayout({
                     </div>
 
                     <div className='border-t h-10 flex items-center justify-center'>
-                        @2026 Dacci Apparel Admin Panel
+                        @2026 Slots Sports Wear Admin Panel
                     </div>
 
                 </main>

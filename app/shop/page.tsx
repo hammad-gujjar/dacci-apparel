@@ -5,8 +5,8 @@ import { Media } from "@/models/Media.model";
 import ShopClient from "../components/ShopClient";
 
 export const metadata = {
-    title: "Shop All - Dacci Apparel",
-    description: "Explore the latest collections of premium clothing and accessories from Dacci Apparel.",
+    title: "Shop All · Slots Sports Wear",
+    description: "Explore the latest collections of premium clothing and accessories from Slots Sports Wear.",
 };
 
 const ShopPage = async () => {

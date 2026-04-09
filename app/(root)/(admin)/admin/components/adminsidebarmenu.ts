@@ -65,7 +65,7 @@ export const adminSidebarMenu = [
     },
     {
         label: "Orders",
-        href: "#",
+        href: "/admin/orders",
         Icon: MdOutlineShoppingBag,
     },
     {

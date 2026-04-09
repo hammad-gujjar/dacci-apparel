@@ -84,7 +84,7 @@ const CompanyStats = () => {
                         {statItems.map((item, index) => (
                             <div key={index} className="stat-item flex flex-col items-center justify-center text-center space-y-2">
                                 <div className="relative flex items-center">
-                                    <h2 className="stat-value font-bold">
+                                    <h2 className="stat-value !font-[middle]">
                                         {item.isFloat
                                             ? item.value.toFixed(1)
                                             : item.value.toLocaleString()}

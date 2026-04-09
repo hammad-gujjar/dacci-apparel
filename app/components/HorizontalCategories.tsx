@@ -46,31 +46,9 @@ const HorizontalCategories = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    const section = sectionRef.current;
-    const scrollContainer = scrollContainerRef.current;
-    if (!section || !scrollContainer) return;
-
-    const scrollWidth = scrollContainer.offsetWidth - window.innerWidth;
-
-    gsap.to(scrollContainer, {
-      x: () => -scrollWidth,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: () => `+=${scrollWidth}`,
-        pin: true,
-        scrub: 3.5,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-      },
-    });
-  }, { scope: sectionRef });
-
   return (
-    <div ref={sectionRef} className="h-[95vh] md:h-screen w-full overflow-hidden">
-      <div ref={scrollContainerRef} className="h-full flex w-fit p-5 gap-3 md:gap-4">
+    <div ref={sectionRef} className="min-h-[95vh] md:min-h-screen w-full overflow-hidden">
+      <div ref={scrollContainerRef} className="h-full flex w-full grid grid-cols-1 md:grid-cols-2">
         {CATEGORIES.map((cat, index) => {
           const isActive = activeCategory === index;
           return (
@@ -79,8 +57,7 @@ const HorizontalCategories = () => {
               key={index}
               onMouseEnter={() => setActiveCategory(index)}
               className={cn(
-                'category-item group h-full relative flex flex-col gap-2 justify-end shrink-0 rounded-[2vw] overflow-hidden transition-all duration-700 ease-in-out cursor-pointer',
-                isActive ? 'w-screen md:w-[50vw]' : 'w-screen md:w-[25vw]'
+                'category-item group h-[40.5vh] md:h-[60vh] relative flex flex-col gap-2 justify-end shrink-0 overflow-hidden cursor-pointer',
               )}
             >
               {/* Background image */}
@@ -88,7 +65,7 @@ const HorizontalCategories = () => {
                 <img
                   className={cn(
                     'absolute top-0 left-1/2 -translate-x-1/2 h-full min-w-[100vw] md:min-w-[50vw] object-cover transition-transform duration-2000 ease-out',
-                    isActive ? 'scale-115' : 'scale-100'
+                    isActive ? 'scale-105' : 'scale-100'
                   )}
                   src={cat.img}
                   alt={cat.title}
@@ -119,7 +96,8 @@ const HorizontalCategories = () => {
                     <AnimatedSwapText
                       text={cat.description}
                       active={isActive}
-                      className="w-[90%] text-[#EDEEE7]/90 tracking-wider text-sm md:text-lg mb-8"
+                      tag="p"
+                      className="w-[90%] text-[#EDEEE7]/90 mb-8"
                       stagger={0.005}
                       delay={0.2}
                     />

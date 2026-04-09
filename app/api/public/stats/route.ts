@@ -29,15 +29,20 @@ export async function GET() {
         // 4. Mock total orders (using reviews + a base factor since no Order model exists)
         const totalOrders = Math.floor(totalCustomers * 1.5) + ratingResult.length;
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: { 
                 averageRating,
                 totalProducts,
                 totalCustomers,
-                totalOrders
+                totalOrders 
             }
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=600, stale-while-revalidate=3600'
+        );
+        return response;
     } catch (err: any) {
         console.error('Public Stats API error:', err);
         return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });

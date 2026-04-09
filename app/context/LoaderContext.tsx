@@ -183,7 +183,7 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
                         <div ref={marqueeRef} className="flex gap-16 items-center py-4">
                             {[...Array(12)].map((_, i) => (
                                 <div key={i} className="flex items-center gap-16">
-                                    <h1 className="text-[#EDEEE7]!">DACCI</h1>
+                                    <h1 className="text-[#EDEEE7]!">SLOTS SPORTS WEAR</h1>
                                     <span className="size-4 md:size-8 rounded-full bg-[#EDEEE7]! opacity-40"></span>
                                 </div>
                             ))}
@@ -192,10 +192,10 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
 
                     {/* Progress Information */}
                     <div className="flex flex-col items-center gap-3">
-                        <span className="text-sm md:text-xl font-[main] tracking-[0.6em] text-[#EDEEE7]/30 uppercase font-bold">Initialising System</span>
+                        <span className="text-sm md:text-xl font-[middle] tracking-[0.6em] text-[#EDEEE7]/30 uppercase font-bold">Initialising System</span>
                         <div className="flex items-end gap-1">
-                            <span className="text-5xl md:text-8xl font-[main] tabular-nums">{progress.toString().padStart(2, '0')}</span>
-                            <span className="text-xl md:text-2xl font-[main] opacity-30 mb-3 md:mb-5 tracking-widest">%</span>
+                            <span className="text-5xl md:text-8xl font-[middle] tabular-nums">{progress.toString().padStart(2, '0')}</span>
+                            <span className="text-xl md:text-2xl font-[middle] opacity-30 mb-3 md:mb-5 tracking-widest">%</span>
                         </div>
                     </div>
                 </div>

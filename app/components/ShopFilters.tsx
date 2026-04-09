@@ -152,15 +152,15 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
 
             {/* Sort Trigger Button (Moved here after Sale as requested) */}
             <div className="flex">
-                <button 
+                <h3 
                     onClick={() => setIsSortOpen(true)}
-                    className="flex items-center justify-between px-4 py-2 bg-black text-white rounded-2xl active:scale-95 transition-all text-xs uppercase tracking-[0.3em] font-black gap-4 hover:bg-black/90 cursor-pointer group"
+                    className="flex items-center justify-between uppercase tracking-[0.3em] gap-4 hover:gap-6 cursor-pointer group transition-all duration-500 font-[middle]"
                 >
                     Sort By
                     <div className="size-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
-                        <Icon name="menu" className="size-4 text-white" />
+                        <Icon name="menu" className="size-4 text-black" />
                     </div>
-                </button>
+                </h3>
             </div>
 
             {/* Contextual Architecture (Types) */}

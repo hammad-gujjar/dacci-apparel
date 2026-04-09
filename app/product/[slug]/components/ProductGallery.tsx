@@ -73,7 +73,7 @@ const ProductGallery = ({
             <div
                 ref={mainImageRef}
                 onClick={() => setIsMarqueeOpen(true)}
-                className="aspect-4/5 bg-zinc-200/50 relative overflow-hidden group/main cursor-none rounded-[1.5vw]"
+                className="aspect-4/4 bg-zinc-200/50 relative overflow-hidden group/main cursor-none"
             >
                 {currentMedia.map((m: any, i: number) => (
                     <Image

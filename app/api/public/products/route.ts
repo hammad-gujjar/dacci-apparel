@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
             Product.countDocuments(query)
         ]);
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: products,
             meta: {
@@ -72,6 +72,11 @@ export async function GET(req: NextRequest) {
                 limit
             }
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=300, stale-while-revalidate=600'
+        );
+        return response;
 
     } catch (err: any) {
         return NextResponse.json({ success: false, message: err?.message || "Failed to fetch products" }, { status: 500 });

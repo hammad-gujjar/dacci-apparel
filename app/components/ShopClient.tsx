@@ -161,7 +161,7 @@ const ShopClient = ({
                             </h3>
                         </div>
                         <p className="text-[#EDEEE7]/50 text-base font-light leading-relaxed max-w-sm">
-                            Behind every Dacci garment lies a rigorous process of selection and refinement. We don't just follow trends; we set the standard for durability and aesthetic longevity.
+                            Behind every Slots garment lies a rigorous process of selection and refinement. We don't just follow trends; we set the standard for durability and aesthetic longevity.
                         </p>
                     </div>
 
@@ -169,7 +169,7 @@ const ShopClient = ({
                         {[
                             { title: "Sourcing", desc: "Italian silks and Egyptian cottons selected for their tactile superiority." },
                             { title: "Technique", desc: "Bespoke tailoring methods infused with modern precision technology." },
-                            { title: "Service", desc: "A lifetime commitment to the maintenance of your Dacci collection." }
+                            { title: "Service", desc: "A lifetime commitment to the maintenance of your Slots collection." }
                         ].map((item, i) => (
                             <div key={i} className="bg-black p-10 flex flex-col gap-4 group hover:bg-[#EDEEE7]/5 transition-colors duration-500">
                                 <span className="text-[#EDEEE7] text-2xl font-[main] uppercase tracking-tight">{item.title}</span>

@@ -24,10 +24,15 @@ export async function GET(req: NextRequest) {
             };
         }));
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: categoriesWithProducts
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=3600, stale-while-revalidate=86400'
+        );
+        return response;
 
     } catch (err: any) {
         console.error("Nav Data API Error:", err);

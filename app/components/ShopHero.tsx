@@ -20,7 +20,7 @@ const ShopHero = () => {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img 
-                    src="https://i.pinimg.com/1200x/04/c5/09/04c5096da839fda9f22f05446f7ca061.jpg" 
+                    src="https://i.pinimg.com/originals/83/90/cb/8390cb310766847e6b08b00b196960f4.jpg" 
                     alt="Shop Hero" 
                     className="w-full h-full object-cover position-center"
                 />
@@ -29,9 +29,9 @@ const ShopHero = () => {
 
             {/* Content */}
             <div ref={contentRef} className="relative flex flex-col items-center z-10 text-center px-5">
-                <p className="text-[#EDEEE7]/40 uppercase tracking-[0.5em] font-bold block mb-4">Explore our Collections</p>
-                <Heading title='THE COLLECTION' className='text-[#EDEEE7]!' delay={1.5}/>
-                <p className="text-[#EDEEE7]/60 mt-6 max-w-xl mx-auto">
+                <p className="!text-[#EDEEE7] uppercase mb-4">Explore our Collections</p>
+                <Heading title='THE COLLECTION' className='!text-[#EDEEE7]' delay={1.5}/>
+                <p className="!text-[#EDEEE7] mt-6 max-w-xl mx-auto text-center">
                     Curated pieces designed for the modern individual. Quality, craftsmanship, and timeless style.
                 </p>
             </div>

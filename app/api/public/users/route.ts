@@ -15,10 +15,15 @@ export async function GET() {
                 .lean()
         ]);
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: { users, totalCount }
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=600, stale-while-revalidate=3600'
+        );
+        return response;
     } catch (err: any) {
         console.error('Public Users API error:', err);
         return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });

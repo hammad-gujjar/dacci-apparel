@@ -67,13 +67,13 @@ const splitText = (text: string) =>
 const HeroSection = ({ arrivalData }: HeroSectionProps) => {
   const { isLoading, transitionTo } = useLoader();
 
-  const heroRef        = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const productCardRef = useRef<HTMLDivElement>(null);
 
   // Showcase state
   const [showcaseUsers, setShowcaseUsers] = useState<ShowcaseUser[]>([]);
-  const [userCount,     setUserCount]     = useState<number>(0);
-  const [avgRating,     setAvgRating]     = useState<number>(0);
+  const [userCount, setUserCount] = useState<number>(0);
+  const [avgRating, setAvgRating] = useState<number>(0);
 
   // ── Fetch showcase data ────────────────────────────────────────────────────
   useEffect(() => {
@@ -118,8 +118,8 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
       if (chars && chars.length > 0) {
         gsap.to(chars, {
           y: '0%',
-          duration: 0.5,
-          delay: 1.1,
+          duration: 0.3,
+          delay: 1,
           ease: 'power2.out',
           stagger: 0.02,
         });
@@ -135,7 +135,15 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
     <div ref={heroRef} className="w-screen h-[90vh] md:h-screen relative overflow-hidden">
       <div className='size-full absolute top-0 left-0 bg-linear-to-t from-black/40 via-black/10 to-transparent'></div>
       {/* Background video */}
-      <img src="/images/hero.jpg" alt="" />
+      {/* Background image — LCP element, load eagerly with high fetch priority */}
+      <img
+        className='object-cover size-full'
+        src="https://i.pinimg.com/originals/cd/44/98/cd4498d59ae2318e6283df5a611568d4.png"
+        alt="Slots Sports Wear premium clothing collection"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+      />
 
       {/* Overlay content */}
       <div className="absolute top-0 left-0 size-full flex flex-col justify-end p-5 md:p-10 gap-2 z-[2]">
@@ -224,7 +232,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
         <div className="w-full md:w-[60%] md:mt-4 mt-2">
           <p className="text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]">
             {splitText(
-              'Daccia Apparel is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website'
+              'Slots Sports Wear is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website'
             )}
           </p>
         </div>

@@ -55,7 +55,7 @@ export default function SignIn() {
       {/* Main Card */}
       <div
         ref={cardRef}
-        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden rounded-[2vw] shadow-2xl"
+        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden shadow-2xl"
         style={{ background: '#edeee78e', backdropFilter: 'blur(40px)' }}
       >
 
@@ -68,7 +68,7 @@ export default function SignIn() {
 
           <div className="relative z-10">
             <p className="uppercase text-[#EDEEE7]/40 font-bold">Welcome Back</p>
-            <h1 className="text-[#EDEEE7]! mt-4">SignIn to Dacci.</h1>
+            <h1 className="text-[#EDEEE7]! mt-4">SignIn to Slots.</h1>
             <p className="mt-6 text-[#EDEEE7]/50 max-w-xs">
               Premium clothing crafted with care. Access your account to continue your journey.
             </p>

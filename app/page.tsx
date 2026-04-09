@@ -45,14 +45,6 @@ const HomePage = () => {
       {/* Company Performance Stats */}
       <CompanyStats />
 
-      {/* Categories heading */}
-      <div className="flex flex-col md:flex-row justify-between md:items-end gap-2 px-5 pt-10">
-        <Heading title="SHOP BY CATEGORIES" className="w-full md:w-1/2" />
-        <p className="w-full md:w-1/3">
-          Explore our curated selection of categories, featuring the latest trends and timeless classics for every style.
-        </p>
-      </div>
-
       {/* Horizontal scrolling categories */}
       <HorizontalCategories />
 

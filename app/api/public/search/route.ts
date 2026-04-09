@@ -37,10 +37,15 @@ export async function GET(req: NextRequest) {
 
         const tagSuggestions = Array.from(tagMap.values()).slice(0, 10);
         
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: tagSuggestions
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=120, stale-while-revalidate=300'
+        );
+        return response;
 
     } catch (err: any) {
         console.error("Search API Error:", err);

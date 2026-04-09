@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { cache } from 'react';
 import ProductClient from './ProductClient';
+import JsonLd from '@/components/JsonLd';
 import { databaseConnection, userdatabaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
 import { ProductVariant } from "@/models/productVariant.model";
@@ -71,15 +72,25 @@ const getProductData = cache(async (slug: string) => {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
     const { slug } = await params;
     const product = await getProductData(slug);
-    if (!product) return { title: 'Product Not Found - Dacci' };
+    if (!product) return { title: 'Product Not Found' };
+
+    const description = product.description?.substring(0, 160) || '';
+    const imageUrl = product.media?.[0]?.secure_url || 'https://slotssportswear.com/images/daccilogosvg.png';
 
     return {
-        title: `${product.name} - Dacci Apparel`,
-        description: product.description.substring(0, 160),
+        title: product.name,
+        description,
         openGraph: {
+            type: 'website',
             title: product.name,
-            description: product.description.substring(0, 160),
-            images: [product.media?.[0]?.secure_url || '/placeholder.png'],
+            description,
+            images: [{ url: imageUrl, width: 800, height: 600, alt: product.name }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: product.name,
+            description,
+            images: [imageUrl],
         },
     };
 }
@@ -92,5 +103,44 @@ export default async function Page({ params }: ProductPageProps) {
         notFound();
     }
 
-    return <ProductClient initialData={productData} />;
+    // Build Product JSON-LD for Google rich results (star ratings, price, availability)
+    const productJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: productData.name,
+        description: productData.description?.substring(0, 500) || '',
+        image: productData.media?.map((m: any) => m.secure_url) || [],
+        sku: productData.slug,
+        brand: {
+            '@type': 'Brand',
+            name: 'Slots Sports Wear',
+        },
+        category: productData.category?.name || '',
+        offers: {
+            '@type': 'Offer',
+            url: `https://slotssportswear.com/product/${productData.slug}`,
+            priceCurrency: 'PKR',
+            price: productData.sellingPrice || productData.price || 0,
+            availability: 'https://schema.org/InStock',
+            seller: { '@type': 'Organization', name: 'Slots Sports Wear' },
+        },
+        ...(productData.averageRating > 0 && productData.reviews?.length > 0
+            ? {
+                aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: productData.averageRating.toFixed(1),
+                    reviewCount: productData.reviews.length,
+                    bestRating: '5',
+                    worstRating: '1',
+                },
+              }
+            : {}),
+    };
+
+    return (
+        <>
+            <JsonLd data={productJsonLd} />
+            <ProductClient initialData={productData} />
+        </>
+    );
 }

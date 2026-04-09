@@ -2,6 +2,7 @@
 
 import Heading from '@/app/components/Heading';
 import Icon from '@/app/components/Icon';
+import { useRouter } from 'next/navigation';
 
 interface ProductInfoProps {
     product: any;
@@ -20,6 +21,7 @@ const ProductInfo = ({
     currentMrp,
     renderStars
 }: ProductInfoProps) => {
+    const router = useRouter();
     const hasVariants = product.variants?.length > 0;
     const uniqueColors = [...new Set(product.variants?.map((v: any) => v.color))] as string[];
 
@@ -144,7 +146,13 @@ const ProductInfo = ({
 
             {/* Final CTA Area */}
             <div className="flex flex-col gap-6 mt-8">
-                <button className="w-full bg-black text-[#EDEEE7] py-8 rounded-full text-[11px] uppercase tracking-[0.6em] font-bold hover:opacity-90 transition-all hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] active:scale-[0.97] flex items-center justify-center gap-4 cursor-pointer">
+                <button 
+                  onClick={() => {
+                        const type = product.category?.slug || product.productType || '';
+                        router.push(`/contact?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(product.slug)}#teckpack`);
+                  }}
+                  className="w-full bg-black text-[#EDEEE7] py-8 rounded-full text-[11px] uppercase tracking-[0.6em] font-bold hover:opacity-90 transition-all hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] active:scale-[0.97] flex items-center justify-center gap-4 cursor-pointer"
+                >
                     <span>Add to Wardrobe</span>
                     <Icon name="arrow" className="-rotate-45deg scale-75" />
                 </button>

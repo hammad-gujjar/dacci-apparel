@@ -84,124 +84,157 @@ const PopularCategories = () => {
         </div>
       </div>
 
-      {/* --- 3-Column Premium Grid --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1.3fr] gap-3 w-full mx-auto min-h-[90vh]">
+      {/* --- Solid Symmetrical Bento Grid (4x4) --- */}
+      <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-4 gap-2 md:gap-3 w-full md:h-[75vh] lg:h-[85vh] mt-10 grid-flow-row-dense">
 
-        {/* Column 1: Man Collection (Left Wide) */}
+        {/* 1. Man Collection (Large Top Left - 2x2) */}
         <div
-          className="category-card relative h-[600px] lg:h-full rounded-[2.5vw] overflow-hidden group cursor-pointer bg-neutral-100"
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[300px] md:min-h-0 md:col-span-2 md:row-span-2"
           onMouseEnter={() => setHoveredCard('man')}
           onMouseLeave={() => setHoveredCard(null)}
         >
-          {/* Top Right Arrow */}
-          <div className="absolute top-8 right-8 z-30 size-14 border border-white/30 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:bg-white group-hover:text-black transition-all duration-500">
-            <IoMdArrowForward className="-rotate-45 text-white group-hover:text-black text-2xl transition-colors" />
-          </div>
-
           <div className="absolute inset-0 size-full z-0 overflow-hidden">
-            <img
-              src="https://i.pinimg.com/736x/09/76/cf/0976cff2a137e7cefe03baada5ca6e74.jpg"
-              alt="Man Collection"
-              className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out"
-            />
+            <img src="https://i.pinimg.com/736x/09/76/cf/0976cff2a137e7cefe03baada5ca6e74.jpg" alt="Man Collection" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
           </div>
-
-          <div className="absolute bottom-12 left-10 z-20 max-w-[80%]">
-            <AnimatedSwapText
-              text="men's top"
-              active={inView}
-              className="text-[#EDEEE7] text-[20px] lg:text-[25px] font-medium mb-3 font-[main]"
-              stagger={0.02}
-              delay={0.5}
-            />
-            <p className={cn(
-              "text-[#EDEEE7] font-light tracking-wide text-lg transition-all duration-700 delay-100",
-              hoveredCard === 'man' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            )}>
-              Designed to stand the test of time
+          <div className="absolute top-4 right-4 z-30 size-8 md:size-10 border border-white/30 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:bg-white group-hover:text-black transition-all duration-500">
+            <IoMdArrowForward className="-rotate-45 text-white group-hover:text-black text-lg transition-colors" />
+          </div>
+          <div className="absolute bottom-4 left-5 md:bottom-6 md:left-6 z-20">
+            <div className={cn("transition-all duration-700 ease-out", hoveredCard === 'man' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              <AnimatedSwapText text="men's top" active={inView} className="text-[#EDEEE7] text-[20px] md:text-[24px] font-medium mb-1 font-[main]" stagger={0.02} delay={0.5} />
+            </div>
+            <p className={cn("text-[#EDEEE7] font-light text-xs md:text-sm transition-all duration-700 ease-out delay-100", hoveredCard === 'man' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              Designed to last
             </p>
           </div>
         </div>
 
-        {/* Column 2: Women & Offer (Center) */}
-        <div className="flex flex-col gap-3 lg:h-full">
-          {/* Women Collection */}
-          <div className="category-card relative flex-1 min-h-[300px] rounded-[2.5vw] overflow-hidden group cursor-pointer bg-neutral-100">
-            <div className="absolute inset-0 size-full z-0">
-              <img
-                src="https://i.pinimg.com/1200x/33/ee/cf/33eecf4466269b6d3659e2899fe18df3.jpg"
-                alt="Women Collection"
-                className="size-full object-cover group-hover:scale-110 transition-transform duration-2000"
-              />
-              <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-colors" />
-            </div>
-            <div className="absolute bottom-8 left-8 z-20">
-              <h3 className="text-[#EDEEE7] font-medium">Women Collection</h3>
-            </div>
+        {/* 2. Women Collection (Vertical Top Mid - 1x2) */}
+        <div
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[350px] md:min-h-0 md:col-span-1 md:row-span-2"
+          onMouseEnter={() => setHoveredCard('women')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div className="absolute inset-0 size-full z-0 overflow-hidden">
+            <img src="https://i.pinimg.com/736x/91/07/6a/91076a498ecc85a30091c6f500f378c4.jpg" alt="Women Collection" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-700" />
           </div>
-
-          {/* Special Offer Card */}
-          <div className="category-card relative flex-1 min-h-[300px] rounded-[2.5vw] bg-[#B39C7E] p-12 flex flex-col justify-center gap-4 group cursor-pointer overflow-hidden">
-            <div className="size-full absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-500 z-0" />
-            <div className="relative z-10 space-y-6">
-              <span className="inline-block px-4 py-1.5 border border-black/10 rounded-full text-xs uppercase tracking-widest font-medium">Special offer</span>
-              <h3 className="text-3xl md:text-3xl font-normal leading-snug">
-                Save 20% off this <br /> holiday season <br /> using the code <br /> <span className="font-bold">Y2023.</span>
-              </h3>
+          <div className="absolute bottom-4 left-5 z-20">
+            <div className={cn("transition-all duration-700 ease-out", hoveredCard === 'women' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              <AnimatedSwapText text="Women" active={inView} className="text-[#EDEEE7] text-[18px] md:text-[20px] font-medium mb-1 font-[main]" stagger={0.02} delay={0.6} />
             </div>
+            <p className={cn("text-[#EDEEE7] font-light text-[10px] md:text-xs transition-all duration-700 ease-out delay-100", hoveredCard === 'women' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              Elegance redefined
+            </p>
           </div>
         </div>
 
-        {/* Column 3: Girl's Top (Right Wide) */}
+        {/* 3. Autumn Edit (Vertical Top Right - 1x2) */}
         <div
-          className="category-card relative h-[550px] lg:h-[100%] rounded-[2.5vw] overflow-hidden group cursor-pointer bg-neutral-100"
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[300px] md:min-h-0 md:col-span-1 md:row-span-2"
+          onMouseEnter={() => setHoveredCard('autumn')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div className="absolute inset-0 size-full z-0 overflow-hidden">
+            <img src="https://i.pinimg.com/1200x/f9/1b/38/f91b38b62b069ff7d769ab4311627d7b.jpg" alt="Autumn Edit" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out object-center" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
+          </div>
+          <div className="absolute bottom-4 left-5 z-20">
+            <div className={cn("transition-all duration-700 ease-out", hoveredCard === 'autumn' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              <AnimatedSwapText text="Autumn" active={inView} className="text-[#EDEEE7] text-[18px] md:text-[20px] font-medium mb-1 font-[main]" stagger={0.02} delay={0.6} />
+            </div>
+            <p className={cn("text-[#EDEEE7] font-light text-[10px] md:text-xs transition-all duration-700 ease-out delay-100", hoveredCard === 'autumn' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              Warm layers
+            </p>
+          </div>
+        </div>
+
+        {/* 4. Special Offer (Small Bottom Left 1 - 1x1) */}
+        <div
+          className="category-card relative bg-[#B39C7E] flex flex-col justify-center p-4 lg:p-6 group cursor-pointer overflow-hidden min-h-[200px] md:min-h-0 md:col-span-1 md:row-span-1"
+        >
+          <div className="size-full absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500 z-0" />
+          <div className="relative z-10 space-y-2">
+            <span className="inline-block px-2 py-1 border border-black/20 rounded-full text-[9px] uppercase tracking-widest font-medium">Special</span>
+            <h3 className="text-lg md:text-xl font-normal leading-snug">
+              Save 10% <br /> on sign up.
+            </h3>
+          </div>
+        </div>
+
+        {/* 5. Footwear (Small Bottom Left 2 - 1x1) */}
+        <div
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[200px] md:min-h-0 md:col-span-1 md:row-span-1"
+          onMouseEnter={() => setHoveredCard('shoes')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div className="absolute inset-0 size-full z-0 overflow-hidden">
+            <img src="https://i.pinimg.com/1200x/64/25/ad/6425ad018953f7a520aa907496cd6b85.jpg" alt="Footwear" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 bg-black/20">
+            <h3 className="text-[#EDEEE7] text-xs font-medium font-[main] tracking-wider uppercase">Shoes</h3>
+          </div>
+        </div>
+
+        {/* 6. Girl's Top (Large Bottom Right - 2x2) */}
+        <div
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[350px] md:min-h-0 md:col-span-2 md:row-span-2"
           onMouseEnter={() => setHoveredCard('girls')}
           onMouseLeave={() => setHoveredCard(null)}
         >
           <div className="absolute inset-0 size-full z-0 overflow-hidden">
-            <img
-              src="https://i.pinimg.com/1200x/55/e5/29/55e5298261a13271488f08ed61488543.jpg"
-              alt="Girl's Top"
-              className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out"
-            />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
+            <img src="https://i.pinimg.com/1200x/55/e5/29/55e5298261a13271488f08ed61488543.jpg" alt="Girls Top" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out object-top" />
+            <div className="absolute inset-0 bg-black/15 group-hover:bg-black/40 transition-colors duration-700" />
           </div>
-
-          <div className="absolute bottom-12 left-10 z-20 max-w-[80%] space-y-6">
-            <div className="space-y-2">
-              <AnimatedSwapText
-                text="Girl's Top"
-                active={inView}
-                className="text-[#EDEEE7] text-[20px] lg:text-[25px] font-medium font-[main]"
-                stagger={0.02}
-                delay={0.7}
-              />
-              <p className={cn(
-                "text-[#EDEEE7] font-light tracking-wide text-lg transition-all duration-700 delay-100",
-                hoveredCard === 'girls' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-              )}>
+          <div className="absolute bottom-5 left-5 md:bottom-6 md:left-6 z-20 space-y-3 md:space-y-4">
+            <div className={cn("transition-all duration-700 ease-out", hoveredCard === 'girls' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
+              <AnimatedSwapText text="Girl's Top" active={inView} className="text-[#EDEEE7] text-[20px] md:text-[24px] font-medium mb-1 font-[main]" stagger={0.02} delay={0.7} />
+              <p className={cn("text-[#EDEEE7] font-light text-sm md:text-base transition-all duration-700 ease-out delay-100", hoveredCard === 'girls' ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0")}>
                 Mysterious everyday
               </p>
             </div>
-
-            {/* Liquid Glass Button */}
-            <div className={cn(
-              "transition-all duration-700 delay-200 rounded-full overflow-hidden",
-              hoveredCard === 'girls' ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            )}>
-              <button className="relative px-8 py-3 rounded-full overflow-hidden transition-transform duration-500 active:scale-95 group/btn">
-                {/* Glass Base */}
+            
+            <div className={cn("transition-all duration-700 delay-200 rounded-full", hoveredCard === 'girls' ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 hidden md:block")}>
+              <button className="relative px-6 py-2.5 rounded-full overflow-hidden transition-transform duration-500 active:scale-95 group/btn">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] transition-colors group-hover/btn:bg-white/20" />
-
-                {/* Liquid Highlight Refraction */}
                 <div className="absolute -inset-x-full inset-y-0 bg-linear-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] group-hover/btn:animate-[shimmer_2s_infinite]" />
-
-                <span className="relative z-10 text-white text-sm font-medium uppercase tracking-widest flex items-center gap-2">
-                  Shop now <IoMdArrowForward className="-rotate-45" />
+                <span className="relative z-10 text-white text-xs font-medium uppercase tracking-widest flex items-center gap-2">
+                  Shop <IoMdArrowForward className="-rotate-45" />
                 </span>
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* 7. Accessories (Small Bottom Left 3 - 1x1) */}
+        <div
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[200px] md:min-h-0 md:col-span-1 md:row-span-1"
+          onMouseEnter={() => setHoveredCard('acc')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div className="absolute inset-0 size-full z-0 overflow-hidden">
+            <img src="https://i.pinimg.com/736x/a6/c3/3b/a6c33b26fdb8d433ac4dd1e0a5226d53.jpg" alt="Accessories" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out object-center" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 bg-black/40">
+            <h3 className="text-[#EDEEE7] text-xs font-medium font-[main] tracking-wider uppercase">Acc.</h3>
+          </div>
+        </div>
+
+        {/* 8. Essentials (Small Bottom Left 4 - 1x1) */}
+        <div
+          className="category-card relative overflow-hidden group cursor-pointer bg-neutral-100 min-h-[200px] md:min-h-0 md:col-span-1 md:row-span-1"
+          onMouseEnter={() => setHoveredCard('essential')}
+          onMouseLeave={() => setHoveredCard(null)}
+        >
+          <div className="absolute inset-0 size-full z-0 overflow-hidden">
+            <img src="https://i.pinimg.com/1200x/eb/b6/7e/ebb67eaa0d380249978d690bd365da2a.jpg" alt="Essentials" className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 bg-black/20">
+            <h3 className="text-[#EDEEE7] text-xs font-medium font-[main] tracking-wider uppercase">Basic</h3>
           </div>
         </div>
 

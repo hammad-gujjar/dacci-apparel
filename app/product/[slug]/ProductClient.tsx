@@ -204,7 +204,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                                 </div>
                             </button>
                         </div>
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-14">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                             {product.relatedProducts.map((p: any) => (
                                 <div key={p._id} className="hover:scale-[1.02] transition-transform duration-1000">
                                     <ProductItem product={p} />

@@ -91,7 +91,7 @@ const HomeMiddle = () => {
 
   }, { dependencies: [isLoading], scope: containerRef });
 
-  const marqueeText = "JOIN OUR MAILING LIST AND RECEIVE 10% OFF ON FIRST ORDER";
+  const marqueeText = <>JOIN OUR MAILING LIST AND RECEIVE <span className="mx-10 font-[middle] !text-[#EDEEE7] font-extrabold">10%</span> OFF ON FIRST ORDER</>;
 
   return (
     <>
@@ -118,12 +118,12 @@ const HomeMiddle = () => {
             { title: "Custom Sportswear Apparels", desc: "Slot-sports-wear can help you create your own personalized fitness apparel manufacturer brand.", img: 'https://i.pinimg.com/1200x/06/d3/81/06d3814393fb753615336fd489e5a6bf.jpg' },
             { title: "Custom Activewear Apparels", desc: "Slot-sports-wear can help you create your own personalized fitness apparel manufacturer brand.", img: 'https://i.pinimg.com/736x/09/c1/54/09c1542f59b443d1f9d4ad06f5c7e6e6.jpg' },
           ].map((item, i) => (
-            <div key={i} className="highlight-card flex flex-col gap-5 h-full rounded-[2vw] p-2 border border-black/10">
-              <div className="h-[40vh] w-full relative overflow-hidden rounded-[2vw]">
+            <div key={i} className="highlight-card flex flex-col gap-5 h-full">
+              <div className="h-[40vh] w-full relative overflow-hidden">
                 <img className='size-full object-cover' src={item.img} alt="" />
               </div>
               <div className="flex flex-col gap-2">
-                <h3 className="uppercase text-black flex items-center gap-2 font-semibold"><span className="text-black text-2xl">•</span>{item.title}</h3>
+                <h3 className="uppercase text-black flex items-center gap-2 font-semibold">{item.title}</h3>
                 <p>{item.desc}</p>
               </div>
             </div>

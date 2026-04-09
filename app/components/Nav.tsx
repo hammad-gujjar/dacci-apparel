@@ -265,7 +265,7 @@ const Nav = () => {
                     <div className="lg:flex-none lg:w-1/3 flex justify-center">
                         <TransitionButton text={<ul className="w-fit h-[7vh] md:h-full">
                             <img className='size-full object-contain' src='/images/daccilogosvg.png' alt='logo' />
-                            <span className='font-serif text-2xl tracking-tighter uppercase font-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>Dacci</span>
+                            <span className='font-[main] text-xl tracking-tighter uppercase font-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>Slots</span>
                         </ul>} url='/' className="relative md:h-[9vh] pointer-events-auto z-101 cursor-pointer" />
                     </div>
 
@@ -319,7 +319,7 @@ const Nav = () => {
                     <div className="w-full h-full flex flex-col md:flex-row p-6 md:p-12 gap-8 md:gap-12">
                         {/* Left: Types */}
                         <div className="w-full md:w-1/2 flex flex-col gap-6 md:border-r md:border-black/5">
-                            <h3 className="text-zinc-400 text-[10px] uppercase tracking-[0.4em] font-bold">Categories</h3>
+                            <h3 className="text-zinc-400 text-[10px] uppercase tracking-[0.4em]">Categories</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 {activeCategory?.types?.map((type: string, i: number) => (
                                     <div key={i} className="megamenu-item">
@@ -327,7 +327,7 @@ const Nav = () => {
                                             text={type}
                                             url={`/shop?category=${activeCategory.slug}&type=${type}`}
                                             scroll={false}
-                                            className="text-2xl md:text-3xl font-[main] hover:translate-x-4 transition-transform duration-300 uppercase tracking-tighter block w-fit text-left cursor-pointer"
+                                            className="!text-[25px] hover:translate-x-4 transition-transform duration-300 uppercase tracking-tighter block w-fit text-left cursor-pointer"
                                         />
                                     </div>
                                 ))}
@@ -343,7 +343,7 @@ const Nav = () => {
                                         setActiveCategory(null);
                                         transitionTo(`/product/${product.slug}`);
                                     }}
-                                    className="megamenu-item flex-1 relative h-full rounded-[1.5vw] overflow-hidden group/product cursor-pointer"
+                                    className="megamenu-item flex-1 relative h-full overflow-hidden group/product cursor-pointer"
                                 >
                                     <Image
                                         src={product.media?.[0]?.secure_url || '/placeholder.png'}
@@ -381,7 +381,7 @@ const Nav = () => {
                         <input
                             type="text"
                             placeholder="SEARCH BY PRODUCT OR TAGS..."
-                            className="w-full bg-transparent border-b-2 border-black/10 py-6 text-[5vw] md:text-[4vw] font-[main] uppercase tracking-tighter focus:border-black outline-none transition-all"
+                            className="w-full bg-transparent border-b-2 border-black/10 py-6 text-[5vw] md:text-[4vw] font-[middle] uppercase tracking-tighter focus:border-black outline-none transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={(e) => {
@@ -396,8 +396,8 @@ const Nav = () => {
                     </div>
 
                     {/* Suggestions */}
-                    <div className="w-full max-h-[50vh] overflow-y-scroll mt-8 scrollbar-hide">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="w-full max-h-[60vh] mt-8 overflow-y-auto scrollbar-hide">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             {suggestions.map((item, i) => (
                                 <Link
                                     key={i}

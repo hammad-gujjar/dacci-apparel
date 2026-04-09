@@ -60,7 +60,7 @@ export default function SignUp() {
 
       <div
         ref={cardRef}
-        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden rounded-[2vw] shadow-2xl"
+        className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden shadow-2xl"
         style={{ background: '#edeee788', backdropFilter: 'blur(40px)' }}
       >
         {/* LEFT — Steps */}
@@ -72,7 +72,7 @@ export default function SignUp() {
 
           <div className="relative z-10">
             <p className="uppercase text-[#EDEEE7]/40 font-bold">New Member</p>
-            <h1 className="text-[#EDEEE7]! mt-4">Join Dacci Today.</h1>
+            <h1 className="text-[#EDEEE7]! mt-4">Join Slots Today.</h1>
             <p className="mt-6 text-[#EDEEE7]/50 max-w-xs">
               Become part of an exclusive community that values craftsmanship, quality, and timeless style.
             </p>

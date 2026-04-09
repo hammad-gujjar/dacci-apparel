@@ -8,10 +8,15 @@ export async function GET(req: NextRequest) {
         
         const categories = await Category.find({ deletedAt: null }).lean();
 
-        return NextResponse.json({
+        const response = NextResponse.json({
             success: true,
             data: categories
         });
+        response.headers.set(
+            'Cache-Control',
+            'public, s-maxage=3600, stale-while-revalidate=86400'
+        );
+        return response;
 
     } catch (err: any) {
         return NextResponse.json({ success: false, message: err?.message || "Failed to fetch categories" }, { status: 500 });
