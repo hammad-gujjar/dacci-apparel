@@ -401,7 +401,7 @@ const Nav = () => {
                             {suggestions.map((item, i) => (
                                 <Link
                                     key={i}
-                                    href={`/shop?tag=${item.tag}`}
+                                    href={`/shop?tags=${item.tag}`}
                                     onClick={() => setIsSearchOpen(false)}
                                     scroll={false}
                                     className="flex items-center gap-6 p-4 hover:bg-black/5 rounded-[1.5vw] transition-all group"
