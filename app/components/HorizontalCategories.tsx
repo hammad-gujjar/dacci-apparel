@@ -84,7 +84,7 @@ const HorizontalCategories = () => {
                     text={cat.title}
                     active={isActive}
                     tag="h3"
-                    className="text-[#EDEEE7] text-3xl md:text-5xl lg:text-6xl font-bold mb-4 uppercase"
+                    className="text-[#EDEEE7] mb-4 uppercase !font-[main]"
                     stagger={0.02}
                     delay={0.1}
                   />
