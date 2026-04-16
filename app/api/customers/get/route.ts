@@ -1,4 +1,3 @@
-import { adminAuth } from "@/lib/adminhelperfunction";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -6,17 +5,17 @@ import mongoose from "mongoose";
 
 export async function GET() {
     try {
-        const isAdmin = await adminAuth();
-        if (!isAdmin || !isAdmin.role) {
-            return NextResponse.json({ success: false, statusCode: 403, message: 'Unauthorized.' })
-        }
-
         const session = await auth.api.getSession({
             headers: await headers()
         });
 
         if (!session) {
             return NextResponse.json({ success: false, statusCode: 401, message: 'Unauthorized.' });
+        }
+
+        // Check if email is verified (optional but recommended since it was in adminAuth)
+        if (!session.user.emailVerified) {
+             return NextResponse.json({ success: false, statusCode: 403, message: 'Please verify your email address.' });
         }
 
         // Create dedicated connection to USERS database

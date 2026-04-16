@@ -1,4 +1,3 @@
-import { adminAuth } from "@/lib/adminhelperfunction";
 import { auth } from "@/lib/auth"; // server-side auth
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
@@ -6,17 +5,17 @@ import mongoose from "mongoose";
 
 export async function PUT(req: Request) {
     try {
-        const isAdmin = await adminAuth();
-        if (!isAdmin || !isAdmin.role) {
-            return NextResponse.json({ success: false, statusCode: 403, message: 'Unauthorized.' })
-        }
-
         const session = await auth.api.getSession({
             headers: await headers()
         });
 
         if (!session) {
             return NextResponse.json({ message: "Unauthorized", success: false }, { status: 401 });
+        }
+
+        // Check if email is verified
+        if (!session.user.emailVerified) {
+             return NextResponse.json({ success: false, statusCode: 403, message: 'Please verify your email address.' });
         }
 
         const body = await req.json();
