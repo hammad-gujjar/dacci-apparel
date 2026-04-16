@@ -203,7 +203,7 @@ const OurServices = () => {
         <>
             <div className='mt-20 bg-[#111111]'>
                 <div className="w-full flex flex-col gap-10 items-center justify-between px-5 pt-20 pb-40">
-                    <Heading title="Our Services" className='w-full md:w-1/2 !text-[#EDEEE7]' />
+                    <Heading title="Our Services" className='w-fit !text-[#EDEEE7]' />
                     <p className='w-[80%] md:w-[60%] text-center !text-[#EDEEE7]'>We offer complete sportswear manufacturing solutions tailored to your brand. Whether you need custom designs, private labeling, or bulk production, we ensure top-tier quality, consistent results, and on-time delivery. Our goal is to help you bring high-performance apparel to market with confidence.</p>
                 </div>
 
