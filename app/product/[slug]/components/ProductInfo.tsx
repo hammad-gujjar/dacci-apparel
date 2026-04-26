@@ -56,12 +56,12 @@ const ProductInfo = ({
             {/* Price & Shipping */}
             <div className="flex flex-col gap-2">
                 <div className="flex items-end gap-5">
-                    <span className="text-5xl font-bold tracking-tighter">₹{currentPrice.toLocaleString()}</span>
+                    <span className="text-5xl font-bold tracking-tighter">${currentPrice.toLocaleString()}</span>
                     {currentMrp > currentPrice && (
-                        <span className="text-2xl text-black/20 line-through mb-1 font-medium italic">₹{currentMrp.toLocaleString()}</span>
+                        <span className="text-2xl text-black/20 line-through mb-1 font-medium italic">${currentMrp.toLocaleString()}</span>
                     )}
                 </div>
-                <p className="uppercase text-green-500 tracking-tight !text-[12px]">Taxes Included • Express Delivery Available</p>
+                <p className="uppercase text-green-500 tracking-tight !text-[12px]">• DHL & FedEx Delivery Worldwide</p>
             </div>
 
             {/* Variants Selection */}
@@ -80,11 +80,10 @@ const ProductInfo = ({
                                 {/* Default button */}
                                 <button
                                     onClick={() => handleVariantSelect(null)}
-                                    className={`px-7 py-4 text-[10px] uppercase tracking-[0.3em] border transition-all rounded-full font-bold relative overflow-hidden group ${
-                                        !selectedVariant
+                                    className={`px-7 py-4 text-[10px] uppercase tracking-[0.3em] border transition-all rounded-full font-bold relative overflow-hidden group ${!selectedVariant
                                             ? 'bg-black text-white border-black shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] scale-105'
                                             : 'bg-white/40 text-black border-black/5 hover:border-black backdrop-blur-md'
-                                    }`}
+                                        }`}
                                 >
                                     <span className="relative z-10">Default</span>
                                 </button>
@@ -95,11 +94,10 @@ const ProductInfo = ({
                                         <button
                                             key={color}
                                             onClick={() => handleVariantSelect(v)}
-                                            className={`px-7 py-4 text-[10px] uppercase tracking-[0.3em] border transition-all rounded-full font-bold relative overflow-hidden group ${
-                                                selectedVariant?.color === color
+                                            className={`px-7 py-4 text-[10px] uppercase tracking-[0.3em] border transition-all rounded-full font-bold relative overflow-hidden group ${selectedVariant?.color === color
                                                     ? 'bg-black text-white border-black shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] scale-105'
                                                     : 'bg-white/40 text-black border-black/5 hover:border-black backdrop-blur-md'
-                                            }`}
+                                                }`}
                                         >
                                             <span className="relative z-10">{color}</span>
                                         </button>
@@ -121,11 +119,10 @@ const ProductInfo = ({
                                     <button
                                         key={v.size}
                                         onClick={() => handleVariantSelect(v)}
-                                        className={`size-16 flex items-center justify-center text-[11px] font-bold border transition-all rounded-full tracking-widest ${
-                                            selectedVariant?._id === v._id
+                                        className={`size-16 flex items-center justify-center text-[11px] font-bold border transition-all rounded-full tracking-widest ${selectedVariant?._id === v._id
                                                 ? 'bg-black text-white border-black shadow-[0_10px_20px_-5px_rgba(0,0,0,0.2)] scale-110'
                                                 : 'bg-white/40 text-black border-black/5 hover:border-black backdrop-blur-md'
-                                        }`}
+                                            }`}
                                     >
                                         {v.size}
                                     </button>
@@ -139,19 +136,19 @@ const ProductInfo = ({
             {/* Description */}
             <div className="flex flex-col gap-5 mt-4">
                 <h3 className="uppercase font-bold tracking-[0.4em] opacity-40">Story behind the craft</h3>
-                <p className="text-base leading-relaxed text-black/60 font-medium">
+                <p>
                     {product.description}
                 </p>
             </div>
 
             {/* Final CTA Area */}
             <div className="flex flex-col gap-6 mt-8">
-                <button 
-                  onClick={() => {
+                <button
+                    onClick={() => {
                         const type = product.category?.slug || product.productType || '';
                         router.push(`/contact?type=${encodeURIComponent(type)}&slug=${encodeURIComponent(product.slug)}#teckpack`);
-                  }}
-                  className="w-full bg-black text-[#EDEEE7] py-8 rounded-full text-[11px] uppercase tracking-[0.6em] font-bold hover:opacity-90 transition-all hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] active:scale-[0.97] flex items-center justify-center gap-4 cursor-pointer"
+                    }}
+                    className="w-full bg-black text-[#EDEEE7] py-8 rounded-full text-[11px] uppercase tracking-[0.6em] font-bold hover:opacity-90 transition-all hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] active:scale-[0.97] flex items-center justify-center gap-4 cursor-pointer"
                 >
                     <span>Add to Wardrobe</span>
                     <Icon name="arrow" className="-rotate-45deg scale-75" />
