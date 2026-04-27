@@ -20,7 +20,7 @@ const NewArrival = ({ products }: NewArrivalProps) => {
                         <p className='w-full text-center'>Discover our latest collection of new arrivals.</p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-10 w-full px-3 md:px-5">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-10 w-full px-3 md:px-5">
                         {products.map((product) => (
                             <ProductItem key={product._id} product={product} />
                         ))}

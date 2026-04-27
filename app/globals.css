@@ -164,9 +164,9 @@ h1 {
 
 p {
   font-family: 'middle';
-  font-size: 13px;
-  word-spacing: 3px;
-  letter-spacing: 2.2px;
+  font-size: 15px;
+  word-spacing: 3.3px;
+  letter-spacing: 2.4px;
 }
 
 h2 {
@@ -449,7 +449,7 @@ html.lenis body {
   }
 
   p {
-    font-size: 3vw;
+    font-size: 3.2vw;
   }
 
   h2 {

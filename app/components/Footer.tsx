@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import { IoLogoInstagram, IoLogoFacebook, IoLogoPinterest } from 'react-icons/io5';
+import { FaXTwitter } from "react-icons/fa6";
 import { FaMedium } from 'react-icons/fa';
 import Heading from './Heading';
 
 const LINKS = {
     quickLinks: [
-        { label: 'Instagram', href: '#', icon: <IoLogoInstagram /> },
-        { label: 'Facebook', href: '#', icon: <IoLogoFacebook /> },
-        { label: 'Medium', href: '#', icon: <FaMedium /> },
-        { label: 'Pinterest', href: '#', icon: <IoLogoPinterest /> },
+        { label: 'Instagram', href: 'https://www.instagram.com/slotssportswear2025/', icon: <IoLogoInstagram /> },
+        { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61579978311422', icon: <IoLogoFacebook /> },
+        { label: 'Twitter', href: 'https://x.com/SlotsSportswear', icon: <FaXTwitter /> },
+        { label: 'Pinterest', href: 'https://www.pinterest.com/slotssportswear/', icon: <IoLogoPinterest /> },
     ]
 };
 
@@ -45,7 +46,7 @@ const Footer = () => {
                                 { label: 'Sports Collection', href: '/shop?category=sport' },
                                 { label: 'Casuals Collection', href: '/shop?category=casual' },
                                 { label: 'Team Collection', href: '/shop?category=team' },
-                                { label: 'Limited Edition', href: '/shop?tag=limited' },
+                                { label: 'Limited Edition', href: '/shop?tags=limited' },
                                 { label: 'FAQs', href: '/faq' },
                             ].map((link) => (
                                 <li key={link.label}>

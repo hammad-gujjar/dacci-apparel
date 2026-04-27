@@ -116,7 +116,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
                 </h3>
                 <div className="flex gap-3 items-center">
                     <span className="text-sm font-bold tracking-tight">
-                        ₹{product.sellingPrice.toLocaleString()}
+                        ${product.sellingPrice.toLocaleString()}
                     </span>
                     {product.mrp > product.sellingPrice && (
                         <span className="text-xs text-zinc-400 line-through">

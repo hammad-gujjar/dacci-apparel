@@ -1,7 +1,7 @@
 import { databaseConnection } from "@/lib/database";
 import { Product } from "@/models/product.model";
-import { Category } from "@/models/category.model"; 
-import { Media } from "@/models/Media.model"; 
+import { Category } from "@/models/category.model";
+import { Media } from "@/models/Media.model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -10,7 +10,7 @@ export async function GET() {
 
         const newArrivals = await Product.find({ deletedAt: null })
             .sort({ createdAt: -1 })
-            .limit(6)
+            .limit(8)
             .populate({ path: "media", model: Media })
             .populate({ path: "category", model: Category, select: "name" })
             .lean();

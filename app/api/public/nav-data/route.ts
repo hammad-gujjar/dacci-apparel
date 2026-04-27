@@ -7,22 +7,30 @@ import { NextResponse, NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
     try {
         await databaseConnection();
-        
+
         // Fetch all categories
         const categories = await Category.find({ deletedAt: null }).lean();
 
         // For each category, fetch 2 sample products for the megamenu
         const categoriesWithProducts = await Promise.all(categories.map(async (cat: any) => {
             const products = await Product.find({ category: cat._id, deletedAt: null })
+                .sort({ createdAt: -1 })
                 .limit(2)
                 .populate({ path: 'media', model: Media })
                 .lean();
-            
+
             return {
                 ...cat,
                 sampleProducts: products
             };
         }));
+
+        // Sort categories so the ones with the most recently added products appear first
+        categoriesWithProducts.sort((a, b) => {
+            const aLatest = a.sampleProducts?.[0]?.createdAt ? new Date(a.sampleProducts[0].createdAt).getTime() : 0;
+            const bLatest = b.sampleProducts?.[0]?.createdAt ? new Date(b.sampleProducts[0].createdAt).getTime() : 0;
+            return bLatest - aLatest;
+        });
 
         const response = NextResponse.json({
             success: true,

@@ -119,7 +119,7 @@ const HomeMiddle = () => {
             { title: "Custom Activewear Apparels", desc: "Slot-sports-wear can help you create your own personalized fitness apparel manufacturer brand.", img: 'https://i.pinimg.com/736x/09/c1/54/09c1542f59b443d1f9d4ad06f5c7e6e6.jpg' },
           ].map((item, i) => (
             <div key={i} className="highlight-card flex flex-col gap-5 h-full">
-              <div className="h-[40vh] w-full relative overflow-hidden">
+              <div className="h-[33vh] md:h-[40vh] w-full relative overflow-hidden">
                 <img className='size-full object-cover' src={item.img} alt="" />
               </div>
               <div className="flex flex-col gap-2">

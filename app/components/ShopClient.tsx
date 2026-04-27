@@ -109,7 +109,7 @@ const ShopClient = ({
                             </div>
                         ) : products.length > 0 ? (
                             <>
-                                <div ref={gridRef} className="grid grid-cols-2 xl:grid-cols-4 gap-x-8 gap-y-16">
+                                <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-x-4 gap-y-6 md:gap-y-10">
                                     {products.map((product) => (
                                         <div key={product._id} className="shop-product-card">
                                             <ProductItem product={product} />

@@ -61,220 +61,183 @@ const services = [
 ];
 
 const OurServices = () => {
-    const sectionRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLElement>(null);
+    const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const trainRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        const section = sectionRef.current;
-        if (!section) return;
+        // Robust resize observer to recalculate ScrollTrigger if ANY layout shift happens above this component
+        let resizeTimer: NodeJS.Timeout;
+        const ro = new ResizeObserver(() => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 100);
+        });
+        
+        if (document.body) {
+            ro.observe(document.body);
+        }
 
-        const images = gsap.utils.toArray('.service-slide-image') as any[];
-        const contentSlides = gsap.utils.toArray('.service-content-slide') as any[];
-        const dotActive = gsap.utils.toArray('.service-dot-active') as any[];
+        let mm = gsap.matchMedia();
 
-        // Initial setup
-        images.forEach((img, i) => {
-            gsap.set(img as HTMLElement, {
-                x: i === 0 ? '0%' : `${80 + i * 40}%`,
-                scale: i === 0 ? 1 : 1 - i * 0.1,
-                opacity: i < 4 ? 1 : 0,
-                zIndex: 10 - i,
-                transformOrigin: 'left center'
+        mm.add({
+            isDesktop: "(min-width: 768px)",
+            isMobile: "(max-width: 767px)"
+        }, (context) => {
+            let { isDesktop } = context.conditions as { isDesktop: boolean };
+
+            gsap.set(trainRef.current, { clearProps: "all" });
+
+            textRefs.current.forEach((el, index) => {
+                if (!el) return;
+                const words = el.querySelectorAll('.word');
+                if (index === 0) {
+                    gsap.set(el, { autoAlpha: 1, zIndex: 1 });
+                    gsap.set(words, { yPercent: 0 });
+                } else {
+                    gsap.set(el, { autoAlpha: 0, zIndex: 0 });
+                    gsap.set(words, { yPercent: 100 });
+                }
             });
-            if (i === 0) {
-                const overlay = (img as HTMLElement).querySelector('.service-image-overlay');
-                if (overlay) gsap.set(overlay, { opacity: 0 });
-            }
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: wrapperRef.current, // Pin the clean wrapper to avoid flex layout shift glitches
+                    start: "top top",
+                    end: `+=${services.length * 100}%`,
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                    fastScrollEnd: true,
+                }
+            });
+
+            services.forEach((_, i) => {
+                if (i === 0) {
+                    tl.to({}, { duration: 1 });
+                    return;
+                }
+
+                const prevText = textRefs.current[i - 1];
+                const currentText = textRefs.current[i];
+                const transitionLabel = `step-${i}`;
+
+                if (isDesktop) {
+                    tl.to(trainRef.current, {
+                        yPercent: -100 * i,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    }, transitionLabel);
+                } else {
+                    tl.to(trainRef.current, {
+                        xPercent: -100 * i,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    }, transitionLabel);
+                }
+
+                if (prevText && currentText) {
+                    // 1. Previous text animates out (takes exact 0.55s total)
+                    tl.to(prevText.querySelectorAll('.word'), {
+                        yPercent: -100,
+                        duration: 0.4,
+                        stagger: { amount: 0.15 },
+                        ease: "power2.in"
+                    }, transitionLabel);
+
+                    tl.to(prevText, {
+                        autoAlpha: 0,
+                        duration: 0.1
+                    }, `${transitionLabel}+=0.45`);
+
+                    // 2. Current text animates in (takes exact 0.5s total)
+                    tl.to(currentText, {
+                        autoAlpha: 1,
+                        zIndex: 1,
+                        duration: 0.1
+                    }, `${transitionLabel}+=0.5`);
+
+                    tl.to(currentText.querySelectorAll('.word'), {
+                        yPercent: 0,
+                        duration: 0.4,
+                        stagger: { amount: 0.15 },
+                        ease: "power2.out"
+                    }, `${transitionLabel}+=0.5`);
+                }
+
+                tl.to({}, { duration: 1 });
+            });
+
+            return () => {
+                tl.kill();
+            };
         });
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: section,
-                start: 'top top',
-                end: `+=${services.length * 120}vh`,
-                pin: true,
-                scrub: 1.5,
-            }
-        });
+        return () => {
+            ro.disconnect();
+            clearTimeout(resizeTimer);
+        };
 
-        const stepSize = 3;
-        services.forEach((_, i) => {
-            if (i === 0) return;
+    }, { scope: wrapperRef });
 
-            const prevContent = contentSlides[i - 1] as HTMLElement;
-            const currentContent = contentSlides[i] as HTMLElement;
-            const pos = i * stepSize;
-
-            const titleChars = currentContent.querySelectorAll('.title-char');
-            const descChars = currentContent.querySelectorAll('.desc-char');
-
-            // 1. Dots
-            if (dotActive[i - 1] && dotActive[i]) {
-                tl.to(dotActive[i - 1], { scale: 0, duration: 0.5 }, pos);
-                tl.to(dotActive[i], { scale: 2.5, duration: 0.5 }, pos);
-            }
-
-            // 2. Images Right to Left & Scale
-            tl.to(images[i - 1], {
-                x: '-80%',
-                scale: 0.9,
-                opacity: 0,
-                duration: 2,
-                ease: 'power2.inOut'
-            }, pos);
-
-            tl.to(images[i], {
-                x: '0%',
-                scale: 1,
-                opacity: 1,
-                duration: 2,
-                ease: 'power3.out'
-            }, pos);
-
-            const currentOverlay = (images[i] as HTMLElement).querySelector('.service-image-overlay');
-            if (currentOverlay) tl.to(currentOverlay, { opacity: 0, duration: 2 }, pos);
-
-            const prevOverlay = (images[i - 1] as HTMLElement).querySelector('.service-image-overlay');
-            if (prevOverlay) tl.to(prevOverlay, { opacity: 1, duration: 2 }, pos);
-
-            for (let j = i + 1; j < services.length; j++) {
-                const offset = j - i;
-                tl.to(images[j], {
-                    x: `${80 + offset * 40}%`,
-                    scale: 1 - offset * 0.1,
-                    opacity: offset < 4 ? 1 : 0,
-                    duration: 2,
-                    ease: 'power2.inOut'
-                }, pos);
-            }
-
-            // 3. Text Transitions
-            if (prevContent) {
-                const prevTitle = prevContent.querySelectorAll('.title-char');
-                const prevDesc = prevContent.querySelectorAll('.desc-char');
-
-                tl.to(prevTitle, {
-                    translateY: '-100%',
-                    opacity: 0,
-                    duration: 0.6,
-                    stagger: 0.005,
-                    ease: 'power2.inOut',
-                }, pos);
-
-                tl.to(prevDesc, {
-                    translateY: '-100%',
-                    opacity: 0,
-                    duration: 0.6,
-                    stagger: 0.002,
-                    ease: 'power2.in',
-                }, pos + 0.1);
-
-                tl.set(prevContent, { opacity: 0 }, pos + 0.8);
-            }
-
-            tl.set(currentContent, { opacity: 1 }, pos);
-
-            // Reveal incoming text characters
-            tl.fromTo(titleChars, {
-                translateY: '100%',
-                opacity: 0
-            }, {
-                translateY: '0%',
-                opacity: 1,
-                duration: 1,
-                stagger: 0.02,
-                ease: 'expo.out',
-            }, pos + 0.5);
-
-            tl.fromTo(descChars, {
-                translateY: '100%',
-                opacity: 0
-            }, {
-                translateY: '0%',
-                opacity: 1,
-                duration: 1,
-                stagger: 0.01,
-                ease: 'expo.out',
-            }, pos + 0.6);
-        });
-
-    }, { scope: sectionRef });
+    const renderText = (text: string) => {
+        return text.split(' ').map((word, index) => (
+            <span key={index} className="inline-block overflow-hidden mr-[0.25em] mb-[-0.1em] pb-[0.1em] align-top">
+                <span className="block word will-change-transform">{word}</span>
+            </span>
+        ));
+    };
 
     return (
-        <>
-            <div className='mt-20 bg-[#111111]'>
-                <div className="w-full flex flex-col gap-10 items-center justify-between px-5 pt-20 pb-40">
-                    <Heading title="Our Services" className='w-fit !text-[#EDEEE7]' />
-                    <p className='w-[80%] md:w-[60%] text-center !text-[#EDEEE7]'>We offer complete sportswear manufacturing solutions tailored to your brand. Whether you need custom designs, private labeling, or bulk production, we ensure top-tier quality, consistent results, and on-time delivery. Our goal is to help you bring high-performance apparel to market with confidence.</p>
-                </div>
+        <div className='w-full bg-[#111111]'>
+            <div className="w-full flex flex-col items-center gap-10 py-25 px-10">
+                <Heading title='Our Services' className='w-fit !text-[#EDEEE7]' />
+                <p className='text-center md:px-15 !text-[#EDEEE7]'>At Slots Sportswear, we specialize in manufacturing high-quality sports apparel designed to meet international standards. Based in Pakistan, we offer a complete range of services including custom design, fabric sourcing, cutting, stitching, printing, and branding. Our expertise covers team uniforms, fitness wear, and performance sports clothing tailored to your specifications. With a strong focus on quality, durability, and timely delivery, Slots Sportswear is committed to helping brands, teams, and businesses bring their vision to life with precision and professionalism.</p>
+            </div>
+            
+            <div ref={wrapperRef} className="w-full relative">
+                <section ref={containerRef} className="h-screen w-full text-[#EDEEE7] flex flex-col md:flex-row overflow-hidden relative">
 
-                <section ref={sectionRef} className="relative w-full h-[90vh] md:h-screen overflow-hidden px-5 flex flex-col md:flex-row items-center font-[main]">
-
-                    {/* 2. Left Text Content (40%) */}
-                    <div className="w-full md:w-[45%] lg:w-[40%] relative flex-[1] md:h-[60%] px-5 lg:pl-10 lg:pr-5 mt-10 md:mt-0 z-20">
+                    <div className="w-full h-1/2 md:w-1/2 md:h-full relative flex items-center justify-center p-6 md:p-12 lg:p-20 z-10 bg-black/80 md:bg-transparent backdrop-blur-md md:backdrop-blur-none">
                         {services.map((service, index) => (
                             <div
                                 key={index}
-                                className="service-content-slide absolute inset-0 flex flex-col justify-center pointer-events-none px-5"
-                                style={{ opacity: index === 0 ? 1 : 0 }}
+                                ref={el => { textRefs.current[index] = el; }}
+                                className="absolute inset-0 flex flex-col justify-center p-6 md:p-12 lg:p-24 opacity-0 invisible"
                             >
-                                <div className="space-y-6 pointer-events-auto flex flex-col">
-                                    <div className="overflow-hidden">
-                                        <div className="flex flex-wrap py-1 gap-x-[0.3em]">
-                                            {service.title.split(' ').map((word, wIdx) => (
-                                                <div key={wIdx} className="flex overflow-hidden">
-                                                    {word.split('').map((char, cIdx) => (
-                                                        <h2
-                                                            key={cIdx}
-                                                            className="title-char !text-[#EDEEE7]"
-                                                            style={{ transform: index === 0 ? 'translateY(0%)' : 'translateY(100%)', opacity: index === 0 ? 1 : 0 }}
-                                                        >
-                                                            {char}
-                                                        </h2>
-                                                    ))}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="overflow-hidden">
-                                        <div className="flex flex-wrap gap-x-[0.2em] md:max-w-[90%]">
-                                            {service.description.split(' ').map((word, wIdx) => (
-                                                <div key={wIdx} className="flex overflow-hidden">
-                                                    {word.split('').map((char, cIdx) => (
-                                                        <p
-                                                            key={cIdx}
-                                                            className="desc-char text-base lg:text-lg !text-[#B3B3B3] font-light leading-relaxed"
-                                                            style={{ transform: index === 0 ? 'translateY(0%)' : 'translateY(100%)', opacity: index === 0 ? 1 : 0 }}
-                                                        >
-                                                            {char === ' ' ? '\u00A0' : char}
-                                                        </p>
-                                                    ))}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                <h2 className="mb-6 !text-[#EDEEE7]">
+                                    {renderText(service.title)}
+                                </h2>
+                                <p className='!text-[#EDEEE7]'>
+                                    {renderText(service.description)}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="w-full h-1/2 md:w-1/2 md:h-full overflow-hidden relative bg-zinc-900">
+                        <div
+                            ref={trainRef}
+                            className="absolute top-0 left-0 w-full h-full flex flex-row md:flex-col will-change-transform"
+                        >
+                            {services.map((service, index) => (
+                                <div key={index} className="w-full h-full flex-shrink-0 relative overflow-hidden">
+                                    <img
+                                        src={service.images[0]}
+                                        alt={service.title}
+                                        className="w-full h-full object-cover scale-[1.02] transform-gpu"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 md:bg-gradient-to-l pointer-events-none"></div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
 
-                    {/* 3. Right Images Slider (50%) */}
-                    <div className="w-full md:w-[45%] lg:w-[50%] h-[45vh] md:h-[60%] lg:h-[70%] relative flex items-center mt-10 md:mt-0 z-10 pointer-events-none overflow-hidden">
-                        {services.map((service, index) => (
-                            <div
-                                key={index}
-                                className="service-slide-image absolute left-4 md:left-0 w-[70vw] md:w-[35vw] lg:w-[28vw] h-full overflow-hidden shadow-2xl"
-                            >
-                                <img src={service.images[0]} className="w-full h-full object-cover" />
-                                <div
-                                    className="service-image-overlay absolute inset-0 bg-black/30 transition-opacity"
-                                    style={{ opacity: index === 0 ? 0 : 1 }}
-                                />
-                            </div>
-                        ))}
-                    </div>
                 </section>
             </div>
-        </>
+        </div>
     );
 };
 
