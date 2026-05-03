@@ -26,6 +26,7 @@ export async function POST(req: Request) {
             description: true,
             media: true,
             tags: true,
+            isNew: true,
         })
 
         const validate = Schema.safeParse(payload);
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
             description: encode(productData.description),
             media: productData.media,
             tags: productData.tags || [],
+            isNew: productData.isNew || false,
         })
 
         await newProduct.save()

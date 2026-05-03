@@ -70,6 +70,7 @@ const AddProduct = () => {
     description: true,
     media: true,
     tags: true,
+    isNew: true,
   });
 
   // 2. Infer the type from the schema
@@ -88,6 +89,7 @@ const AddProduct = () => {
       description: "",
       media: [],
       tags: [],
+      isNew: false,
     },
   });
 
@@ -283,6 +285,18 @@ const AddProduct = () => {
               required
               readOnly
             />
+            {/* isNew Checkbox */}
+            <div className="flex items-center gap-2 ios-input">
+              <input
+                type="checkbox"
+                id="isNew"
+                className="w-4 h-4 cursor-pointer"
+                {...form.register('isNew')}
+              />
+              <label htmlFor="isNew" className="text-sm font-medium cursor-pointer">
+                Is New Arrival?
+              </label>
+            </div>
 
             <div className="flex flex-col gap-2 col-span-2">
               <Controller

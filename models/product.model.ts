@@ -38,6 +38,7 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     tags: [{ type: String, trim: true }],
+    isNew: { type: Boolean, default: false },
 
     deletedAt: { type: Date, default: null, index: true },
 }, { timestamps: true });

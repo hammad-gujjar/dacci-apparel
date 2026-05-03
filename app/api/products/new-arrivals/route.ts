@@ -8,7 +8,7 @@ export async function GET() {
     try {
         await databaseConnection();
 
-        const newArrivals = await Product.find({ deletedAt: null })
+        const newArrivals = await Product.find({ deletedAt: null, isNew: true })
             .sort({ createdAt: -1 })
             .limit(8)
             .populate({ path: "media", model: Media })

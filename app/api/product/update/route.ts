@@ -28,6 +28,7 @@ export async function PUT(request: Request) {
             description: true,
             media: true,
             tags: true, // Added tags to schema
+            isNew: true,
         });
 
         const validate = Schema.safeParse(payload);
@@ -55,6 +56,8 @@ export async function PUT(request: Request) {
         getProduct.discountPercentage = validatedData.discountPercentage
         getProduct.description = encode(validatedData.description)
         getProduct.media = validatedData.media
+        getProduct.isNew = validatedData.isNew || false
+        getProduct.tags = validatedData.tags || getProduct.tags;
 
         await getProduct.save();
 
