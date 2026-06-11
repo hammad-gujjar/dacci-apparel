@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import JsonLd from "@/components/JsonLd";
 import WhatsAppButton from "./components/WhatsAppButton";
 
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://slotssportswear.com'),
   title: {
