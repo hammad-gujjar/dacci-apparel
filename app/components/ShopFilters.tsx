@@ -222,7 +222,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
             {isMobileOpen && (
                 <div className="fixed inset-0 z-[100] lg:hidden">
                     <div className="absolute inset-0 bg-black/40 backdrop-blur-md" onClick={() => setIsMobileOpen(false)} />
-                    <div className="absolute right-0 top-0 h-full w-[85%] bg-[#EDEEE7] p-8 overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-500">
+                    <div className="absolute right-0 top-0 h-full w-[85%] bg-[#EDEEE7] px-8 py-15 overflow-y-auto shadow-2xl animate-in slide-in-from-right duration-500">
                         <div className="flex justify-between items-center mb-10 pb-6 border-b border-black/5">
                             <span className="text-[10px] uppercase font-bold tracking-[0.4em] text-black">Control Suite</span>
                             <button onClick={() => setIsMobileOpen(false)} className="size-10 flex items-center justify-center rounded-xl bg-white border border-black/5">
