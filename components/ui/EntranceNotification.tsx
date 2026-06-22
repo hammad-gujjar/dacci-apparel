@@ -243,9 +243,10 @@ export default function EntranceNotification() {
           position: "fixed",
           bottom: "3%",
           left: "50%",
-          transform: "translate(-50%)",
+          transform: "translateX(-50%)",
           zIndex: 9999,
           width: "min(900px, 96vw)",
+          maxHeight: "94vh",
           display: "flex",
           background: "#EDEEE7",
           overflow: "hidden",
@@ -256,6 +257,7 @@ export default function EntranceNotification() {
       >
         {/* ── LEFT: Copy ───────────────────────────────────────────────── */}
         <div
+          className="entrance-content-col"
           style={{
             flex: "1 1 55%",
             padding: "clamp(28px, 4vw, 56px) clamp(24px, 4vw, 52px)",
@@ -264,6 +266,7 @@ export default function EntranceNotification() {
             justifyContent: "space-between",
             gap: 20,
             position: "relative",
+            overflowY: "auto",
           }}
         >
           {/* Badge */}
@@ -413,13 +416,13 @@ export default function EntranceNotification() {
         {/* ── RIGHT: Image ──────────────────────────────────────────────── */}
         <div
           ref={imageColRef}
+          className="entrance-image-col"
           style={{
             flex: "1 1 45%",
             position: "relative",
             minHeight: 320,
             overflow: "hidden",
           }}
-          className="entrance-image-col"
         >
           {/* Left-edge depth gradient */}
           <div
@@ -479,6 +482,7 @@ export default function EntranceNotification() {
           ref={closeBtnRef}
           onClick={dismiss}
           aria-label="Close notification"
+          className="entrance-close-btn"
           style={{
             position: "absolute",
             top: 14,
@@ -523,15 +527,35 @@ export default function EntranceNotification() {
         @media (max-width: 600px) {
           .entrance-panel {
             flex-direction: column !important;
-            bottom: 0 !important;
+            justify-content: flex-start !important;
+            bottom: 50% !important;
             top: auto !important;
-            left: 0 !important;
-            transform: none !important;
-            width: 100vw !important;
+            left: 50% !important;
+            transform: translate(-50%, 50%) !important;
+            width: 94vw !important;
+            max-width: 94vw !important;
+            height: 88vh !important;
+            max-height: 88vh !important;
+          }
+          .entrance-content-col {
+            flex: 1 1 50% !important;
+            max-height: 50% !important;
+            min-height: 0 !important;
+            overflow-y: auto !important;
+            padding: 20px 18px 18px !important;
+            gap: 12px !important;
           }
           .entrance-image-col {
-            min-height: 210px !important;
+            flex: 1 1 50% !important;
+            min-height: 0 !important;
+            max-height: 50% !important;
             order: -1;
+          }
+          .entrance-close-btn {
+            top: 10px !important;
+            right: 10px !important;
+            width: 30px !important;
+            height: 30px !important;
           }
         }
         @media (prefers-reduced-motion: reduce) {
