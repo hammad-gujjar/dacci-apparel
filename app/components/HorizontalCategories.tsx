@@ -13,28 +13,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CATEGORIES = [
   {
-    title: "Sports Collection",
+    title: "Polo Collection",
     description: "Explore our thoughtfully designed clothing and accessories for women, balancing contemporary style with enduring quality.",
-    img: "https://i.pinimg.com/736x/ea/14/62/ea1462687561612f83a6436f4073165f.jpg",
-    url: "/shop?category=sport"
+    img: "images/polo.jpeg",
+    url: "/shop?category=polos"
   },
   {
-    title: "Team Collection",
+    title: "Shorts Collection",
     description: "Discover premium menswear that combines modern aesthetics with classic craftsmanship for every occasion.",
-    img: "https://i.pinimg.com/736x/f7/7b/95/f77b95f1e220d0ba92fe049ef6ec0b5a.jpg",
-    url: "/shop?category=team"
+    img: "images/short.jpeg",
+    url: "/shop?category=shorts"
   },
   {
-    title: "Casual Collection",
+    title: "Hoodies Collection",
     description: "Comfortable, durable, and stylish clothing designed for the next generation of trendsetters.",
-    img: "https://i.pinimg.com/1200x/04/af/87/04af87fc18f01e6398fe32bc8bda3f89.jpg",
-    url: "/shop?category=casual"
+    img: "images/hoody.jpeg",
+    url: "/shop?category=hoodies"
   },
   {
-    title: "Fitness Collection",
+    title: "Gloves Collection",
     description: "The perfect finishing touch. From leather goods to statement pieces that define your style.",
-    img: "https://i.pinimg.com/1200x/0a/a5/06/0aa506c761fd47a8bc55e461ae8f4357.jpg",
-    url: "/shop?category=fitness"
+    img: "images/gloves.jpeg",
+    url: "/shop?category=gloves"
   }
 ];
 
