@@ -8,6 +8,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import Footer from "./components/Footer";
 import JsonLd from "@/components/JsonLd";
 import WhatsAppButton from "./components/WhatsAppButton";
+import Notification from '../components/ui/EntranceNotification';
 
 
 export const metadata: Metadata = {
@@ -116,6 +117,7 @@ export default async function RootLayout({
             </Providers>
             <Footer />
           </SmoothScroll>
+          <Notification />
           <WhatsAppButton />
         </LoaderProvider>
       </body>

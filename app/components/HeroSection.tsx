@@ -137,8 +137,16 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
       {/* Background video */}
       {/* Background image — LCP element, load eagerly with high fetch priority */}
       <img
-        className='object-cover size-full'
-        src="https://res.cloudinary.com/dhrfua4wp/image/upload/v1780148472/remove_the_text_on_this_202605301840_dqohzp.webp"
+        className='hidden md:block object-cover size-full'
+        src="images/hero.jpeg"
+        alt="Slots Sports Wear premium clothing collection"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+      />
+      <img
+        className='block md:hidden object-cover size-full'
+        src="images/mobilehero.jpeg"
         alt="Slots Sports Wear premium clothing collection"
         loading="eager"
         fetchPriority="high"
