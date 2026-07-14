@@ -22,7 +22,7 @@ const Footer = () => {
                     {/* Branding & Mission */}
                     <div className="flex flex-col gap-5 pr-15">
                         <div className="flex items-center gap-5">
-                            <img src="/images/daccilogosvg.png" alt="Slots Sports Wear logo" className="size-8 object-contain invert" />
+                            <img src="/images/logo.png" alt="Slots Sports Wear logo" className="size-12 object-contain" />
                             <span className="text-xl font-[main] uppercase tracking-tighter">Slots Sports Wear</span>
                         </div>
                         <p className="text-sm font-light leading-relaxed text-[#EDEEE7]/60 max-w-sm">
@@ -97,7 +97,7 @@ const Footer = () => {
 
                 {/* Massive Branding */}
                 <div className="relative pointer-events-none select-none w-full h-fit flex justify-center py-5">
-                    <Heading title="SLOT SPORTS WEAR" className='!text-[#EDEEE7]' />
+                    <Heading title="SLOTS SPORTS WEAR" className='text-[#EDEEE7]!' />
                 </div>
 
                 {/* Bottom Meta */}
