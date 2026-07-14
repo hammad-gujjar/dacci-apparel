@@ -254,9 +254,9 @@ const Nav = () => {
                                 onMouseEnter={() => handleMouseEnter(cat)}
                                 onMouseLeave={handleMouseLeave}
                             >
-                                <button className="text-[10px] uppercase tracking-[0.3em] font-bold py-2 hover:opacity-50 transition-all cursor-pointer">
+                                <Link href={`/shop?category=${cat.slug}`} className="text-[10px] uppercase tracking-[0.3em] font-bold py-2 hover:opacity-50 transition-all cursor-pointer">
                                     {cat.name}
-                                </button>
+                                </Link>
                             </div>
                         ))}
                     </div>
