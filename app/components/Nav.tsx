@@ -453,34 +453,38 @@ const Nav = () => {
                     </button>
 
                     <nav className="flex flex-col items-center gap-8 md:gap-12">
-                        {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'FAQS'].map((item) => (
-                            <div key={item} className="menu-content-item overflow-hidden">
-                                <button
-                                    onClick={() => {
-                                        setIsMenuOpen(false);
-                                        const url = item === 'HOME' ? '/' : item === 'FAQS' ? '/faq' : `/${item.toLowerCase()}`;
-                                        setTimeout(() => transitionTo(url), 650);
-                                    }}
-                                    className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight cursor-pointer"
-                                >
-                                    {item}
-                                </button>
-                            </div>
-                        ))}
-
-                        {/* Mobile Categories */}
+                        {/* Categories: now using the bold heading style links used to have (mobile only, hidden on desktop) */}
                         {navData.length > 0 && (
-                            <div className="md:hidden flex flex-wrap justify-center gap-4 mt-8 menu-content-item max-w-xs">
+                            <div className="md:hidden flex flex-col items-center gap-8">
                                 {navData.map((cat) => (
-                                    <TransitionButton
-                                        key={cat._id}
-                                        text={cat.name}
-                                        url={`/shop?category=${cat.slug}`}
-                                        className="text-sm text-white/40 hover:text-white uppercase tracking-widest transition-colors"
-                                    />
+                                    <div key={cat._id} className="menu-content-item overflow-hidden">
+                                        <TransitionButton
+                                            text={cat.name}
+                                            url={`/shop?category=${cat.slug}`}
+                                            className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight cursor-pointer"
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         )}
+
+                        {/* Links: small tag style (flex-row) on mobile like categories used to have, bold heading style (flex-col) on desktop */}
+                        <div className="flex flex-wrap md:flex-col justify-center items-center gap-4 md:gap-12 max-w-xs md:max-w-none">
+                            {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'FAQS'].map((item) => (
+                                <div key={item} className="menu-content-item overflow-hidden">
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                            const url = item === 'HOME' ? '/' : item === 'FAQS' ? '/faq' : `/${item.toLowerCase()}`;
+                                            setTimeout(() => transitionTo(url), 650);
+                                        }}
+                                        className="text-sm md:text-7xl text-white/40 md:text-white uppercase tracking-widest md:tracking-tight md:font-[main] hover:text-white md:hover:text-[#EDEEE7]/60 transition-colors cursor-pointer"
+                                    >
+                                        {item}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </nav>
                 </div>
             </div>

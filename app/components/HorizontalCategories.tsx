@@ -13,28 +13,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CATEGORIES = [
   {
-    title: "Polo Collection",
-    description: "Explore our thoughtfully designed clothing and accessories for women, balancing contemporary style with enduring quality.",
-    img: "images/polo.jpeg",
-    url: "/shop?category=polos"
+    title: "Men Collection",
+    description: "Explore our thoughtfully designed clothing and accessories for men, balancing contemporary style with enduring quality.",
+    img: "images/mens.jpeg",
+    url: "/shop?category=men"
   },
   {
-    title: "Shorts Collection",
-    description: "Discover premium menswear that combines modern aesthetics with classic craftsmanship for every occasion.",
-    img: "images/short.jpeg",
-    url: "/shop?category=shorts"
-  },
-  {
-    title: "Hoodies Collection",
-    description: "Comfortable, durable, and stylish clothing designed for the next generation of trendsetters.",
-    img: "images/hoody.jpeg",
-    url: "/shop?category=hoodies"
+    title: "Women Collection",
+    description: "Discover premium womenwear that combines modern aesthetics with classic craftsmanship for every occasion.",
+    img: "images/womens.jpeg",
+    url: "/shop?category=women"
   },
   {
     title: "Gloves Collection",
-    description: "The perfect finishing touch. From leather goods to statement pieces that define your style.",
+    description: "Comfortable, durable, and stylish clothing designed for the next generation of trendsetters.",
     img: "images/gloves.jpeg",
     url: "/shop?category=gloves"
+  },
+  {
+    title: "Gears Collection",
+    description: "The perfect finishing touch. From leather goods to statement pieces that define your style.",
+    img: "images/gears.jpeg",
+    url: "/shop?category=gears"
   }
 ];
 
@@ -80,18 +80,20 @@ const HorizontalCategories = () => {
                 <div className="bg-linear-to-t from-black/90 via-black/20 to-transparent absolute inset-0 z-0 pointer-events-none" />
 
                 <div className="relative z-10 w-full flex flex-col items-start">
+                  {/* Title heading - desktop only. On mobile the title shows in the arrow row below instead. */}
                   <AnimatedSwapText
                     text={cat.title}
                     active={isActive}
                     tag="h3"
-                    className="text-[#EDEEE7] mb-4 uppercase !font-[main]"
+                    className="hidden md:block text-[#EDEEE7] mb-4 uppercase !font-[main]"
                     stagger={0.02}
                     delay={0.1}
                   />
 
+                  {/* Description - desktop only, revealed on hover */}
                   <div className={cn(
-                    'transition-all w-full duration-700 ease-out delay-200',
-                    isActive ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'
+                    'hidden md:block transition-all w-full duration-700 ease-out delay-200',
+                    isActive ? 'md:opacity-100' : 'md:opacity-0 md:h-0 md:overflow-hidden'
                   )}>
                     <AnimatedSwapText
                       text={cat.description}
@@ -101,18 +103,32 @@ const HorizontalCategories = () => {
                       stagger={0.005}
                       delay={0.2}
                     />
+                  </div>
 
+                  {/* Arrow + label row - always visible on mobile (label = title, no hover needed).
+                      On desktop this keeps the original hover-reveal behavior (label = "Explore Collection"). */}
+                  <div className={cn(
+                    'transition-all w-full duration-700 ease-out delay-200 opacity-100',
+                    isActive ? 'md:opacity-100' : 'md:opacity-0 md:h-0 md:overflow-hidden'
+                  )}>
                     <div className="flex items-center gap-4">
                       <div className={cn(
-                        "text-black bg-[#EDEEE7] rounded-full w-14 h-14 flex items-center justify-center p-3 hover:scale-110 transition-all duration-500",
-                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                        "text-black bg-[#EDEEE7] rounded-full w-14 h-14 flex items-center justify-center p-3 hover:scale-110 transition-all duration-500 opacity-100 translate-y-0",
+                        isActive ? "md:opacity-100 md:translate-y-0" : "md:opacity-0 md:translate-y-4"
                       )}>
                         <IoMdArrowForward className="w-full h-full -rotate-45" />
                       </div>
+
+                      {/* Mobile label: category title, always shown, no animation needed since it's static */}
+                      <span className="md:hidden text-[#EDEEE7] uppercase tracking-[0.2em] text-sm font-medium">
+                        {cat.title}
+                      </span>
+
+                      {/* Desktop label: "Explore Collection", hover-revealed as before */}
                       <AnimatedSwapText
                         text="Explore Collection"
                         active={isActive}
-                        className="text-[#EDEEE7] uppercase tracking-[0.2em] text-sm font-medium"
+                        className="hidden md:block text-[#EDEEE7] uppercase tracking-[0.2em] text-sm font-medium"
                         stagger={0.015}
                         delay={0.4}
                       />

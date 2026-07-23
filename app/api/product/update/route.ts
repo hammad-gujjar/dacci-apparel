@@ -22,6 +22,7 @@ export async function PUT(request: Request) {
             name: true,
             slug: true,
             category: true,
+            productType: true,
             mrp: true,
             sellingPrice: true,
             discountPercentage: true,
@@ -51,6 +52,7 @@ export async function PUT(request: Request) {
         getProduct.name = validatedData.name
         getProduct.slug = validatedData.slug
         getProduct.category = validatedData.category
+        getProduct.productType = validatedData.productType
         getProduct.mrp = validatedData.mrp
         getProduct.sellingPrice = validatedData.sellingPrice
         getProduct.discountPercentage = validatedData.discountPercentage

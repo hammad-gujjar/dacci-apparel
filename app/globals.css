@@ -156,8 +156,7 @@ body {
 
 h1 {
   font-family: 'main';
-  font-size: 50px;
-  font-weight: 500;
+  font-size: 40px;
   text-transform: uppercase;
   color: #111111;
 }
@@ -445,7 +444,7 @@ html.lenis body {
 
 @media (max-width:600px) {
   h1 {
-    font-size: 7.5vw;
+    font-size: 6.5vw;
   }
 
   p {

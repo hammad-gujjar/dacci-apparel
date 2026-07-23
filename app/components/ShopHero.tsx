@@ -29,9 +29,9 @@ const ShopHero = () => {
 
             {/* Content */}
             <div ref={contentRef} className="relative flex flex-col items-center z-10 text-center px-5">
-                <p className="!text-[#EDEEE7] uppercase mb-4">Explore our Collections</p>
-                <Heading title='THE COLLECTION' className='!text-[#EDEEE7]' delay={1.5}/>
-                <p className="!text-[#EDEEE7] mt-6 max-w-xl mx-auto text-center">
+                <p className="text-[#EDEEE7]! uppercase mb-4">Explore our Collections</p>
+                <h1 className='text-[#EDEEE7]! text-center'>THE COLLECTION</h1>
+                <p className="text-[#EDEEE7]! mt-6 max-w-xl mx-auto text-center">
                     Curated pieces designed for the modern individual. Quality, craftsmanship, and timeless style.
                 </p>
             </div>

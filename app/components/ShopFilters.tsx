@@ -4,6 +4,8 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Icon from './Icon';
+import { Filter } from 'lucide-react';
+import axios from 'axios';
 
 interface Category {
     _id: string;
@@ -18,7 +20,8 @@ interface ShopFiltersProps {
 }
 
 const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
-    const [activeCategory, setActiveCategory] = useState<Category | null>(null);
+    const [categoriesList, setCategoriesList] = useState<Category[]>(categories);
+    const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -29,39 +32,71 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
     const currentSort = searchParams.get('sort') || 'newest';
     const currentOnSale = searchParams.get('onSale') === 'true';
 
+    // Fetch fresh categories from backend API
     useEffect(() => {
-        if (currentCat) {
-            const cat = categories.find(c => c.slug === currentCat);
-            if (cat) setActiveCategory(cat);
-        } else {
-            setActiveCategory(null);
-        }
-    }, [currentCat, categories]);
+        const fetchFreshCategories = async () => {
+            try {
+                const { data } = await axios.get('/api/public/categories');
+                if (data.success && Array.isArray(data.data)) {
+                    setCategoriesList(data.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch fresh categories:", err);
+            }
+        };
+        fetchFreshCategories();
+    }, []);
 
-    const handleCategoryClick = (cat: Category | 'sale') => {
-        const params = new URLSearchParams(searchParams.toString());
-        
-        if (cat === 'sale') {
-            if (currentOnSale) {
-                params.delete('onSale');
-            } else {
-                params.set('onSale', 'true');
-            }
-            // Optional: reset category when sale is selected, or keep both
-            // params.delete('category'); 
-        } else {
-            if (activeCategory?._id === cat._id) {
-                setActiveCategory(null);
-                params.delete('category');
-                params.delete('type');
-            } else {
-                setActiveCategory(cat);
-                params.set('category', cat.slug);
-                params.delete('type');
-                params.delete('onSale'); // Reset sale when choosing category
-            }
+    // Auto-expand current active category from URL
+    useEffect(() => {
+        if (currentCat && !expandedCategories.includes(currentCat)) {
+            setExpandedCategories(prev => [...prev, currentCat]);
         }
-        params.delete('page'); // Reset to page 1 on filter
+    }, [currentCat]);
+
+    // Toggle category dropdown without filtering products
+    const handleCategoryClick = (catSlug: string) => {
+        setExpandedCategories(prev =>
+            prev.includes(catSlug)
+                ? prev.filter(slug => slug !== catSlug)
+                : [...prev, catSlug]
+        );
+    };
+
+    // Filter by category (All option)
+    const handleCategoryAllFilter = (catSlug: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (currentCat === catSlug && !currentType) {
+            params.delete('category');
+        } else {
+            params.set('category', catSlug);
+        }
+        params.delete('type');
+        params.delete('page');
+        router.push(`/shop?${params.toString()}`, { scroll: false });
+    };
+
+    // Filter by type under category
+    const handleTypeClick = (catSlug: string, type: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (currentCat === catSlug && currentType === type) {
+            params.delete('type');
+        } else {
+            params.set('category', catSlug);
+            params.set('type', type);
+        }
+        params.delete('page');
+        router.push(`/shop?${params.toString()}`, { scroll: false });
+    };
+
+    const handleSaleClick = () => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (currentOnSale) {
+            params.delete('onSale');
+        } else {
+            params.set('onSale', 'true');
+        }
+        params.delete('page');
         router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
@@ -75,16 +110,6 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
-    const handleTypeClick = (type: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (currentType === type) {
-            params.delete('type');
-        } else {
-            params.set('type', type);
-        }
-        router.push(`/shop?${params.toString()}`, { scroll: false });
-    };
-
     const handleTagClick = (tag: string) => {
         const params = new URLSearchParams(searchParams.toString());
         if (currentTags === tag) {
@@ -92,6 +117,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         } else {
             params.set('tags', tag);
         }
+        params.delete('page');
         router.push(`/shop?${params.toString()}`, { scroll: false });
     };
 
@@ -117,77 +143,103 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
     }, [isSortOpen]);
 
     const FilterContent = () => (
-        <div className="flex flex-col gap-5 pb-8">
-            {/* Categories & Sale */}
-            <div className="flex flex-col gap-3">
-                <div className="flex flex-col gap-4">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat._id}
-                            onClick={() => handleCategoryClick(cat)}
-                            className="flex items-center justify-between group cursor-pointer text-left"
-                        >
-                            <h3 className={`text-base uppercase tracking-widest transition-all duration-300 ${activeCategory?._id === cat._id ? 'text-black font-black' : 'text-black/40 group-hover:text-black'}`}>
-                                {cat.name}
-                            </h3>
-                            <div className={`size-4 flex items-center justify-center transition-all duration-500 ${activeCategory?._id === cat._id ? 'rotate-90 scale-110' : 'opacity-0 group-hover:opacity-100'}`}>
-                                <Icon name="chevron" className="size-full text-black" />
+        <div className="flex flex-col gap-6 pb-8">
+            {/* Categories & Accordion Types */}
+            <div className="flex flex-col gap-4">
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Categories</span>
+                <div className="flex flex-col gap-3">
+                    {categoriesList.map((cat) => {
+                        const isExpanded = expandedCategories.includes(cat.slug);
+                        const isCategoryActive = currentCat === cat.slug;
+
+                        return (
+                            <div key={cat._id} className="flex flex-col border-b border-black/5 pb-2">
+                                {/* Category Header Button - Expanding types without filtering products */}
+                                <button
+                                    type="button"
+                                    onClick={() => handleCategoryClick(cat.slug)}
+                                    className="flex items-center justify-between group cursor-pointer text-left w-full py-1"
+                                >
+                                    <h3 className={`text-sm uppercase tracking-widest transition-all duration-300 ${isCategoryActive ? 'text-black font-black' : 'text-black/60 group-hover:text-black'}`}>
+                                        {cat.name}
+                                    </h3>
+                                    <div className={`size-4 flex items-center justify-center transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
+                                        <Icon name="chevron" className="size-full text-black/60 group-hover:text-black" />
+                                    </div>
+                                </button>
+
+                                {/* Types under Category */}
+                                {isExpanded && (
+                                    <div className="flex flex-col gap-2 pl-3 pt-2 pb-1 my-1 border-l-2 border-black/10">
+                                        {/* All Option for Category */}
+                                        <button
+                                            type="button"
+                                            onClick={() => handleCategoryAllFilter(cat.slug)}
+                                            className={`text-left text-[11px] uppercase tracking-wider py-1.5 px-3 rounded-md transition-all cursor-pointer w-fit ${isCategoryActive && !currentType ? 'bg-black text-white font-bold' : 'text-black/60 hover:text-black hover:bg-black/5'}`}
+                                        >
+                                            All {cat.name}
+                                        </button>
+
+                                        {/* Specific Types under Category */}
+                                        {cat.types && cat.types.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 pt-1">
+                                                {cat.types.map((type) => (
+                                                    <button
+                                                        key={type}
+                                                        type="button"
+                                                        onClick={() => handleTypeClick(cat.slug, type)}
+                                                        className={`px-3 py-1.5 text-[10px] uppercase tracking-widest transition-all cursor-pointer rounded-full border ${isCategoryActive && currentType === type ? 'bg-black text-white border-black' : 'bg-transparent text-black/60 border-black/15 hover:border-black active:scale-95'}`}
+                                                    >
+                                                        {type}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
-                        </button>
-                    ))}
+                        );
+                    })}
+
                     {/* Sale Filter */}
                     <button
-                        onClick={() => handleCategoryClick('sale')}
-                        className="flex items-center justify-between group pt-4 border-t border-black/5"
+                        type="button"
+                        onClick={handleSaleClick}
+                        className="flex items-center justify-between group pt-3"
                     >
-                        <h3 className={`text-base uppercase tracking-widest flex items-center gap-3 transition-colors ${currentOnSale ? 'text-[red] font-black' : 'text-[red]/40 group-hover:text-[red]'}`}>
+                        <h3 className={`text-sm uppercase tracking-widest flex items-center gap-3 transition-colors ${currentOnSale ? 'text-[red] font-black' : 'text-[red]/60 group-hover:text-[red]'}`}>
                             Official Sales <span className="text-[9px] bg-[red] text-white px-2 py-0.5 rounded-sm font-bold tracking-normal">SALE</span>
                         </h3>
-                        <div className={`size-4 flex items-center justify-center transition-all duration-500 ${currentOnSale ? 'rotate-90 scale-110' : 'opacity-0 group-hover:opacity-100'}`}>
+                        <div className={`size-4 flex items-center justify-center transition-all duration-300 ${currentOnSale ? 'rotate-90 scale-110' : 'opacity-0 group-hover:opacity-100'}`}>
                             <Icon name="chevron" className="size-full text-[red]" />
                         </div>
                     </button>
                 </div>
             </div>
 
-            {/* Sort Trigger Button (Moved here after Sale as requested) */}
-            <div className="flex">
+            {/* Sort Trigger Button */}
+            <div className="flex pt-2 border-t border-black/5">
                 <h3 
                     onClick={() => setIsSortOpen(true)}
-                    className="flex items-center justify-between uppercase tracking-[0.3em] gap-4 hover:gap-6 cursor-pointer group transition-all duration-500 font-[middle]"
+                    className="flex items-center justify-between uppercase tracking-[0.3em] gap-4 hover:gap-6 cursor-pointer group transition-all duration-500 font-[middle] text-sm"
                 >
                     Sort By
-                    <div className="size-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                    <div className="size-8 flex items-center justify-center rounded-full bg-black/5 group-hover:bg-black/10 transition-colors">
                         <Icon name="menu" className="size-4 text-black" />
                     </div>
                 </h3>
             </div>
 
-            {/* Contextual Architecture (Types) */}
-            <div className={`flex flex-col gap-3 overflow-hidden transition-all duration-700 ${activeCategory ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Select Type</span>
-                <div className="flex flex-wrap gap-2.5">
-                    {activeCategory?.types.map((type) => (
-                        <button
-                            key={type}
-                            onClick={() => handleTypeClick(type)}
-                            className={`px-5 py-2.5 text-[10px] uppercase tracking-widest transition-all cursor-pointer rounded-full border ${currentType === type ? 'bg-black text-white border-black' : 'bg-transparent text-black/50 border-black/10 hover:border-black active:scale-95'}`}
-                        >
-                            {type}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
             {/* Designer Taxonomy (Tags) */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 pt-2 border-t border-black/5">
                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Brand & tags</span>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2">
                     {brandingTags.map((tag) => (
                         <button
                             key={tag}
+                            type="button"
                             onClick={() => handleTagClick(tag)}
-                            className={`px-5 py-2.5 text-[10px] uppercase tracking-widest transition-all rounded-full border ${currentTags === tag ? 'bg-black text-white border-black' : 'bg-transparent text-black/40 border-black/10 hover:border-black active:scale-95'}`}
+                            className={`px-4 py-2 text-[10px] uppercase tracking-widest transition-all rounded-full border ${currentTags === tag ? 'bg-black text-white border-black' : 'bg-transparent text-black/50 border-black/10 hover:border-black active:scale-95'}`}
                         >
                             #{tag}
                         </button>
@@ -205,16 +257,17 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
             </aside>
 
             {/* Mobile Filter Toggle */}
-            <div className="lg:hidden w-full mb-10">
+            <div className="lg:hidden w-full mb-6">
                 <button 
+                    type="button"
                     onClick={() => setIsMobileOpen(true)}
-                    className="flex items-center justify-between w-full px-6 py-5 bg-black text-white rounded-2xl shadow-xl active:scale-95 transition-all"
+                    className="flex items-center justify-between w-full px-5 py-3.5 bg-transparent border border-black/20 text-black hover:border-black active:scale-95 transition-all cursor-pointer"
                 >
-                    <div className="flex items-center gap-4">
-                        <Icon name="menu" className="size-5 text-white/50" />
-                        <span className="uppercase tracking-[0.3em] text-xs font-black">Refine Selection</span>
+                    <div className="flex items-center gap-3">
+                        <Filter className="size-4 text-black" />
+                        <span className="uppercase tracking-[0.2em] text-xs font-bold">Filter</span>
                     </div>
-                    <Icon name="chevron" className="rotate-90 size-4 text-white" />
+                    <Icon name="chevron" className="rotate-90 size-4 text-black" />
                 </button>
             </div>
 
@@ -255,6 +308,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
                             {SORT_OPTIONS.map((opt) => (
                                 <button
                                     key={opt.value}
+                                    type="button"
                                     onClick={() => {
                                         handleSortClick(opt.value);
                                         setIsSortOpen(false);
@@ -267,6 +321,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
                         </div>
 
                         <button 
+                            type="button"
                             onClick={() => setIsSortOpen(false)}
                             className="mt-10 text-[10px] uppercase font-bold tracking-widest text-black/30 hover:text-black transition-colors underline underline-offset-8"
                         >

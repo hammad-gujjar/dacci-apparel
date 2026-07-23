@@ -43,6 +43,7 @@ interface ProductResponse {
     name: string;
     slug: string;
     category: string;
+    productType: string;
     mrp: number;
     sellingPrice: number;
     discountPercentage: number;
@@ -58,7 +59,9 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
   const { id } = use(params);
 
   const [loading, setloading] = useState<boolean>(false);
-  const [Categories, setCategories] = useState<{ label: string, value: string }[]>([]);
+  const [Categories, setCategories] = useState<{ label: string, value: string, types: string[] }[]>([]);
+  const [productTypes, setProductTypes] = useState<{ label: string, value: string }[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
 
   // editor states
   const [open, setOpen] = useState<boolean>(false);
@@ -73,7 +76,7 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
   useEffect(() => {
     if (Category && Category.success) {
-      const catOptions = Category.data.map((cat: any) => ({ label: cat.name, value: cat._id }));
+      const catOptions = Category.data.map((cat: any) => ({ label: cat.name, value: cat._id, types: cat.types || [] }));
       setCategories(catOptions)
     }
   }, [Category]);
@@ -85,6 +88,7 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
     name: true,
     slug: true,
     category: true,
+    productType: true,
     mrp: true,
     sellingPrice: true,
     discountPercentage: true,
@@ -104,6 +108,7 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
       name: "",
       slug: "",
       category: "",
+      productType: "",
       mrp: "" as unknown as number,
       sellingPrice: "" as unknown as number,
       discountPercentage: "" as unknown as number,
@@ -123,6 +128,7 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
         name: product?.name,
         slug: product?.slug,
         category: product?.category,
+        productType: product?.productType || "",
         mrp: product?.mrp,
         sellingPrice: product?.sellingPrice,
         discountPercentage: product?.discountPercentage,
@@ -169,6 +175,26 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
       form.setValue('discountPercentage', discountPercentage);
     }
   }, [form.watch('mrp'), form.watch('sellingPrice'), form]);
+
+  // Update product types when category changes
+  useEffect(() => {
+    const categoryId = form.watch('category');
+    if (categoryId) {
+      const category = Categories.find((cat: any) => cat.value === categoryId);
+      if (category) {
+        setSelectedCategory(category);
+        const typeOptions = ((category as any).types || []).map((type: string) => ({ label: type, value: type }));
+        setProductTypes(typeOptions);
+        const currentType = form.getValues('productType');
+        if (currentType && !typeOptions.some((t: any) => t.value === currentType)) {
+          form.setValue('productType', '');
+        }
+      }
+    } else {
+      setProductTypes([]);
+      setSelectedCategory(null);
+    }
+  }, [form.watch('category'), Categories, form]);
 
 
   const editor = (event: any, editor: any) => {
@@ -250,7 +276,6 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
             />
 
             {/* Category */}
-            {/* Category */}
             <div className="flex flex-col gap-2">
               <Controller
                 control={form.control}
@@ -270,6 +295,30 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
                 <p className="text-red-500 text-sm">
                   {form.formState.errors.category.message}
                 </p>
+              )}
+            </div>
+
+            {/* Product Type */}
+            <div className="flex flex-col gap-2 relative">
+              <Controller
+                control={form.control}
+                name="productType"
+                render={({ field }) => (
+                  <Select
+                    options={productTypes}
+                    selected={field.value}
+                    setSelected={(val: any) => field.onChange(val)}
+                    isMulti={false}
+                  />
+                )}
+              />
+              {form.formState.errors.productType && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.productType.message}
+                </p>
+              )}
+              {!selectedCategory && (
+                <p className="text-sm text-gray-500 absolute bottom-[-1.3vw] left-1">Select a category first</p>
               )}
             </div>
 

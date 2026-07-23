@@ -1,7 +1,10 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 import { IoLogoInstagram, IoLogoFacebook, IoLogoPinterest } from 'react-icons/io5';
 import { FaXTwitter } from "react-icons/fa6";
-import { FaMedium } from 'react-icons/fa';
 import Heading from './Heading';
 
 const LINKS = {
@@ -13,7 +16,29 @@ const LINKS = {
     ]
 };
 
+interface Category {
+    _id: string;
+    name: string;
+    slug: string;
+}
+
 const Footer = () => {
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await axios.get('/api/public/categories');
+                if (data.success && Array.isArray(data.data)) {
+                    setCategories(data.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch categories for footer:", err);
+            }
+        };
+        fetchCategories();
+    }, []);
+
     return (
         <footer className="w-full bg-[#111111] text-[#EDEEE7] py-10 px-5 md:px-10 overflow-hidden">
             <div className="max-w-screen-2xl mx-auto">
@@ -41,20 +66,36 @@ const Footer = () => {
                     <div className="flex flex-col gap-6">
                         <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30">Collections</span>
                         <ul className="flex flex-col gap-3">
-                            {[
-                                { label: 'New Arrivals', href: '/shop?sort=newest' },
-                                { label: 'Sports Collection', href: '/shop?category=sport' },
-                                { label: 'Casuals Collection', href: '/shop?category=casual' },
-                                { label: 'Team Collection', href: '/shop?category=team' },
-                                { label: 'Limited Edition', href: '/shop?tags=limited' },
-                                { label: 'FAQs', href: '/faq' },
-                            ].map((link) => (
-                                <li key={link.label}>
-                                    <Link href={link.href} className="hover:opacity-50 transition-all tracking-wide font-[middle]">
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
+                            <li>
+                                <Link href="/shop?sort=newest" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
+                                    New Arrivals
+                                </Link>
+                            </li>
+                            {categories.length > 0 ? (
+                                categories.map((cat) => (
+                                    <li key={cat._id}>
+                                        <Link href={`/shop?category=${cat.slug}`} className="hover:opacity-50 transition-all tracking-wide font-[middle]">
+                                            {cat.name}
+                                        </Link>
+                                    </li>
+                                ))
+                            ) : (
+                                <>
+                                    <li><Link href="/shop?category=sport" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Sports Collection</Link></li>
+                                    <li><Link href="/shop?category=casual" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Casuals Collection</Link></li>
+                                    <li><Link href="/shop?category=team" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Team Collection</Link></li>
+                                </>
+                            )}
+                            <li>
+                                <Link href="/shop?tags=limited" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
+                                    Limited Edition
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/faq" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
+                                    FAQs
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
