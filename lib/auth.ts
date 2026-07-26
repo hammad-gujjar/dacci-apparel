@@ -97,7 +97,7 @@ export const auth = betterAuth({
                         const adminEmail = process.env.ADMIN_EMAIL;
                         if (adminEmail) {
                             // Fetch user details to send in login notification
-                            const dbUser = await db.collection('user').findOne({ id: session.userId });
+                            const dbUser = await db('user').findOne({ id: session.userId });
                             const userEmail = dbUser?.email || 'Unknown Email';
                             const userName = dbUser?.name || 'Unknown User';
                             
