@@ -6,26 +6,26 @@ const Whychooseus = () => {
     const services = [
         {
             num: "01",
-            title: "Global Exporting",
-            desc: "Seamlessly exporting premium surgical instruments worldwide with secure packaging and timely delivery."
+            title: "WORLDWIDE B2B FULFILLMENT",
+            desc: "Delivering your bulk golf apparel securely and on schedule. We provide hassle-free logistics and door-to-door shipping across North America, Europe, and Australia."
         },
         {
             num: "02",
-            title: "Quality Assurance",
-            desc: "Rigorous quality checks for maximum durability, precision, and compliance with international medical standards."
+            title: "PREMIUM GOLF CRAFTSMANSHIP",
+            desc: "Utilizing advanced moisture-wicking fabrics and precision stitching to guarantee comfort, durability, and elite performance on the golf course."
         },
         {
             num: "03",
-            title: "Custom Manufacturing",
-            desc: "Tailored surgical solutions to meet specialized medical needs, from design prototypes to mass production."
+            title: "FULL OEM & ODM SOLUTIONS",
+            desc: "Bring your unique designs to life. From initial tech packs and rapid sampling to scalable bulk production with flexible MOQs tailored for emerging and established brands."
         }
     ];
 
     return (
-        < div className="flex flex-col items-center w-full w-full mx-auto px-3 md:px-10 py-20" >
-            <Heading title='Why Choose Us' className='w-fit !text-[#EDEEE7]' />
+        < div className="w-full flex flex-col items-center w-full w-full mx-auto px-[2vw] py-20" >
+            <h1 className='w-fit !text-[#EDEEE7] text-center' >WHY PARTNER WITH US</h1>
             <p className="mb-10 text-center max-w-2xl text-[#EDEEE7]/80">
-                Professional, highly trusted services from a leading surgical instruments export company.
+                Empowering global golf brands with premium manufacturing, flexible production, and reliable export services.
             </p>
 
             <div className="flex flex-col w-full">
@@ -39,7 +39,7 @@ const Whychooseus = () => {
                             <div className="absolute inset-0 bg-[#EDEEE7] translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"></div>
                         </div>
 
-                        <span className="relative z-10 text-5xl md:text-6xl font-bold text-[#EDEEE7]/50 group-hover:text-black transition-all duration-500 w-24 md:w-32 transform group-hover:-translate-y-1">
+                        <span className="relative z-10 text-5xl md:text-6xl font-bold text-[#EDEEE7]/80 group-hover:text-black transition-all duration-500 w-24 md:w-32 transform group-hover:-translate-y-1">
                             {service.num}
                         </span>
                         <div className="relative z-10 flex-1 mt-4 md:mt-0 flex flex-col md:flex-row md:items-center justify-between w-full">

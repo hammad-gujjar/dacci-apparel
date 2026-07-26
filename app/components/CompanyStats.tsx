@@ -76,9 +76,9 @@ const CompanyStats = () => {
         <section ref={containerRef} className="py-15 px-5">
             <div className="max-w-full mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
-                    <div className='flex flex-col gap-3'>
-                        <Heading title='We have reach there' />
-                        <p className='md:w-[80%]'>This is the allover details about our company and we are progressing now and (INSHA'ALLAH) you will see our real promotion.</p>
+                    <div className='flex flex-col items-center md:items-start gap-3'>
+                        <h1 className='w-full text-center md:text-start md:text-start'>We Have Reached There</h1>
+                        <p className='w-full text-center md:text-start md:items-start'>Welcome to our company overview.<br/>As a specialized custom golf wear manufacturer, we are continuously expanding our production capacity, upgrading modern manufacturing tech, and elevating international quality standards. Partner with us as we power the next generation of performance golf brands.</p>
                     </div>
                     <div className='grid grid-cols-2 justify-between gap-x-10 gap-y-5'>
                         {statItems.map((item, index) => (

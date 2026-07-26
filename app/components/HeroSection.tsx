@@ -126,7 +126,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
     }
   }, { dependencies: [isLoading, arrivalData] });
 
-  const marqueeText = <>JOIN OUR MAILING LIST AND RECEIVE <span className="mx-10 font-[middle] text-[#EDEEE7]! font-extrabold">10%</span> OFF ON FIRST ORDER</>;
+  const marqueeText = <>LOW MOQs <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> FULLY CUSTOMIZABLE GOLF WEAR | EXPERT OEM <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> ODM SERVICES</>;
 
   // ── Hero entrance animations ──────────────────────────────────────────────
   useGSAP(() => {
@@ -251,7 +251,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           {/* ── Hero title ─────────────────────────────────────────────────── */}
           <div className="w-full md:w-[65%]">
             <h1 className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em]">
-              {splitText('High-Quality Golf-Wear Manufacturer Low MOQ for Startups')}
+              {splitText('YOUR CUSTOM GOLF APPAREL PARTNER | SCALE YOUR BRAND WITH FLEXIBLE MOQs')}
             </h1>
           </div>
 
@@ -259,7 +259,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           <div className="w-full md:w-[60%] md:mt-4 mt-2">
             <p className="text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]">
               {splitText(
-                'Slots Sports Wear is a classic and modern clothing brand that promote classic formal and streatwear clothes and custom manufacturing for clients even in bulk and quality you can see in website'
+                'Bring your golf wear designs to life. From custom polos to premium headwear, we offer world-class manufacturing, low minimums, and global shipping to help your brand grow.'
               )}
             </p>
           </div>

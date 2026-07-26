@@ -48,7 +48,7 @@ const HorizontalCategories = () => {
 
   return (
     <div ref={sectionRef} className="min-h-[95vh] md:min-h-screen w-full overflow-hidden">
-      <div ref={scrollContainerRef} className="h-full flex w-full grid grid-cols-1 md:grid-cols-2">
+      <div ref={scrollContainerRef} className="h-full flex w-full grid grid-cols-1 md:grid-cols-2 px-2 gap-2">
         {CATEGORIES.map((cat, index) => {
           const isActive = activeCategory === index;
           return (

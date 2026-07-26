@@ -3,12 +3,12 @@ import nodemailer from 'nodemailer';
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.ADMIN_EMAIL,
-        pass: process.env.ADMIN_EMAIL_PASSWORD,
+        user: process.env.COMPANY_EMAIL,
+        pass: process.env.COMPANY_EMAIL_PASSWORD,
     },
 });
 
-export const EMAIL_FROM = process.env.COMPANY_EMAIL || 'info@slotssportswear.com';
+export const EMAIL_FROM = process.env.COMPANY_EMAIL || 'slotssportswear@gmail.com';
 
 // Verify the connection configuration
 transporter.verify(function (error: any, success: any) {

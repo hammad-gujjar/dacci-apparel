@@ -120,7 +120,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
                     </span>
                     {product.mrp > product.sellingPrice && (
                         <span className="text-xs text-zinc-400 line-through">
-                            ₹{product.mrp.toLocaleString()}
+                            ${product.mrp.toLocaleString()}
                         </span>
                     )}
                 </div>

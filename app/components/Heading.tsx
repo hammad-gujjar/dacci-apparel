@@ -25,7 +25,7 @@ const Heading = ({ title, className, delay, padding }: { title?: string, classNa
         gsap.to(chars, {
             scrollTrigger: {
                 trigger: containerElement,
-                start: "top 85%",
+                start: "top 90%",
                 toggleActions: "play none none reverse",
             },
             y: "0%",

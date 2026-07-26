@@ -104,7 +104,7 @@ export const auth = betterAuth({
                             await transporter.sendMail({
                                 from: EMAIL_FROM,
                                 to: adminEmail,
-                                subject: 'User Logged In - Dacci Apparel',
+                                subject: 'User Logged In - Slotssportswear Apparel',
                                 html: `<p>A user just logged in.</p><p>Name: ${userName}</p><p>Email: ${userEmail}</p>`,
                             });
                         }
