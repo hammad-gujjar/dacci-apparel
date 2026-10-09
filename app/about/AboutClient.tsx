@@ -115,9 +115,9 @@ const AboutClient = () => {
         <div ref={containerRef}>
             <div className='w-full pt-[10vh] px-5'>
                 <div className='about-hero-text w-full flex flex-col items-center justify-between gap-5 pt-15'>
-                    <Heading title="About Us" />
+                    <Heading title="Custom Sportswear Manufacturing Excellence" className="w-full justify-center text-center" />
                     <p className='md:w-[60%] w-[80%] text-center'>
-                        We combine Pakistani manufacturing strength with global quality standards to deliver reliable apparel production for brands worldwide.
+                        From concept development to final production, we help global brands create high-performance apparel through advanced OEM &amp; ODM manufacturing solutions.
                     </p>
                 </div>
                 <img 
@@ -132,12 +132,12 @@ const AboutClient = () => {
                         className='manufact-animate object-cover' 
                     />
                     <div className='manufact-animate flex flex-col gap-2'>
-                        <Heading title='Manufacturing Excellence from Pakistan' className='!text-[25px] font-semibold' />
+                        <Heading title='Advanced OEM & ODM Sportswear Production' className='!text-[25px] font-semibold' />
                         <p>
-                            Pakistan is one of the world's largest textile producers, with decades of expertise in cotton cultivation, knitting, dyeing, and garment construction. Our facilities leverage this heritage with modern equipment and global quality standards.
+                            With state-of-the-art cut-and-sew facilities and modern textile machinery, we engineer high-performance sportswear, teamwear, and activewear for international brands. Our end-to-end manufacturing infrastructure supports automated pattern drafting, precision laser cutting, sublimation, and high-density embroidery.
                         </p>
                         <p>
-                            We operate ISO-certified production lines with capacity for 50,000+ units per month. Every order goes through multi-point quality inspection, and we maintain direct relationships with fabric mills for consistent material quality.
+                            Operating with an agile production model, we deliver scalable manufacturing from low 50-piece minimum order quantities to bulk volume orders exceeding 5,000+ units monthly. Every production run is backed by rigorous multi-point AQL quality inspection and comprehensive global door-to-door logistics.
                         </p>
                     </div>
                     <img 
@@ -147,14 +147,14 @@ const AboutClient = () => {
                     />
                     <div className='stats-grid col-span-2 grid grid-cols-2 gap-5'>
                         {[
-                            { title: "Monthly Capacity", value: "50,000+ units" },
-                            { title: "Quality Standard", value: "AQL 2.5" },
-                            { title: "Team Size", value: "100+ workers" },
-                            { title: "Export Markets", value: "USA, Europe, Australia" },
+                            { title: "Production Capabilities", value: "5000+ monthly clothes" },
+                            { title: "Quality Inspection Process", value: "Multi-stage AQL 2.5 inline & pre-shipment audits" },
+                            { title: "Skilled Manufacturing Team", value: "50+ master pattern makers, tailors & QA specialists" },
+                            { title: "Worldwide Logistics Support", value: "Tracked air & ocean freight to USA, Europe & Australia" },
                         ].map((item, index) => (
                             <ul key={index} className='stat-card ios-card flex flex-col gap-2'>
                                 <p className='font-semibold'>{item.title}</p>
-                                <p>{item.value}</p>
+                                <p className='text-sm text-neutral-600'>{item.value}</p>
                             </ul>
                         ))}
                     </div>
@@ -162,39 +162,39 @@ const AboutClient = () => {
             </div>
 
             <div className='p-5 flex flex-col items-center justify-center gap-5 pb-10'>
-                <div className='why-choose-header w-full flex flex-col items-center gap-10'>
-                    <Heading title="Why Brands Choose Us" />
+                <div className='why-choose-header w-full flex flex-col items-center gap-5'>
+                    <Heading title="Our Manufacturing Ethos" />
                     <p className='md:w-1/2 w-full text-center'>
-                        We combine Pakistani manufacturing strength with global quality standards to deliver reliable apparel production for brands worldwide.
+                        Empowering athletic apparel brands with advanced sportswear engineering, agile low-MOQ production, and uncompromising factory-direct standards.
                     </p>
                 </div>
                 <div className='features-grid grid grid-cols-2 md:grid-cols-4 gap-5 px-5 w-full'>
                     {[
                         {
-                            title:"Low MOQ — 50pcs",
-                            des:"No massive commitments. Start with 50 units per style and scale as you grow.",
-                            img:'/images/box.png'
+                            title: "Custom Apparel Development",
+                            des: "Bespoke pattern drafting, 3D prototyping, and tailored athletic sizing engineered to bring your custom sportswear designs to life.",
+                            img: '/images/box.png'
                         },
                         {
-                            title:"14-Day Lead Times",
-                            des:"Core styles manufactured and shipped within two weeks of order confirmation.",
-                            img:'/images/schedule.png'
+                            title: "Technical Fabric Sourcing",
+                            des: "Direct procurement of moisture-wicking knits, high-recovery compression spandex, and certified sustainable performance textiles.",
+                            img: '/images/schedule.png'
                         },
                         {
-                            title:"Direct Pricing",
-                            des:"Factory-direct pricing with no middlemen. Transparent cost breakdowns per unit.",
-                            img:'/images/price-tag.png'
+                            title: "Private Label Manufacturing",
+                            des: "Complete branding customization including custom woven neck tags, heat-transfer care labels, barcode ticketing, and custom packaging.",
+                            img: '/images/price-tag.png'
                         },
                         {
-                            title:"Quality Assured",
-                            des:"AQL 2.5 inspection standards. Every batch tested before it leaves the facility.",
-                            img:'/images/guarantee.png'
+                            title: "Global Brand Partnerships",
+                            des: "Trusted long-term manufacturing partner for international athletic labels, professional sports teams, gym chains, and wholesalers.",
+                            img: '/images/guarantee.png'
                         },
                     ].map((item, index) => (
-                        <ul key={index} className='feature-card ios-card flex flex-col items-center gap-5 h-full'>
-                            <img src={item.img} alt="" className='w-10 h-10 object-cover mb-5' />
-                            <p className='font-semibold'>{item.title}</p>
-                            <p className='text-center'>{item.des}</p>
+                        <ul key={index} className='feature-card ios-card flex flex-col items-center gap-4 h-full'>
+                            <img src={item.img} alt="" className='w-10 h-10 object-cover mb-3' />
+                            <p className='font-semibold text-center'>{item.title}</p>
+                            <p className='text-center text-sm'>{item.des}</p>
                         </ul>
                     ))}
                 </div>

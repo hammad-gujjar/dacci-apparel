@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/dashboard/', '/api/', '/auth/'],
       },
     ],
-    sitemap: 'https://slotssportswear.com/sitemap.xml',
-    host: 'https://slotssportswear.com',
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/sitemap.xml`,
+    host: process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app',
   };
 }

@@ -1,14 +1,18 @@
 import { MetadataRoute } from 'next';
 import { databaseConnection } from '@/lib/database';
 import { Product } from '@/models/product.model';
+import { SEOPage } from '@/models/SEOPage.model';
+import { KnowledgeArticle } from '@/models/KnowledgeArticle.model';
+import { getAllSolutionsSlugs } from '@/lib/seo/solutionsData';
+import { getAllKnowledgeSlugs } from '@/lib/seo/knowledgeData';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // regenerate every hour
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://slotssportswear.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app';
 
-  // Static pages
+  // Static core pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -23,6 +27,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/manufacturing-process`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/knowledge`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/story`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
@@ -32,9 +54,73 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/cart`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
     },
   ];
+
+  // Programmatic B2B SEO Solutions pages
+  const staticSolutionSlugs = getAllSolutionsSlugs();
+  let allSolutionSlugs = [...staticSolutionSlugs];
+
+  try {
+    await databaseConnection();
+    const dbSEOPages = await SEOPage.find({}).select('slug published status noIndex updatedAt').lean();
+    const publishedDbSlugs = dbSEOPages
+      .filter((p: any) => p.published !== false && p.status !== 'Draft' && !p.noIndex)
+      .map((p: any) => p.slug);
+    const draftDbSlugs = new Set(
+      dbSEOPages
+        .filter((p: any) => p.published === false || p.status === 'Draft' || p.noIndex)
+        .map((p: any) => p.slug)
+    );
+
+    const allowedStaticSlugs = staticSolutionSlugs.filter(slug => !draftDbSlugs.has(slug));
+    allSolutionSlugs = Array.from(new Set([...allowedStaticSlugs, ...publishedDbSlugs]));
+  } catch {
+    // Continue with static solution slugs if DB unavailable
+  }
+
+  const solutionPages: MetadataRoute.Sitemap = allSolutionSlugs.map(slug => ({
+    url: `${baseUrl}/solutions/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.85,
+  }));
+
+  // Technical Manufacturing Knowledge Hub articles
+  const staticKnowledgeSlugs = getAllKnowledgeSlugs();
+  let allKnowledgeSlugs = [...staticKnowledgeSlugs];
+
+  try {
+    await databaseConnection();
+    const dbArticles = await KnowledgeArticle.find({}).select('slug published status noIndex updatedAt').lean();
+    const publishedDbSlugs = dbArticles
+      .filter((a: any) => a.published !== false && a.status !== 'Draft' && !a.noIndex)
+      .map((a: any) => a.slug);
+    const draftDbSlugs = new Set(
+      dbArticles
+        .filter((a: any) => a.published === false || a.status === 'Draft' || a.noIndex)
+        .map((a: any) => a.slug)
+    );
+
+    const allowedStaticSlugs = staticKnowledgeSlugs.filter(slug => !draftDbSlugs.has(slug));
+    allKnowledgeSlugs = Array.from(new Set([...allowedStaticSlugs, ...publishedDbSlugs]));
+  } catch {
+    // Continue with static knowledge slugs if DB unavailable
+  }
+
+  const knowledgePages: MetadataRoute.Sitemap = allKnowledgeSlugs.map(slug => ({
+    url: `${baseUrl}/knowledge/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
 
   // Dynamic product pages
   try {
@@ -50,9 +136,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    return [...staticPages, ...productPages];
+    return [...staticPages, ...solutionPages, ...knowledgePages, ...productPages];
   } catch {
-    // Return static pages only if DB fails
-    return staticPages;
+    // Return static, solution, and knowledge pages if product DB fails
+    return [...staticPages, ...solutionPages, ...knowledgePages];
   }
 }

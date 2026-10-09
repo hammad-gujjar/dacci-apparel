@@ -12,6 +12,7 @@ import { authClient } from '@/lib/auth-client';
 import { IoCloseOutline } from "react-icons/io5";
 import Image from 'next/image';
 import Icon from './Icon';
+import { useTechPack } from '../context/TechPackContext';
 
 const Nav = () => {
     const pathname = usePathname();
@@ -25,6 +26,7 @@ const Nav = () => {
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [activeCategory, setActiveCategory] = useState<any>(null);
     const { data: session } = authClient.useSession();
+    const { itemCount, openDrawer } = useTechPack();
 
     const megaMenuRef = useRef<HTMLDivElement>(null);
     const menuOverlayRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,23 @@ const Nav = () => {
             try {
                 const { data: res } = await axios.get('/api/public/nav-data');
                 if (res.success) {
-                    setNavData(res.data);
+                    const primarySlugs = ['golfwear', 'teamwear', 'fitness-apparel', 'activewear'];
+                    const labelMap: Record<string, string> = {
+                        'golfwear': 'Golf',
+                        'teamwear': 'Team',
+                        'fitness-apparel': 'Fitness',
+                        'activewear': 'Active'
+                    };
+                    const filteredData = (res.data || [])
+                        .filter((cat: any) => primarySlugs.includes(cat.slug))
+                        .map((cat: any) => ({
+                            ...cat,
+                            navLabel: labelMap[cat.slug] || cat.name
+                        }))
+                        // Ensure correct order
+                        .sort((a: any, b: any) => primarySlugs.indexOf(a.slug) - primarySlugs.indexOf(b.slug));
+                        
+                    setNavData(filteredData);
                 }
             } catch (err) {
                 console.error("Nav data fetch error:", err);
@@ -255,7 +273,7 @@ const Nav = () => {
                                 onMouseLeave={handleMouseLeave}
                             >
                                 <Link href={`/shop?category=${cat.slug}`} className="text-[10px] uppercase tracking-[0.3em] font-bold py-2 hover:opacity-50 transition-all cursor-pointer">
-                                    {cat.name}
+                                    {cat.navLabel}
                                 </Link>
                             </div>
                         ))}
@@ -263,10 +281,22 @@ const Nav = () => {
 
                     {/* Logo (Centered) */}
                     <div className="lg:flex-none lg:w-1/3 flex justify-center">
-                        <TransitionButton text={<ul className="w-fit h-[7vh] md:h-full">
-                            <img className='size-full object-contain' src='/images/daccilogosvg.png' alt='logo' />
-                            <span className='font-[main] text-xl tracking-tighter uppercase font-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>Slots</span>
-                        </ul>} url='/' className="relative md:h-[9vh] pointer-events-auto z-101 cursor-pointer" />
+                        <TransitionButton
+                            text={
+                                <ul className="w-fit h-[7vh] md:h-full relative flex items-center justify-center">
+                                    <img
+                                        className="size-full object-contain max-h-[7vh] md:max-h-full"
+                                        src="/images/daccilogosvg.png"
+                                        alt="Slots Sports Wear logo"
+                                    />
+                                    <span className="font-[main] text-xl tracking-tighter uppercase font-black absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#111111] pointer-events-none select-none">
+                                        Slots
+                                    </span>
+                                </ul>
+                            }
+                            url="/"
+                            className="relative md:h-[9vh] pointer-events-auto z-101 cursor-pointer"
+                        />
                     </div>
 
                     {/* Right Side Icons */}
@@ -277,9 +307,19 @@ const Nav = () => {
 
                         <div className="h-4 w-px bg-black/10"></div>
 
-                        <TransitionButton text={<ul className="p-2 hover:bg-black/5 rounded-full transition-colors relative">
+                        <button
+                            onClick={openDrawer}
+                            className="p-2 hover:bg-black/5 rounded-full transition-colors relative cursor-pointer group"
+                            title="Tech Pack Request Drawer"
+                            aria-label="Open Tech Pack Request Drawer"
+                        >
                             <Icon name="shopping-bag" className="" />
-                        </ul>} url='/cart' className='cursor-pointer' />
+                            {itemCount > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5 bg-black text-[#EDEEE7] text-[9px] font-[middle] font-bold size-4 rounded-full flex items-center justify-center tabular-nums shadow-sm">
+                                    {itemCount}
+                                </span>
+                            )}
+                        </button>
 
                         <div className="h-4 w-px bg-black/10"></div>
 
@@ -459,7 +499,7 @@ const Nav = () => {
                                 {navData.map((cat) => (
                                     <div key={cat._id} className="menu-content-item overflow-hidden">
                                         <TransitionButton
-                                            text={cat.name}
+                                            text={cat.navLabel}
                                             url={`/shop?category=${cat.slug}`}
                                             className="text-4xl md:text-7xl font-[main] text-white hover:text-[#EDEEE7]/60 transition-colors uppercase tracking-tight cursor-pointer"
                                         />
@@ -469,16 +509,16 @@ const Nav = () => {
                         )}
 
                         {/* Links: small tag style (flex-row) on mobile like categories used to have, bold heading style (flex-col) on desktop */}
-                        <div className="flex flex-wrap md:flex-col justify-center items-center gap-4 md:gap-12 max-w-xs md:max-w-none">
-                            {['HOME', 'SHOP', 'ABOUT', 'CONTACT', 'FAQS'].map((item) => (
-                                <div key={item} className="menu-content-item overflow-hidden">
+                        <div className="flex flex-wrap md:flex-col justify-center items-center gap-4 md:gap-[clamp(1rem,2.5vh,2.5rem)] max-w-xs md:max-w-none">
+                            {['HOME', 'SHOP', 'ABOUT', 'PROCESS', 'KNOWLEDGE', 'CONTACT', 'FAQS'].map((item) => (
+                                <div key={item} className="menu-content-item overflow-hidden py-1">
                                     <button
                                         onClick={() => {
                                             setIsMenuOpen(false);
-                                            const url = item === 'HOME' ? '/' : item === 'FAQS' ? '/faq' : `/${item.toLowerCase()}`;
+                                            const url = item === 'HOME' ? '/' : item === 'FAQS' ? '/faq' : item === 'PROCESS' ? '/manufacturing-process' : item === 'KNOWLEDGE' ? '/knowledge' : `/${item.toLowerCase()}`;
                                             setTimeout(() => transitionTo(url), 650);
                                         }}
-                                        className="text-sm md:text-7xl text-white/40 md:text-white uppercase tracking-widest md:tracking-tight md:font-[main] hover:text-white md:hover:text-[#EDEEE7]/60 transition-colors cursor-pointer"
+                                        className="text-sm md:text-[clamp(3rem,6.5vh,6rem)] text-white/40 md:text-white uppercase tracking-widest md:tracking-tight md:font-[main] hover:text-white md:hover:text-[#EDEEE7]/60 transition-colors cursor-pointer leading-none"
                                     >
                                         {item}
                                     </button>

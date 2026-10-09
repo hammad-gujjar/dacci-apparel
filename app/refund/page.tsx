@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Returns & Refunds',
     description: 'Understand the Slots Sports Wear Returns and Refund Policy. Learn the conditions for returns, how to initiate a return, and our refund processing timelines.',
     openGraph: {
-        title: 'Returns & Refunds Policy — Slots Sports Wear',
+        title: 'Returns & Refunds Policy - Slots Sports Wear',
         description: 'Our clear and fair returns policy for custom sportswear orders. Your satisfaction is backed by our quality guarantee.',
     },
     robots: { index: true, follow: true },
@@ -43,7 +43,7 @@ export default function RefundPage() {
                         {
                             label: 'Quality Defects',
                             value: 'Full Remedy',
-                            desc: 'Confirmed defects receive free replacement production or a full refund — your choice, no questions asked.',
+                            desc: 'Confirmed defects receive free replacement production or a full refund - your choice, no questions asked.',
                         },
                         {
                             label: 'Refund Timeline',

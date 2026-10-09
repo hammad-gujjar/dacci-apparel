@@ -6,7 +6,11 @@ export async function GET(req: NextRequest) {
     try {
         await databaseConnection();
         
-        const categories = await Category.find({ deletedAt: null }).lean();
+        let categories = await Category.find({ deletedAt: null }).lean();
+        
+        // Filter out legacy categories, keep only the active Shop taxonomy
+        const activeSlugs = ['golfwear', 'teamwear', 'fitness-apparel', 'activewear', 'running-wear', 'training-wear'];
+        categories = categories.filter((c: any) => activeSlugs.includes(c.slug));
 
         const response = NextResponse.json({
             success: true,

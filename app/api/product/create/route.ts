@@ -20,6 +20,7 @@ export async function POST(req: Request) {
             slug: true,
             category: true,
             productType: true,
+            productCategoryAssignments: true,
             mrp: true,
             sellingPrice: true,
             discountPercentage: true,

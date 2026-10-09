@@ -23,6 +23,7 @@ export async function PUT(request: Request) {
             slug: true,
             category: true,
             productType: true,
+            productCategoryAssignments: true,
             mrp: true,
             sellingPrice: true,
             discountPercentage: true,

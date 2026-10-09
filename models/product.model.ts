@@ -14,6 +14,11 @@ const productSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    productCategoryAssignments: [{
+        category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+        subcategory: { type: String, trim: true },
+        assignmentType: { type: String, enum: ['specific', 'all'], default: 'specific' }
+    }],
     mrp: {
         type: Number,
         required: true,

@@ -11,52 +11,68 @@ gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
-        title: 'Premium Custom Apparel',
-        description: 'We specialize in producing high-quality sportswear and casual clothing tailored to your brand’s unique identity. From fabric selection to final stitching, every piece is crafted with precision.',
+        title: 'Fabric Sourcing',
+        points: [
+            'Premium technical fabric sourcing',
+            'Performance knit and mesh options',
+            'Breathable athletic textile selection',
+            'Certified organic cotton sourcing',
+            'Production-ready material coordination'
+        ],
         images: [
-            'https://i.pinimg.com/736x/06/64/65/06646591daec1f4ae432e7b743748466.jpg'
+            'images/4-our-services-images/sportswear-fabric-sourcing.webp'
         ],
     },
     {
-        title: 'Private Label Services',
-        description: 'Launch your own clothing brand with ease through our private labeling solutions. We manufacture garments under your brand name, ensuring custom designs and complete confidentiality.',
+        title: 'Custom Pattern Development',
+        points: [
+            'Digital CAD pattern development',
+            '3D garment prototyping',
+            'Athletic fit engineering',
+            'Size grading for production',
+            'Production-ready pattern preparation'
+        ],
         images: [
-            'https://i.pinimg.com/1200x/ee/15/d2/ee15d2c8a1641d62ecebeb0f442ab89e.jpg'
+            'images/4-our-services-images/custom-sportswear-pattern-development.webp'
         ],
     },
     {
-        title: 'Bulk Scale Manufacturing',
-        description: 'Our advanced production facilities enable us to handle large-volume orders efficiently while maintaining reliable quality. Ideal for wholesalers, retailers, and international brands.',
+        title: 'Printing & Embroidery',
+        points: [
+            'Sublimation sportswear printing',
+            'DTF custom garment printing',
+            'Computerized embroidery production',
+            'Durable athletic branding',
+            'Consistent logo application'
+        ],
         images: [
-            'https://i.pinimg.com/1200x/e2/11/f3/e211f3ca9a3d8d808b00e857d1212a82.jpg'
+            'images/4-our-services-images/sportswear-printing-embroidery.webp'
         ],
     },
     {
-        title: 'Global Export Solutions',
-        description: 'We provide seamless export services worldwide, handling documentation, packaging, and shipping with extreme efficiency. Our experienced logistics team ensures timely delivery.',
+        title: 'Quality Control',
+        points: [
+            'Multi-stage production inspections',
+            'Four-point fabric quality checks',
+            'Seam and stitching inspection',
+            'Dimensional tolerance verification',
+            'AQL-based quality assurance'
+        ],
         images: [
-            'https://i.pinimg.com/736x/1c/5d/63/1c5d6330c717fe2e03969618f7e11e1c.jpg'
+            'images/4-our-services-images/sportswear-quality-control.webp'
         ],
     },
     {
-        title: 'Bespoke Product Design',
-        description: 'Turn your ideas into reality with our in-house design team. From concept sketches to final prototypes, we help you create trendy, market-ready casual collections.',
-        images: [
-            'https://i.pinimg.com/736x/e3/18/4d/e3184d658507ecf32dbff5dfced7453c.jpg'
+        title: 'Packaging',
+        points: [
+            'Custom woven neck labels',
+            'Branded hang tags',
+            'Barcode and product stickers',
+            'Secure polybag packaging',
+            'Export-ready carton packing'
         ],
-    },
-    {
-        title: 'Quality Assurance',
-        description: 'We follow strict quality control procedures at every stage of production. Our garments meet strict international standards, ensuring extreme durability and safety.',
         images: [
-            'https://i.pinimg.com/736x/ab/15/d6/ab15d685d26ddcbdb5ab6a7be2a54483.jpg'
-        ],
-    },
-    {
-        title: 'Branding Solutions',
-        description: 'Enhance your brand identity with customized labels, tags, and packaging. We provide complete unique branding solutions to make your products stand out.',
-        images: [
-            'https://i.pinimg.com/736x/ba/ff/e2/baffe26a65ab0af2bee5c6f9945f2fbb.jpg'
+            'images/4-our-services-images/sportswear-packaging.webp'
         ],
     },
 ];
@@ -144,7 +160,7 @@ const OurServices = () => {
                     tl.to(prevText.querySelectorAll('.word'), {
                         yPercent: -100,
                         duration: 0.4,
-                        stagger: { amount: 0.15 },
+                        stagger: { amount: 0.05 },
                         ease: "power2.in"
                     }, transitionLabel);
 
@@ -163,7 +179,7 @@ const OurServices = () => {
                     tl.to(currentText.querySelectorAll('.word'), {
                         yPercent: 0,
                         duration: 0.4,
-                        stagger: { amount: 0.15 },
+                        stagger: { amount: 0.05 },
                         ease: "power2.out"
                     }, `${transitionLabel}+=0.5`);
                 }
@@ -207,12 +223,19 @@ const OurServices = () => {
                                 ref={el => { textRefs.current[index] = el; }}
                                 className="absolute inset-0 flex flex-col justify-center p-6 md:p-12 lg:p-24 opacity-0 invisible"
                             >
-                                <h2 className="mb-6 !text-[#EDEEE7]">
+                                <h2 className="mb-6 !text-[#EDEEE7] text-2xl md:text-4xl lg:text-5xl font-bold uppercase">
                                     {renderText(service.title)}
                                 </h2>
-                                <p className='!text-[#EDEEE7]'>
-                                    {renderText(service.description)}
-                                </p>
+                                <ul className="flex flex-col gap-3 !text-[#EDEEE7]/90 text-sm md:text-base list-none pl-0 m-0">
+                                    {service.points.map((point, ptIdx) => (
+                                        <li key={ptIdx} className="flex items-start gap-3">
+                                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#EDEEE7] shrink-0 opacity-80"></span>
+                                            <span className="block leading-relaxed">
+                                                {renderText(point)}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         ))}
                     </div>

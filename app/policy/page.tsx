@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Privacy Policy',
     description: 'Read the Slots Sports Wear Privacy Policy. Learn how we collect, use, and protect your personal data when you interact with our website and services.',
     openGraph: {
-        title: 'Privacy Policy — Slots Sports Wear',
+        title: 'Privacy Policy - Slots Sports Wear',
         description: 'How Slots Sports Wear collects, uses, and protects your personal information. Your privacy is our priority.',
     },
     robots: { index: true, follow: true },

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: 'Terms & Conditions',
     description: 'Read the Terms and Conditions of Slots Sports Wear. Understand your rights and obligations when placing orders, using our website, or engaging our manufacturing services.',
     openGraph: {
-        title: 'Terms & Conditions — Slots Sports Wear',
+        title: 'Terms & Conditions - Slots Sports Wear',
         description: 'The complete terms governing use of the Slots Sports Wear website and manufacturing services.',
     },
     robots: { index: true, follow: true },

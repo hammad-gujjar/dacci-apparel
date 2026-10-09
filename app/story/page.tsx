@@ -1,43 +1,63 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import FormattedTitle from '../components/FormattedTitle';
+import Heading from '../components/Heading';
+import TransitionButton from '../components/TransitionButton';
 
 export const metadata: Metadata = {
-    title: 'Our Story',
-    description: 'Discover the story behind Slots Sports Wear — a premium sportswear manufacturer born in Pakistan, built on quality craftsmanship, low MOQ, and a passion for performance apparel.',
-    openGraph: {
-        title: 'Our Story — Slots Sports Wear',
-        description: 'From a small workshop to a globally trusted sportswear manufacturer. Learn how Slots Sports Wear was built on quality, integrity, and performance.',
-        images: [{ url: 'https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg', width: 1200, height: 630, alt: 'Slots Sports Wear Factory' }],
+    title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
+    description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. From a local workshop to a trusted custom sportswear factory for global brands.',
+    alternates: {
+        canonical: 'https://slotssportswear.vercel.app/story'
     },
+    openGraph: {
+        title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
+        description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. A trusted custom sportswear factory for global brands.',
+        url: 'https://slotssportswear.vercel.app/story',
+        images: [{ url: 'https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg', width: 1200, height: 630, alt: 'Slots Sports Wear Manufacturing Facility' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
+        description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. A trusted custom sportswear factory for global brands.',
+        images: ['https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg'],
+    }
 };
 
 const milestones = [
-    { year: '2018', title: 'The Beginning', desc: 'Started as a small workshop in Lahore, Pakistan, with a mission to produce performance sportswear that meets international quality standards.' },
-    { year: '2020', title: 'Global Expansion', desc: 'Began exporting to brands across the USA, UK, and Australia. Our ISO-certified facility expanded to 100+ skilled workers.' },
-    { year: '2022', title: 'Tech-Pack Integration', desc: 'Introduced a full tech-pack submission system, enabling global brands to submit designs and receive samples in as little as 7 days.' },
-    { year: '2024', title: 'Industry Recognition', desc: 'Reached 50,000+ monthly production capacity. Trusted by 200+ active brands worldwide with a 4.8★ average client rating.' },
-    { year: '2026', title: 'Today & Beyond', desc: 'Continuing to innovate with sustainable fabric sourcing, digital design tools, and next-day sampling for premium customers.' },
+    { year: '2018', title: 'The Beginning', desc: 'Established as a specialized cut-and-sew workshop in Sialkot, Pakistan, focusing purely on high-performance athletic apparel for local teams and athletic clubs.' },
+    { year: '2020', title: 'Global Export Operations', desc: 'Scaled operations to support international B2B clients across North America, the UK, and Australia with integrated OEM manufacturing services.' },
+    { year: '2022', title: 'Technical Modernization', desc: 'Implemented comprehensive digital tech-pack translation, automated laser cutting, and industrial dye-sublimation departments to streamline global orders.' },
+    { year: '2024', title: 'High-Volume Capacity', desc: 'Expanded infrastructure to support 50,000+ pieces monthly while maintaining strict AQL 2.5 quality control standards for over 200 active brand partners.' },
+    { year: '2026', title: 'Advanced Private Label', desc: 'Pioneering rapid 7-14 day prototype sampling and sustainable technical fabric sourcing for premium global activewear and streetwear brands.' },
 ];
 
-const values = [
-    { title: 'Craftsmanship', desc: 'Every stitch matters. Our artisans bring decades of textile know-how to every order, small or large.' },
-    { title: 'Transparency', desc: 'No hidden costs. No surprises. We give you full cost breakdowns, production timelines, and honest communication.' },
-    { title: 'Sustainability', desc: 'We source eco-certified fabrics and minimise waste across our production lines — because quality should not cost the planet.' },
-    { title: 'Partnership', desc: 'We are not just a vendor — we are your brand\'s manufacturing partner, invested in your long-term growth.' },
+const principles = [
+    { title: 'Precision Manufacturing', desc: 'Every tech pack is meticulously translated into CAD patterns with exact grading tolerances to ensure absolute consistency across all bulk production runs.' },
+    { title: 'Fabric Development', desc: 'Strategic sourcing of premium technical textiles, moisture-wicking blends, and high-recovery elastane directly from certified global mills.' },
+    { title: 'Total Customization', desc: 'End-to-end OEM/ODM capabilities including sublimation, high-density screen printing, tackle twill embroidery, and custom bespoke trims.' },
+    { title: 'Quality Control', desc: 'Rigorous inline and final QA inspections following strict AQL guidelines to guarantee zero compromises on seam strength, sizing, and color accuracy.' },
+    { title: 'Reliable Communication', desc: 'Direct, transparent factory-to-brand communication providing complete visibility over your production timeline, sampling, and exact cost breakdowns.' },
+    { title: 'Global Partnerships', desc: 'Built to scale with your brand - from flexible 50-piece low MOQs for startups to high-volume container shipments for established global retailers.' },
+];
+
+const capabilities = [
+    'Custom Teamwear',
+    'Fitness Apparel',
+    'Activewear',
+    'Sports Uniforms',
+    'Private Label Apparel'
 ];
 
 export default function StoryPage() {
     return (
-        <main className="w-full bg-[#EDEEE7] min-h-screen">
-
+        <main className="w-full bg-[#EDEEE7] min-h-screen text-[#111111]">
             {/* Hero */}
-            <section className="w-full pt-[12vh] pb-20 px-5 md:px-10">
+            <section className="w-full pt-[15vh] pb-20 px-5 md:px-10">
                 <div className="max-w-screen-xl mx-auto flex flex-col items-center gap-6 text-center">
-                    <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Est. 2018 · Punjab, Pakistan</span>
-                    <h1 className="uppercase"><FormattedTitle>Our Story</FormattedTitle></h1>
+                    <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Est. 2018 · Sialkot, Pakistan</span>
+                    <Heading title="Our Manufacturing Story" className="uppercase justify-center" />
                     <p className="md:w-[55%] w-full">
-                        From a single cutting table in Lahore to a globally trusted manufacturing partner — this is how Slots Sports Wear was built, stitch by stitch.
+                        From a specialized local workshop to a trusted global B2B partner. Discover the manufacturing heritage and production excellence that defines SLOTS SPORTSWEAR.
                     </p>
                 </div>
             </section>
@@ -52,38 +72,53 @@ export default function StoryPage() {
                 />
             </div>
 
-            {/* Mission */}
-            <section className="w-full px-5 md:px-10 py-20 max-w-screen-xl mx-auto">
+            {/* Origins */}
+            <section className="w-full px-5 md:px-10 py-24 max-w-screen-xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
                     <div className="flex flex-col gap-4">
-                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Our Mission</span>
-                        <h2><FormattedTitle>Manufacturing Excellence, Without Compromise</FormattedTitle></h2>
+                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Our Origins</span>
+                        <h2 className="uppercase">Manufacturing Excellence, Without Compromise</h2>
                     </div>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-6">
                         <p>
-                            Slots Sports Wear was founded on a belief that quality sportswear manufacturing should be accessible to brands of all sizes. We combine Pakistan's deep textile heritage with modern production technology to deliver apparel that performs — on the field and in the market.
+                            SLOTS SPORTSWEAR was founded on a distinct manufacturing philosophy: premium custom sportswear production must be accessible, transparent, and scalable for brands of all sizes. By combining Pakistan's deep textile heritage with modern production technology, we deliver athletic apparel that performs flawlessly on the field and in the market.
                         </p>
                         <p>
-                            Our ISO-certified facility runs on a simple principle: every brand that trusts us with their product deserves factory-direct pricing, expert craftsmanship, and a partner that communicates honestly throughout the entire process.
+                            Our ISO-certified facility operates under one strict principle - every brand that trusts us with their tech packs deserves factory-direct pricing, expert craftsmanship, and a B2B partner that communicates honestly throughout the entire OEM/ODM lifecycle.
                         </p>
                     </div>
                 </div>
             </section>
 
+            {/* What We Manufacture Today */}
+            <section className="w-full px-5 md:px-10 py-20 bg-white/40 backdrop-blur-sm border-y border-black/10">
+                <div className="max-w-screen-xl mx-auto flex flex-col gap-10 text-center items-center">
+                    <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Production Capabilities</span>
+                    <h2 className="uppercase">What We Manufacture Today</h2>
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                        {capabilities.map((cap, i) => (
+                            <span key={i} className="px-6 py-3 border border-black/20 rounded-full text-sm font-semibold tracking-wider uppercase">
+                                {cap}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Timeline */}
-            <section className="w-full px-5 md:px-10 py-20 bg-[#111111] text-[#EDEEE7]">
+            <section className="w-full px-5 md:px-10 py-24 bg-[#111111] text-[#EDEEE7]">
                 <div className="max-w-screen-xl mx-auto flex flex-col gap-14">
                     <div className="flex flex-col gap-3">
-                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">How We Got Here</span>
-                        <h2 className="!text-[#EDEEE7]"><FormattedTitle>Our Journey</FormattedTitle></h2>
+                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Manufacturing Evolution</span>
+                        <h2 className="!text-[#EDEEE7] uppercase">Our Journey</h2>
                     </div>
                     <div className="flex flex-col gap-0">
                         {milestones.map((m, i) => (
-                            <div key={i} className="flex flex-col md:flex-row gap-5 md:gap-16 border-t border-white/10 py-8">
-                                <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30 md:w-24 shrink-0 pt-1">{m.year}</span>
-                                <div className="flex flex-col gap-2">
-                                    <h3 className="!text-[#EDEEE7]"><FormattedTitle>{m.title}</FormattedTitle></h3>
-                                    <p className="text-[#EDEEE7]/60">{m.desc}</p>
+                            <div key={i} className="flex flex-col md:flex-row gap-5 md:gap-16 border-t border-white/10 py-10">
+                                <span className="text-[12px] font-[main] tracking-[0.2em] opacity-40 md:w-32 shrink-0 pt-1">{m.year}</span>
+                                <div className="flex flex-col gap-4">
+                                    <h3 className="!text-[#EDEEE7] text-2xl uppercase">{m.title}</h3>
+                                    <p className="text-[#EDEEE7]/60 md:w-[80%] leading-relaxed">{m.desc}</p>
                                 </div>
                             </div>
                         ))}
@@ -91,19 +126,19 @@ export default function StoryPage() {
                 </div>
             </section>
 
-            {/* Values */}
-            <section className="w-full px-5 md:px-10 py-20 max-w-screen-xl mx-auto">
+            {/* Principles */}
+            <section className="w-full px-5 md:px-10 py-24 max-w-screen-xl mx-auto">
                 <div className="flex flex-col gap-12">
                     <div className="flex flex-col gap-3">
-                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">What We Stand For</span>
-                        <h2><FormattedTitle>Our Core Values</FormattedTitle></h2>
+                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Our Core Principles</span>
+                        <h2 className="uppercase">Manufacturing Standards</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        {values.map((v, i) => (
-                            <div key={i} className="ios-card flex flex-col gap-3 p-8">
-                                <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30">0{i + 1}</span>
-                                <h3><FormattedTitle>{v.title}</FormattedTitle></h3>
-                                <p>{v.desc}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {principles.map((v, i) => (
+                            <div key={i} className="ios-card bg-white/40 flex flex-col gap-4 p-10 border border-black/5">
+                                <span className="text-[10px] font-bold opacity-30">0{i + 1}</span>
+                                <h3 className="uppercase text-xl">{v.title}</h3>
+                                <p className="text-neutral-700 leading-relaxed">{v.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -111,19 +146,25 @@ export default function StoryPage() {
             </section>
 
             {/* CTA */}
-            <section className="w-full px-5 md:px-10 py-20 border-t border-black/10">
-                <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div className="flex flex-col gap-3">
-                        <h2><FormattedTitle>Ready to Build Your Brand?</FormattedTitle></h2>
-                        <p className="md:w-[70%]">Start with 50 pieces. Scale to 50,000. Our team is ready to help you produce the apparel your customers will love.</p>
-                    </div>
-                    <div className="flex gap-4 shrink-0">
-                        <Link href="/contact#teckpack" className="px-8 py-4 bg-black text-[#EDEEE7] hover:bg-black/80 transition-colors tracking-widest text-[10px] uppercase font-bold">
-                            Submit Tech Pack
-                        </Link>
-                        <Link href="/about" className="px-8 py-4 border border-black hover:bg-black hover:text-[#EDEEE7] transition-colors tracking-widest text-[10px] uppercase font-bold">
-                            About Us
-                        </Link>
+            <section className="w-full px-5 md:px-10 py-24 border-t border-black/10">
+                <div className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-8">
+                    <h2 className="uppercase">Ready to Build Your Brand?</h2>
+                    <p className="md:w-[60%] text-lg">
+                        From design to bulk production, our factory is equipped to scale with your brand. Partner with a manufacturer that prioritizes quality and transparency.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 mt-6">
+                        <TransitionButton
+                            text="Request A Quote"
+                            url="/contact"
+                            rollingText
+                            className="px-10 py-5 bg-[#111111] text-[#EDEEE7] hover:bg-black/80 transition-colors tracking-widest text-[12px] uppercase font-bold"
+                        />
+                        <TransitionButton
+                            text="View Manufacturing Process"
+                            url="/manufacturing-process"
+                            rollingText
+                            className="px-10 py-5 border border-[#111111] text-[#111111] hover:bg-black hover:text-[#EDEEE7] transition-colors tracking-widest text-[12px] uppercase font-bold"
+                        />
                     </div>
                 </div>
             </section>

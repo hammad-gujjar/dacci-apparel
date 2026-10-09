@@ -48,7 +48,7 @@ const HomeContact = () => {
         try {
             const { data } = await axios.post('/api/subscribe', form);
             if (data.success) {
-                toast.success('Your inquiry has been sent — we will get back to you shortly.');
+                toast.success('Your inquiry has been sent - we will get back to you shortly.');
                 setForm({ firstName: '', contact: '', inquiry: '' });
             }
         } catch (error: any) {
@@ -65,7 +65,7 @@ const HomeContact = () => {
         <section ref={containerRef} className="w-full py-24 px-5 md:px-10 bg-[#EDEEE7]">
             <div className="max-w-screen-xl mx-auto flex flex-col items-center text-center gap-12">
 
-                {/* Header — Heading component removed, plain centered h1 */}
+                {/* Header - Heading component removed, plain centered h1 */}
                 <div className="flex flex-col gap-5 max-w-2xl reveal-up items-center">
                     <span className="text-black/30 text-[10px] uppercase tracking-[0.6em] font-bold">The Journal</span>
                     <h1 className="text-center text-3xl md:text-5xl font-bold uppercase tracking-tight text-black">

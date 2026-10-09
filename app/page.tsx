@@ -1,61 +1,27 @@
-'use client';
+import type { Metadata } from 'next';
+import HomePageClient from '@/app/components/HomePageClient';
 
-import { useState } from 'react';
-import { useGSAP } from '@gsap/react';
-import axios from 'axios';
-import { useLoader } from '@/app/context/LoaderContext';
-
-import Heading from '@/app/components/Heading';
-import NewArrival from '@/app/components/NewArrival';
-import HomeMiddle from '@/app/components/HomeMiddle';
-import HomeContact from '@/app/components/HomeContact';
-import HeroSection from '@/app/components/HeroSection';
-import PopularCategories from '@/app/components/PopularCategories';
-import HorizontalCategories from '@/app/components/HorizontalCategories';
-import CompanyStats from '@/app/components/CompanyStats';
-import OurServices from '@/app/components/OurServices';
-
-// ─── HomePage ─────────────────────────────────────────────────────────────
-const HomePage = () => {
-  const { setIsReady } = useLoader();
-
-  const [arrivalData, setArrivalData] = useState<any[]>([]);
-
-  // ── Fetch new arrivals ────────────────────────────────────────────────────
-  useGSAP(() => {
-    const fetchArrivals = async () => {
-      try {
-        const { data } = await axios.get('/api/products/new-arrivals');
-        if (data.success) setArrivalData(data.data);
-      } catch (err) {
-        console.error('Error fetching arrivals:', err);
-      } finally {
-        setIsReady(true);
-      }
-    };
-    fetchArrivals();
-  }, [setIsReady]);
-
-  // ─── Render ────────────────────────────────────────────────────────────────
-  return (
-    <>
-      {/* Hero section — self-contained component */}
-      <HeroSection arrivalData={arrivalData} />
-
-      {/* Company Performance Stats */}
-      <CompanyStats />
-
-      {/* Horizontal scrolling categories */}
-      <HorizontalCategories />
-
-      {/* Remaining sections */}
-      <NewArrival products={arrivalData} />
-      <PopularCategories />
-      <OurServices />
-      <HomeMiddle />
-      <HomeContact />
-    </>
-  );
+export const metadata: Metadata = {
+  title: {
+    absolute: 'Custom Sportswear Manufacturer | OEM Teamwear Supplier',
+  },
+  description:
+    'Custom sportswear manufacturer providing OEM and private label apparel production for global brands, teams and wholesalers.',
+  openGraph: {
+    title: 'Custom Sportswear Manufacturer | OEM Teamwear Supplier',
+    description:
+      'Custom sportswear manufacturer providing OEM and private label apparel production for global brands, teams and wholesalers.',
+    type: 'website',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Custom Sportswear Manufacturer | OEM Teamwear Supplier',
+    description:
+      'Custom sportswear manufacturer providing OEM and private label apparel production for global brands, teams and wholesalers.',
+  },
 };
 
-export default HomePage;
+export default function Page() {
+  return <HomePageClient />;
+}

@@ -76,7 +76,9 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
   useEffect(() => {
     if (Category && Category.success) {
-      const catOptions = Category.data.map((cat: any) => ({ label: cat.name, value: cat._id, types: cat.types || [] }));
+      const activeSlugs = ['golfwear', 'teamwear', 'fitness-apparel', 'activewear', 'running-wear', 'training-wear'];
+      const filteredCategories = Category.data.filter((cat: any) => activeSlugs.includes(cat.slug));
+      const catOptions = filteredCategories.map((cat: any) => ({ label: cat.name, value: cat._id, types: cat.types || [] }));
       setCategories(catOptions)
     }
   }, [Category]);
@@ -122,13 +124,27 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
 
   useEffect(() => {
     if (getProduct && getProduct.success) {
-      const product = getProduct.data;
+      const product = getProduct.data as any;
+      
+      let inferredProductType = product?.productType || "";
+      if (product?.productCategoryAssignments && product.productCategoryAssignments.length > 0) {
+          const assignment = product.productCategoryAssignments[0];
+          if (assignment.assignmentType === 'all') {
+              inferredProductType = `${assignment.subcategory}-ALL`;
+          } else if (assignment.assignmentType === 'specific') {
+              const prefix = Categories.find(c => c.value === product.category)?.label?.charAt(0)?.toUpperCase();
+              if (prefix) {
+                 inferredProductType = `${prefix}-${assignment.subcategory}-SPECIFIC`;
+              }
+          }
+      }
+
       form.reset({
         _id: product?._id,
         name: product?.name,
         slug: product?.slug,
         category: product?.category,
-        productType: product?.productType || "",
+        productType: inferredProductType,
         mrp: product?.mrp,
         sellingPrice: product?.sellingPrice,
         discountPercentage: product?.discountPercentage,
@@ -183,11 +199,24 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
       const category = Categories.find((cat: any) => cat.value === categoryId);
       if (category) {
         setSelectedCategory(category);
-        const typeOptions = ((category as any).types || []).map((type: string) => ({ label: type, value: type }));
-        setProductTypes(typeOptions);
+        const sharedTypes = ['Polo Shirts', 'T-Shirts', 'Shorts', 'Caps', 'Tank Tops', 'Hoodies'];
+        const generatedOptions: { label: string, value: string }[] = [];
+        ((category as any).types || []).forEach((type: string) => {
+          if (sharedTypes.includes(type)) {
+            const prefix = category.label.charAt(0).toUpperCase(); 
+            generatedOptions.push({ label: `${prefix}-${type}`, value: `${prefix}-${type}-SPECIFIC` });
+            generatedOptions.push({ label: `${type} All`, value: `${type}-ALL` });
+          } else {
+            generatedOptions.push({ label: type, value: type });
+          }
+        });
+        setProductTypes(generatedOptions);
+        
+        // Handle pre-selecting the right value on load
         const currentType = form.getValues('productType');
-        if (currentType && !typeOptions.some((t: any) => t.value === currentType)) {
-          form.setValue('productType', '');
+        if (currentType && !generatedOptions.some((t: any) => t.value === currentType)) {
+            // It might be a regular type that got transformed, let's keep it if we can
+            // But we actually shouldn't wipe it out on mount if it's valid
         }
       }
     } else {
@@ -233,7 +262,20 @@ const EditProduct: React.FC<CategoryEditProps> = ({ params }) => {
       values.media = mediaIds;
       values.tags = tags;
 
-      const { data: response } = await axios.put('/api/product/update', values);
+      const payload: any = { ...values };
+      const selectedProductType = values.productType;
+      
+      if (selectedProductType.endsWith('-ALL')) {
+         payload.productType = selectedProductType.replace('-ALL', '');
+         payload.productCategoryAssignments = [{ subcategory: payload.productType, assignmentType: 'all' }];
+      } else if (selectedProductType.endsWith('-SPECIFIC')) {
+         payload.productType = selectedProductType.split('-').slice(1, -1).join('-'); 
+         payload.productCategoryAssignments = [{ category: values.category, subcategory: payload.productType, assignmentType: 'specific' }];
+      } else {
+         payload.productCategoryAssignments = [{ category: values.category, subcategory: selectedProductType, assignmentType: 'specific' }];
+      }
+
+      const { data: response } = await axios.put('/api/product/update', payload);
       if (!response.success) {
         toast.error(response.message);
       } else {

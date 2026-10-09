@@ -145,7 +145,7 @@ const ReviewCollective = ({
                                         </div>
 
                                         <div className="flex flex-col gap-4">
-                                            <h4 className="text-lg font-bold tracking-tight leading-tight">— {rev.title}</h4>
+                                            <h4 className="text-lg font-bold tracking-tight leading-tight">- {rev.title}</h4>
                                             <p className="text-base text-black/60 leading-relaxed max-w-2xl italic">
                                                 "{rev.review}"
                                             </p>
@@ -165,7 +165,7 @@ const ReviewCollective = ({
                         </div>
                     )}
 
-                    {/* Scroll Button — up/down arrow based on position */}
+                    {/* Scroll Button - up/down arrow based on position */}
                     {product.reviews?.length > 3 && (
                         <button
                             onClick={(e) => {

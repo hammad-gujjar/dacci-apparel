@@ -5,8 +5,10 @@ import { Media } from "@/models/Media.model";
 import ShopClient from "../components/ShopClient";
 
 export const metadata = {
-    title: "Shop All · Slots Sports Wear",
-    description: "Explore the latest collections of premium clothing and accessories from Slots Sports Wear.",
+    title: {
+        absolute: "Custom Sportswear Collection | OEM Apparel Manufacturer",
+    },
+    description: "Explore custom sportswear collections including golfwear, teamwear, fitness apparel, activewear, running wear, and training wear manufactured for global brands and wholesale buyers.",
 };
 
 const ShopPage = async () => {

@@ -4,9 +4,9 @@ import FormattedTitle from '../components/FormattedTitle';
 
 export const metadata: Metadata = {
     title: 'FAQs',
-    description: 'Find answers to the most common questions about Slots Sports Wear — including MOQ, lead times, sampling, shipping, custom orders, and payment.',
+    description: 'Find answers to the most common questions about Slots Sports Wear - including MOQ, lead times, sampling, shipping, custom orders, and payment.',
     openGraph: {
-        title: 'Frequently Asked Questions — Slots Sports Wear',
+        title: 'Frequently Asked Questions - Slots Sports Wear',
         description: 'Everything you need to know about working with Slots Sports Wear. MOQ, sampling, lead times, and more answered here.',
     },
 };
@@ -32,7 +32,7 @@ const faqs = [
         category: 'Production & Quality',
         items: [
             { q: 'What quality standards do you follow?', a: 'All orders go through AQL 2.5 inspection before shipment. We are an ISO-certified facility and conduct multi-point quality checks throughout production.' },
-            { q: 'What fabrics and materials do you work with?', a: 'We work with a wide range of performance fabrics — polyester, spandex blends, moisture-wicking knits, organic cotton, and recycled materials. We can source specific fabrics on request.' },
+            { q: 'What fabrics and materials do you work with?', a: 'We work with a wide range of performance fabrics - polyester, spandex blends, moisture-wicking knits, organic cotton, and recycled materials. We can source specific fabrics on request.' },
             { q: 'What is your production capacity?', a: 'Our facility produces 50,000+ units per month across all styles. We maintain dedicated production slots to ensure your orders are delivered on schedule.' },
         ]
     },
@@ -64,7 +64,7 @@ export default function FaqPage() {
                     <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Help Center</span>
                     <h1 className="uppercase"><FormattedTitle>Frequently Asked Questions</FormattedTitle></h1>
                     <p className="md:w-[50%] w-full">
-                        Everything you need to know about partnering with Slots Sports Wear — from your first inquiry to final delivery.
+                        Everything you need to know about partnering with Slots Sports Wear - from your first inquiry to final delivery.
                     </p>
                 </div>
             </section>

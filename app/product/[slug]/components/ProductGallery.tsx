@@ -12,7 +12,7 @@ interface ProductGalleryProps {
     currentMedia: any[];
     activeImageIndex: number;
     setActiveImageIndex: (index: number) => void;
-    currentDiscount: number;
+    currentDiscount?: number;
     setIsMarqueeOpen: (open: boolean) => void;
 }
 
@@ -21,7 +21,6 @@ const ProductGallery = ({
     currentMedia,
     activeImageIndex,
     setActiveImageIndex,
-    currentDiscount,
     setIsMarqueeOpen
 }: ProductGalleryProps) => {
     const mainImageRef = useRef<HTMLDivElement>(null);
@@ -69,7 +68,7 @@ const ProductGallery = ({
                 View Gallery
             </div>
 
-            {/* Main Image Container — all images stacked, active one visible */}
+            {/* Main Image Container - all images stacked, active one visible */}
             <div
                 ref={mainImageRef}
                 onClick={() => setIsMarqueeOpen(true)}
@@ -90,11 +89,9 @@ const ProductGallery = ({
                         )}
                     />
                 ))}
-                {currentDiscount > 0 && (
-                    <div className="absolute top-8 left-8 bg-black text-white px-6 py-3 text-[10px] uppercase tracking-[0.4em] font-bold shadow-xl border border-white/10 z-10">
-                        {currentDiscount}% OFF
-                    </div>
-                )}
+                <div className="absolute top-6 left-6 bg-black/85 backdrop-blur-xs text-white px-5 py-2.5 text-[9px] uppercase tracking-[0.3em] font-bold border border-white/10 z-10">
+                    OEM / ODM Production Available
+                </div>
             </div>
 
             {/* Thumbnails */}

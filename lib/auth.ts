@@ -14,6 +14,8 @@ export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
     trustedOrigins: [
         process.env.BETTER_AUTH_URL,
+        process.env.NEXT_PUBLIC_SITE_URL,
+        "https://slotssportswear.vercel.app",
         "http://localhost:3000",
     ].filter(Boolean) as string[],
 
@@ -24,20 +26,20 @@ export const auth = betterAuth({
         autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, url }) => {
             try {
-                const VerifyemailHtml = getEmailVerifyHtml(user.email!, user.name, url,);
+                const VerifyemailHtml = getEmailVerifyHtml(user.email!, user.name, url);
 
                 // send email using nodemailer
                 await transporter.sendMail({
                     from: EMAIL_FROM,
-                    to: user.email!,
-                    subject: 'Verify your email address',
+                    to: user.email,
+                    subject: 'Verify your email address - SLOTS SPORTSWEAR',
                     html: VerifyemailHtml,
                 });
             } catch (error) {
-                console.log('email sending error:', error);
+                console.error('Email verification sending error:', error);
             }
             if (process.env.NODE_ENV === 'development') {
-                console.log('Verification token:', url);
+                console.log('Verification token URL:', url);
             }
         },
     },
@@ -53,19 +55,17 @@ export const auth = betterAuth({
                 const info = await transporter.sendMail({
                     from: EMAIL_FROM,
                     to: user.email!,
-                    subject: 'Reset your password',
+                    subject: 'Reset your password - SLOTS SPORTSWEAR',
                     html: ResetemailHtml,
                 });
 
                 console.log('Reset password email sent:', info.messageId);
 
                 if (process.env.NODE_ENV === 'development') {
-                    console.log("Reset password link for", url);
+                    console.log("Reset password link:", url);
                 }
-
-
             } catch (error) {
-                console.log('Error in sendResetPassword:', error);
+                console.error('Error in sendResetPassword:', error);
             }
         },
     },
@@ -80,8 +80,8 @@ export const auth = betterAuth({
                             await transporter.sendMail({
                                 from: EMAIL_FROM,
                                 to: adminEmail,
-                                subject: 'New User Registered - Dacci Apparel',
-                                html: `<p>A new user has registered on Dacci Apparel:</p><p>Name: ${user.name}</p><p>Email: ${user.email}</p>`,
+                                subject: 'New User Registered - SLOTS SPORTSWEAR',
+                                html: `<p>A new user has registered on SLOTS SPORTSWEAR:</p><p>Name: ${user.name}</p><p>Email: ${user.email}</p>`,
                             });
                         }
                     } catch (err) {
@@ -96,16 +96,35 @@ export const auth = betterAuth({
                     try {
                         const adminEmail = process.env.ADMIN_EMAIL;
                         if (adminEmail) {
-                            // Fetch user details to send in login notification
-                            const dbUser = await db.collection('user').findOne({ id: session._id });
+                            const mongoose = require('mongoose');
+                            const { getUsersConnection } = require('@/lib/database');
+                            
+                            let dbUser = null;
+                            try {
+                                const userDb = await getUsersConnection();
+                                const User = userDb.models.User || userDb.model('User', new mongoose.Schema({}, { strict: false }), 'user');
+                                dbUser = await User.findById(session.userId);
+                                if (!dbUser) {
+                                    dbUser = await User.findOne({ id: session.userId });
+                                }
+                            } catch (e) {
+                                console.error('Error fetching user for login notification', e);
+                            }
+                            
                             const userEmail = dbUser?.email || 'Unknown Email';
                             const userName = dbUser?.name || 'Unknown User';
-                            
+
+                            // Prevent duplicate emails or emails for missing users
+                            if (!dbUser) {
+                                console.warn(`Login notification skipped: could not resolve user for session userId ${session.userId}`);
+                                return;
+                            }
+
                             await transporter.sendMail({
                                 from: EMAIL_FROM,
                                 to: adminEmail,
-                                subject: 'User Logged In - Slotssportswear Apparel',
-                                html: `<p>A user just logged in.</p><p>Name: ${userName}</p><p>Email: ${userEmail}</p>`,
+                                subject: 'User Logged In - SLOTS SPORTSWEAR',
+                                html: `<p>A user just logged in to SLOTS SPORTSWEAR.</p><p>Name: ${userName}</p><p>Email: ${userEmail}</p>`,
                             });
                         }
                     } catch (err) {

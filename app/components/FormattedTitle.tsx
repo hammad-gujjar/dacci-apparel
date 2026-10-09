@@ -9,12 +9,12 @@ interface FormattedTitleProps {
 export default function FormattedTitle({ as: Component = 'span', children, className = '' }: FormattedTitleProps) {
     if (typeof children !== 'string') return <Component className={className}>{children}</Component>;
     
-    // Split the text to capture numbers and special characters like %, &, ?, —, -, etc.
-    const parts = children.split(/([0-9%&?+—\-/]+)/);
+    // Split the text to capture numbers and special characters like %, &, ?, -, -, etc.
+    const parts = children.split(/([0-9%&?+-\-/]+)/);
     
     return (
         <Component className={className}>
-            {parts.map((p, i) => /[0-9%&?+—\-/]/.test(p) ? (
+            {parts.map((p, i) => /[0-9%&?+-\-/]/.test(p) ? (
                 <span key={i} className="font-[middle] font-medium tracking-normal">{p}</span>
             ) : p)}
         </Component>

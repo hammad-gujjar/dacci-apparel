@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,23 +10,27 @@ gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
     {
-        title: 'Submit Tech Pack',
-        description: 'Provide your design specifications, materials, and sizing details. Our team will review and ensure everything is ready for sampling.',
+        number: '01',
+        title: 'Tech Pack & Design Development',
+        description: 'Submit your design specifications, CAD mockups, and measurement charts. Our technical team reviews every seam, stitch density, and pattern grading for production readiness.',
         image: 'https://i.pinimg.com/736x/ab/5c/04/ab5c048111b26580dc804d40013f2d9f.jpg'
     },
     {
-        title: 'Sampling',
-        description: 'We create a prototype based on your tech pack. You review the sample for fit, fabric, and construction before greenlighting bulk production.',
+        number: '02',
+        title: 'Fabric Selection & Sampling',
+        description: 'Select from certified technical performance textiles and moisture-wicking knits. We craft physical prototypes within 7-14 days for your fit and quality approval before bulk run.',
         image: 'https://i.pinimg.com/736x/fe/6d/8a/fe6d8adf9189b38e60e74fc496bb5339.jpg'
     },
     {
-        title: 'Production',
-        description: 'Once the sample is approved, we move into bulk manufacturing. Our quality control team monitors every step to maintain high standards.',
+        number: '03',
+        title: 'Precision Manufacturing',
+        description: 'Following sample approval, our factory launches bulk production with automated laser cutters, skilled tailors, specialized stitching, sublimation, and embroidery with flexible low MOQs.',
         image: 'https://i.pinimg.com/736x/55/3f/e1/553fe1cc62f86ea61c26ef0ff0b7c0ac.jpg'
     },
     {
-        title: 'Ship to USA',
-        description: 'After final inspection and packaging, your order is shipped globally. We handle logistics to ensure timely and safe delivery.',
+        number: '04',
+        title: 'Quality Control & Global Delivery',
+        description: 'Every finished garment undergoes multi-stage AQL inspection, seam pull-testing, and custom branded packaging before seamless door-to-door freight to global destinations.',
         image: 'https://i.pinimg.com/736x/5f/27/12/5f2712f78631282060150dce5158c3d8.jpg'
     }
 ];
@@ -38,7 +42,6 @@ const HowItWorks = () => {
     useGSAP(() => {
         if (!sectionRef.current || !bgRef.current) return;
 
-        const items = gsap.utils.toArray('.hiw-item') as HTMLElement[];
         const headers = gsap.utils.toArray('.hiw-header') as HTMLElement[];
         const titles = gsap.utils.toArray('.hiw-title') as HTMLElement[];
         const descriptions = gsap.utils.toArray('.hiw-description') as HTMLElement[];
@@ -139,7 +142,7 @@ const HowItWorks = () => {
             <div className="my-10 w-full justify-center flex flex-col items-center gap-5 pb-10">
                 <Heading title="How It Works" />
                 <p className='md:w-1/2 w-full text-center'>
-                    We combine Pakistani manufacturing strength with global quality standards to deliver reliable apparel production for brands worldwide.
+                    Our streamlined 4-step OEM and ODM manufacturing roadmap ensures precision, transparency, and reliable execution from initial concept to global delivery.
                 </p>
             </div>
             <section ref={sectionRef} className="w-full h-screen flex-col overflow-hidden mt-20">
@@ -165,8 +168,9 @@ const HowItWorks = () => {
                                         style={{ color: '#111111' }}
                                     >
                                         <h3
-                                            className="hiw-title text-xl md:text-2xl font-bold font-sf-pro"
+                                            className="hiw-title text-xl md:text-2xl font-bold font-sf-pro flex items-center"
                                         >
+                                            <span className="opacity-50 mr-3 text-lg md:text-xl font-normal">{step.number}</span>
                                             {step.title}
                                         </h3>
                                         <div className="w-10 h-10 flex items-center justify-center shrink-0">

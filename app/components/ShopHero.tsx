@@ -29,10 +29,10 @@ const ShopHero = () => {
 
             {/* Content */}
             <div ref={contentRef} className="relative flex flex-col items-center z-10 text-center px-5">
-                <p className="text-[#EDEEE7]! uppercase mb-4">Explore our Collections</p>
-                <h1 className='text-[#EDEEE7]! text-center'>THE COLLECTION</h1>
-                <p className="text-[#EDEEE7]! mt-6 max-w-xl mx-auto text-center">
-                    Curated pieces designed for the modern individual. Quality, craftsmanship, and timeless style.
+                <p className="text-[#EDEEE7]! uppercase tracking-[0.3em] text-xs font-bold mb-4">B2B Manufacturing Catalog</p>
+                <h1 className='text-[#EDEEE7]! text-center'>Custom Sportswear Collection</h1>
+                <p className="text-[#EDEEE7]! mt-6 max-w-2xl mx-auto text-center font-light leading-relaxed">
+                    Explore our complete range of custom sportswear, teamwear and activewear solutions designed for global brands, teams and wholesale buyers.
                 </p>
             </div>
         </section>

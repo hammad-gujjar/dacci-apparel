@@ -3,9 +3,9 @@ import { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Icon from './Icon';
 import { Filter } from 'lucide-react';
-import axios from 'axios';
 
 interface Category {
     _id: string;
@@ -19,8 +19,27 @@ interface ShopFiltersProps {
     brandingTags: string[];
 }
 
+const CUSTOMIZATION_SERVICES = [
+    'Sublimation',
+    'Embroidery',
+    'Screen Printing',
+    'Private Label'
+];
+
 const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
-    const [categoriesList, setCategoriesList] = useState<Category[]>(categories);
+    const requiredOrder = [
+        "golfwear",
+        "teamwear",
+        "fitness-apparel",
+        "activewear",
+        "running-wear",
+        "training-wear"
+    ];
+
+    const [categoriesList] = useState<Category[]>(() => {
+        const primaryCats = categories.filter(c => requiredOrder.includes(c.slug));
+        return primaryCats.sort((a, b) => requiredOrder.indexOf(a.slug) - requiredOrder.indexOf(b.slug));
+    });
     const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const router = useRouter();
@@ -31,21 +50,6 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
     const currentTags = searchParams.get('tags');
     const currentSort = searchParams.get('sort') || 'newest';
     const currentOnSale = searchParams.get('onSale') === 'true';
-
-    // Fetch fresh categories from backend API
-    useEffect(() => {
-        const fetchFreshCategories = async () => {
-            try {
-                const { data } = await axios.get('/api/public/categories');
-                if (data.success && Array.isArray(data.data)) {
-                    setCategoriesList(data.data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch fresh categories:", err);
-            }
-        };
-        fetchFreshCategories();
-    }, []);
 
     // Auto-expand current active category from URL
     useEffect(() => {
@@ -122,10 +126,10 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
     };
 
     const SORT_OPTIONS = [
-        { label: 'Newest Arrivals', value: 'newest' },
-        { label: 'Price: Low to High', value: 'price-asc' },
-        { label: 'Price: High to Low', value: 'price-desc' },
-        { label: 'Sales: High to Low', value: 'sale-desc' },
+        { label: 'Newest Production Designs', value: 'newest' },
+        { label: 'Sample Price: Low to High', value: 'price-asc' },
+        { label: 'Sample Price: High to Low', value: 'price-desc' },
+        { label: 'Popular OEM Styles', value: 'sale-desc' },
     ];
 
     const [isSortOpen, setIsSortOpen] = useState(false);
@@ -146,7 +150,7 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
         <div className="flex flex-col gap-6 pb-8">
             {/* Categories & Accordion Types */}
             <div className="flex flex-col gap-4">
-                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Categories</span>
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Sportswear Categories</span>
                 <div className="flex flex-col gap-3">
                     {categoriesList.map((cat) => {
                         const isExpanded = expandedCategories.includes(cat.slug);
@@ -201,19 +205,43 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
                         );
                     })}
 
-                    {/* Sale Filter */}
+                    {/* In-Stock Samples / Clearance */}
                     <button
                         type="button"
                         onClick={handleSaleClick}
                         className="flex items-center justify-between group pt-3"
                     >
-                        <h3 className={`text-sm uppercase tracking-widest flex items-center gap-3 transition-colors ${currentOnSale ? 'text-[red] font-black' : 'text-[red]/60 group-hover:text-[red]'}`}>
-                            Official Sales <span className="text-[9px] bg-[red] text-white px-2 py-0.5 rounded-sm font-bold tracking-normal">SALE</span>
+                        <h3 className={`text-sm uppercase tracking-widest flex items-center gap-3 transition-colors ${currentOnSale ? 'text-black font-black' : 'text-black/60 group-hover:text-black'}`}>
+                            In-Stock Samples <span className="text-[9px] bg-black text-white px-2 py-0.5 rounded-xs font-bold tracking-normal">READY</span>
                         </h3>
                         <div className={`size-4 flex items-center justify-center transition-all duration-300 ${currentOnSale ? 'rotate-90 scale-110' : 'opacity-0 group-hover:opacity-100'}`}>
-                            <Icon name="chevron" className="size-full text-[red]" />
+                            <Icon name="chevron" className="size-full text-black" />
                         </div>
                     </button>
+                </div>
+            </div>
+
+            {/* Customization Techniques */}
+            <div className="flex flex-col gap-4 pt-2 border-t border-black/5">
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Customization</span>
+                <div className="flex flex-wrap gap-2">
+                    {CUSTOMIZATION_SERVICES.map((technique) => {
+                        const isTagActive = currentTags === technique;
+                        return (
+                            <button
+                                key={technique}
+                                type="button"
+                                onClick={() => handleTagClick(technique)}
+                                className={`px-3 py-1.5 text-[10px] uppercase tracking-widest font-bold transition-all rounded-full border cursor-pointer ${
+                                    isTagActive 
+                                        ? 'bg-black text-white border-black' 
+                                        : 'bg-transparent text-black/60 border-black/15 hover:border-black active:scale-95'
+                                }`}
+                            >
+                                {technique}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 
@@ -230,22 +258,40 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
                 </h3>
             </div>
 
-            {/* Designer Taxonomy (Tags) */}
-            <div className="flex flex-col gap-4 pt-2 border-t border-black/5">
-                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Brand & tags</span>
-                <div className="flex flex-wrap gap-2">
-                    {brandingTags.map((tag) => (
-                        <button
-                            key={tag}
-                            type="button"
-                            onClick={() => handleTagClick(tag)}
-                            className={`px-4 py-2 text-[10px] uppercase tracking-widest transition-all rounded-full border ${currentTags === tag ? 'bg-black text-white border-black' : 'bg-transparent text-black/50 border-black/10 hover:border-black active:scale-95'}`}
-                        >
-                            #{tag}
-                        </button>
-                    ))}
+            {/* Tech Pack Development Quick Link */}
+            <div className="flex flex-col gap-3 pt-2 border-t border-black/5">
+                <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Custom Production</span>
+                <div className="p-4 bg-black/5 rounded-2xl flex flex-col gap-2">
+                    <p className="text-xs font-medium text-black/70">
+                        Have custom tech packs, mockups, or custom fabric specifications?
+                    </p>
+                    <Link
+                        href="/contact#teckpack"
+                        className="text-[10px] uppercase font-bold tracking-widest text-black underline underline-offset-4 hover:opacity-70 transition-opacity flex items-center gap-1"
+                    >
+                        Submit Tech Pack &rarr;
+                    </Link>
                 </div>
             </div>
+
+            {/* Designer Taxonomy (Tags) */}
+            {brandingTags && brandingTags.length > 0 && (
+                <div className="flex flex-col gap-4 pt-2 border-t border-black/5">
+                    <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.4em]">Brand & tags</span>
+                    <div className="flex flex-wrap gap-2">
+                        {brandingTags.map((tag) => (
+                            <button
+                                key={tag}
+                                type="button"
+                                onClick={() => handleTagClick(tag)}
+                                className={`px-4 py-2 text-[10px] uppercase tracking-widest transition-all rounded-full border ${currentTags === tag ? 'bg-black text-white border-black' : 'bg-transparent text-black/50 border-black/10 hover:border-black active:scale-95'}`}
+                            >
+                                #{tag}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 

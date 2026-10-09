@@ -11,7 +11,7 @@ const ShopBreadcrumb = () => {
         <nav className="w-full py-8 text-black/40 text-[10px] uppercase font-bold tracking-[0.3em] flex items-center gap-2">
             <Link href="/" className="hover:text-black transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/shop" className={`hover:text-black transition-colors ${!category ? 'text-black' : ''}`}>Shop</Link>
+            <Link href="/shop" className={`hover:text-black transition-colors ${!category ? 'text-black' : ''}`}>Catalog</Link>
             
             {category && (
                 <>

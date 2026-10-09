@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -16,26 +17,19 @@ interface NotificationContent {
 
 // ─── Content config ───────────────────────────────────────────────────────────
 const GUEST_CONTENT: NotificationContent = {
-  badge: "LIMITED OFFER",
-  headline: "Get 10% off\non register.",
-  subtext: "Free shipping on every order over $500.",
-  offer: "No code needed — discount applied at checkout.",
+  badge: "B2B PORTAL",
+  headline: "Wholesale Apparel\nManufacturing",
+  subtext: "Manage Tech Packs, RFQs, and business inquiries.",
+  offer: "Join global brands scaling their custom sportswear production.",
   primaryBtn: { label: "Create Account", href: "/auth/signup" },
   secondaryBtn: { label: "Sign In", href: "/auth/signin" },
-};
-
-const USER_CONTENT: NotificationContent = {
-  badge: "MEMBER PERKS",
-  headline: "Welcome\nback.",
-  subtext: "You have early access to new arrivals.",
-  offer: "Free express shipping on your next order.",
-  primaryBtn: { label: "Shop New Arrivals", href: "/shop" },
-  secondaryBtn: { label: "View My Orders", href: "/contact" },
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function EntranceNotification() {
   const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
 
   // Refs for GSAP targets
   const backdropRef  = useRef<HTMLDivElement>(null);
@@ -50,18 +44,72 @@ export default function EntranceNotification() {
   const imageTagRef  = useRef<HTMLDivElement>(null);
   const closeBtnRef  = useRef<HTMLButtonElement>(null);
 
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const isLoggedIn = !!session?.user;
-  const content = isLoggedIn ? USER_CONTENT : GUEST_CONTENT;
+  const content = GUEST_CONTENT;
 
-  // ── Mount after delay then run entrance timeline ──────────────────────────
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 4500); // longer delay
-    return () => clearTimeout(timer);
-  }, []);
+  // 1. Determine if we are on an allowed page
+  const isAllowedPage = 
+    pathname === '/' || 
+    pathname === '/shop' || 
+    pathname.startsWith('/product/') || 
+    pathname.startsWith('/solutions/');
 
   useEffect(() => {
-    if (!mounted) return;
+    // Reset state on navigation
+    setIsVisible(false);
+    setMounted(false);
+    
+    if (isPending || isLoggedIn || !isAllowedPage) return;
+
+    // Clear legacy boolean flag if it exists to unblock users
+    if (localStorage.getItem('slots_popup_dismissed')) {
+        localStorage.removeItem('slots_popup_dismissed');
+    }
+
+    // Check if dismissed recently (within 24 hours)
+    const dismissedAt = localStorage.getItem('slots_popup_dismissed_at');
+    if (dismissedAt) {
+        const timeSinceDismissal = Date.now() - parseInt(dismissedAt, 10);
+        if (timeSinceDismissal < 24 * 60 * 60 * 1000) { // 24 hours
+            return;
+        }
+    }
+
+    let hasTriggered = false;
+    let timer: NodeJS.Timeout;
+
+    const triggerPopup = () => {
+        if (hasTriggered) return;
+        hasTriggered = true;
+        setMounted(true);
+        // small delay before animation starts
+        setTimeout(() => setIsVisible(true), 100);
+    };
+
+    // Trigger after 20 seconds
+    timer = setTimeout(triggerPopup, 20000);
+
+    // Trigger after scrolling 40%
+    const handleScroll = () => {
+        if (hasTriggered) return;
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPosition = window.scrollY;
+        if (scrollHeight > 0 && (scrollPosition / scrollHeight) >= 0.4) {
+            triggerPopup();
+        }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+        clearTimeout(timer);
+        window.removeEventListener('scroll', handleScroll);
+    };
+  }, [pathname, isPending, isLoggedIn, isAllowedPage]);
+
+  useEffect(() => {
+    if (!isVisible) return;
 
     const isMobile = window.innerWidth <= 600;
 
@@ -159,14 +207,18 @@ export default function EntranceNotification() {
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
         "-=0.5"
       );
-  }, [mounted]);
+  }, [isVisible]);
 
   // ── Dismiss with GSAP exit timeline ──────────────────────────────────────
   const dismiss = () => {
+    localStorage.setItem('slots_popup_dismissed_at', Date.now().toString());
     const isMobile = window.innerWidth <= 600;
 
     const tl = gsap.timeline({
-      onComplete: () => setMounted(false),
+      onComplete: () => {
+        setIsVisible(false);
+        setMounted(false);
+      },
       defaults: { ease: "power3.in" },
     });
 
@@ -239,6 +291,10 @@ export default function EntranceNotification() {
       {/* ── Panel ────────────────────────────────────────────────────────── */}
       <div
         ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="entrance-headline"
+        aria-describedby="entrance-subtext"
         style={{
           position: "fixed",
           bottom: "3%",
@@ -289,6 +345,7 @@ export default function EntranceNotification() {
           {/* Headline + body copy */}
           <div style={{ flex: 1 }}>
             <h2
+              id="entrance-headline"
               ref={headlineRef}
               style={{
                 fontSize: "clamp(30px, 4.2vw, 52px)",
@@ -315,6 +372,7 @@ export default function EntranceNotification() {
             />
 
             <p
+              id="entrance-subtext"
               ref={subtextRef}
               style={{
                 fontSize: "clamp(13px, 1.5vw, 15px)",
@@ -441,7 +499,7 @@ export default function EntranceNotification() {
 
           <img
             src="https://i.pinimg.com/1200x/a8/2a/cf/a82acf55c8434591dfbd75c0fe9807da.jpg"
-            alt="Style your moment"
+            alt="Custom sportswear manufacturing B2B portal"
             style={{
               width: "100%",
               height: "100%",

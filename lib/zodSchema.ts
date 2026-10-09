@@ -17,6 +17,7 @@ export const zSchema = z.object({
     slug: z.string().min(3, { message: "slug is required." }),
     category: z.string().min(3, { message: "category is required." }),
     productType: z.string().min(2, { message: "product type is required." }),
+    productCategoryAssignments: z.any().optional(),
     description: z.string().min(10, { message: "description is required." }),
     media: z.array(z.string()),
     mrp: z.union([

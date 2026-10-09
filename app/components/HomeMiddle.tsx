@@ -83,16 +83,46 @@ const HomeMiddle = () => {
         {/* Secondary Collection Highlights */}
         <div className="highlights-grid w-full grid grid-cols-2 md:grid-cols-3 gap-5 relative z-10 p-5">
           {[
-            { title: "Private label", desc: "Vendorist Apparel is a quality-focused private-label clothing manufacturer that meets the demands of both a fresh clothing line and well-known businesses.", img: 'https://i.pinimg.com/1200x/09/30/41/093041bbdd205a7676b5a38c1d6e646b.jpg' },
-            { title: "Cut & Sew Manufacturer", desc: "The top maker of cut-and-sew clothing is at your disposal. You have complete control over the creation process of your intended content.", img: 'https://i.pinimg.com/1200x/9d/1d/68/9d1d689b6ff37f8f303e2e89afb6bac4.jpg' },
-            { title: "Custom Embroidery Services", desc: "Enhance your brand with our state-of-the-art bespoke embroidery processes and techniques.", img: 'https://i.pinimg.com/1200x/e2/7b/c9/e27bc914c5db41b42a134b0b81aa062c.jpg' },
-            { title: "Custom Printing Services", desc: "With our custom printing services, you can add a personal touch to your clothing.", img: 'https://i.pinimg.com/736x/44/1e/c6/441ec6acd0ca332a83a1d9ba5540bf05.jpg' },
-            { title: "Custom Sportswear Apparels", desc: "Slot-sports-wear can help you create your own personalized fitness apparel manufacturer brand.", img: 'https://i.pinimg.com/1200x/06/d3/81/06d3814393fb753615336fd489e5a6bf.jpg' },
-            { title: "Custom Activewear Apparels", desc: "Slot-sports-wear can help you create your own personalized fitness apparel manufacturer brand.", img: 'https://i.pinimg.com/736x/09/c1/54/09c1542f59b443d1f9d4ad06f5c7e6e6.jpg' },
+            { 
+              title: "Private Label Sportswear", 
+              desc: "Private-label sportswear manufacturing for growing apparel brands.", 
+              img: 'https://i.pinimg.com/1200x/09/30/41/093041bbdd205a7676b5a38c1d6e646b.jpg',
+              alt: "Private label sportswear manufacturing and brand packaging"
+            },
+            { 
+              title: "Cut & Sew Manufacturing", 
+              desc: "Precision cut-and-sew production for custom performance apparel.", 
+              img: 'https://i.pinimg.com/1200x/9d/1d/68/9d1d689b6ff37f8f303e2e89afb6bac4.jpg',
+              alt: "Professional cut and sew manufacturing for custom sportswear"
+            },
+            { 
+              title: "Custom Embroidery Services", 
+              desc: "Custom embroidery for branded sportswear and athletic teamwear.", 
+              img: 'https://i.pinimg.com/1200x/e2/7b/c9/e27bc914c5db41b42a134b0b81aa062c.jpg',
+              alt: "Custom sportswear embroidery and teamwear branding"
+            },
+            { 
+              title: "Custom Printing Services", 
+              desc: "High-quality sublimation and garment printing for athletic wear.", 
+              img: 'https://i.pinimg.com/736x/44/1e/c6/441ec6acd0ca332a83a1d9ba5540bf05.jpg',
+              alt: "Custom sportswear printing and sublimation services"
+            },
+            { 
+              title: "Custom Sportswear Apparel", 
+              desc: "Full-scale custom sportswear production for professional athletic brands.", 
+              img: 'https://i.pinimg.com/1200x/06/d3/81/06d3814393fb753615336fd489e5a6bf.jpg',
+              alt: "Custom sportswear apparel manufacturing for athletic brands"
+            },
+            { 
+              title: "Custom Activewear Production", 
+              desc: "Premium OEM activewear manufacturing designed for high performance.", 
+              img: 'https://i.pinimg.com/736x/09/c1/54/09c1542f59b443d1f9d4ad06f5c7e6e6.jpg',
+              alt: "Custom OEM activewear and fitness apparel production"
+            },
           ].map((item, i) => (
             <div key={i} className="highlight-card flex flex-col gap-5 h-full">
               <div className="h-[33vh] md:h-[40vh] w-full relative overflow-hidden">
-                <img className='size-full object-cover' src={item.img} alt="" />
+                <img className='size-full object-cover' src={item.img} alt={item.alt} />
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="uppercase text-black flex items-center gap-2 font-semibold">{item.title}</h3>

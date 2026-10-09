@@ -1,6 +1,6 @@
 'use client';
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef } from "react";
 import toast from 'react-hot-toast';
 import { useGSAP } from "@gsap/react";
@@ -9,6 +9,10 @@ import Link from "next/link";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export default function SignUp() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams?.get("callbackUrl");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,10 +41,20 @@ export default function SignUp() {
     }
     await authClient.signUp.email({ email, password, name }, {
       onRequest: () => setLoading(true),
-      onSuccess: () => {
+      onSuccess: async () => {
         setLoading(false);
+        try {
+          if (authClient.sendVerificationEmail) {
+            await authClient.sendVerificationEmail({ 
+              email, 
+              callbackURL: callbackUrl || "/dashboard"
+            });
+          }
+        } catch (error) {
+          console.error("Verification email manual trigger error", error);
+        }
         toast.success("Account created! Please verify your email.");
-        redirect("/auth/verifyemail");
+        router.push("/auth/verifyemail");
       },
       onError: (ctx) => {
         setLoading(false);
@@ -63,7 +77,7 @@ export default function SignUp() {
         className="w-full max-w-5xl mx-4 grid grid-cols-1 md:grid-cols-2 border border-black/10 overflow-hidden shadow-2xl"
         style={{ background: '#edeee788', backdropFilter: 'blur(40px)' }}
       >
-        {/* LEFT — Steps */}
+        {/* LEFT - Steps */}
         <div
           ref={leftRef}
           className="hidden md:flex flex-col justify-between p-10 bg-black text-[#EDEEE7] relative overflow-hidden"
@@ -90,7 +104,7 @@ export default function SignUp() {
           </div>
         </div>
 
-        {/* RIGHT — Form */}
+        {/* RIGHT - Form */}
         <div ref={rightRef} className="p-10 flex flex-col justify-center gap-8 bg-[#EDEEE7]">
           <div className="auth-field">
             <p className="uppercase text-black/30 font-bold">New Account</p>

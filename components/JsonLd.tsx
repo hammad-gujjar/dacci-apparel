@@ -1,5 +1,5 @@
 /**
- * JsonLd — lightweight server component that injects JSON-LD structured data.
+ * JsonLd - lightweight server component that injects JSON-LD structured data.
  * Usage: <JsonLd data={{ "@type": "Organization", ... }} />
  */
 export default function JsonLd({ data }: { data: Record<string, unknown> }) {

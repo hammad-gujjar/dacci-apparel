@@ -14,12 +14,14 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Modular Components
 import ProductGallery from './components/ProductGallery';
 import ProductInfo from './components/ProductInfo';
 import ReviewCollective from './components/ReviewCollective';
 import ReviewModal from './components/ReviewModal';
 import GalleryMarquee from './components/GalleryMarquee';
+import ProductManufacturingDetails from './components/ProductManufacturingDetails';
+import ManufacturingProcess from './components/ManufacturingProcess';
+import ProductContentStructure from './components/ProductContentStructure';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -49,8 +51,6 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Derived values
-    const currentPrice = selectedVariant ? selectedVariant.sellingPrice : product.sellingPrice;
-    const currentMrp = selectedVariant ? selectedVariant.mrp : product.mrp;
     const currentDiscount = selectedVariant ? selectedVariant.discountPercentage : product.discountPercentage;
     const currentMedia = (selectedVariant?.media?.length > 0 ? selectedVariant.media : product.media) || [];
     const mainImage = currentMedia?.[activeImageIndex]?.secure_url || currentMedia?.[0]?.secure_url || '/placeholder.png';
@@ -178,11 +178,18 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                         product={product}
                         selectedVariant={selectedVariant}
                         handleVariantSelect={handleVariantSelect}
-                        currentPrice={currentPrice}
-                        currentMrp={currentMrp}
                         renderStars={renderStars}
                     />
                 </div>
+
+                {/* Product Manufacturing Details (Fabric Options, Customization, Production) */}
+                <ProductManufacturingDetails />
+
+                {/* Structured Content Sections (Product Overview, Customization Options, Why Choose, Manufacturing Capability, FAQ) */}
+                <ProductContentStructure product={product} />
+
+                {/* From Design To Delivery (6 sequential steps) */}
+                <ManufacturingProcess />
 
                 <ReviewCollective
                     product={product}

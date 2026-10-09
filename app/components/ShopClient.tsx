@@ -150,26 +150,26 @@ const ShopClient = ({
                 </div>
             </div>
 
-            {/* Informative Section - KEEP DARK */}
+            {/* Manufacturing Capabilities Section - KEEP DARK */}
             <section className="bg-black py-32 px-5 md:px-10 border-t border-[#EDEEE7]/10 mt-24">
                 <div className="max-w-5xl mx-auto flex flex-col gap-16">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
                         <div className="flex flex-col gap-6 max-w-2xl">
-                            <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-[0.5em]">Vision of Excellence</span>
+                            <span className="text-[#EDEEE7]/30 text-[10px] uppercase font-bold tracking-[0.5em]">OEM & ODM Manufacturing</span>
                             <h3 className="text-[#EDEEE7] text-4xl md:text-7xl font-[main] uppercase tracking-tighter leading-none">
-                                Uncompromising <br /> Quality Control.
+                                Uncompromising <br /> Production Quality.
                             </h3>
                         </div>
                         <p className="text-[#EDEEE7]/50 text-base font-light leading-relaxed max-w-sm">
-                            Behind every Slots garment lies a rigorous process of selection and refinement. We don't just follow trends; we set the standard for durability and aesthetic longevity.
+                            Behind every production run lies a rigorous process of quality control and refinement. We engineer custom sportswear that meets the strict performance demands of global athletic brands.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-[#EDEEE7]/10 border border-[#EDEEE7]/10 rounded-[1.5vw] overflow-hidden mt-10">
                         {[
-                            { title: "Sourcing", desc: "Italian silks and Egyptian cottons selected for their tactile superiority." },
-                            { title: "Technique", desc: "Bespoke tailoring methods infused with modern precision technology." },
-                            { title: "Service", desc: "A lifetime commitment to the maintenance of your Slots collection." }
+                            { title: "Fabrication", desc: "Technical knits, moisture-wicking blends, and custom lab-dips engineered for commercial durability." },
+                            { title: "Technique", desc: "Advanced sublimation, high-density embroidery, and automated CAD pattern grading for a perfect fit." },
+                            { title: "Scalability", desc: "From flexible 50-piece pilot runs to full-scale 5,000+ unit production logistics shipped worldwide." }
                         ].map((item, i) => (
                             <div key={i} className="bg-black p-10 flex flex-col gap-4 group hover:bg-[#EDEEE7]/5 transition-colors duration-500">
                                 <span className="text-[#EDEEE7] text-2xl font-[main] uppercase tracking-tight">{item.title}</span>

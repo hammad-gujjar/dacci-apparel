@@ -69,24 +69,24 @@ const AdminDashboard = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#111111] dark:border-[#EDEEE7]"></div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-3">
+        <div className="min-h-screen bg-[#EDEEE7] dark:bg-[#111111] p-3">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
-                    <p className="text-gray-500 dark:text-gray-400">Welcome back! Here's what's happening.</p>
+                    <h1 className="text-2xl font-[main] tracking-wide text-[#111111] dark:text-[#EDEEE7] mb-2 uppercase">Dashboard</h1>
+                    <p className="text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle]">Welcome back! Here's what's happening.</p>
                 </div>
 
                 {/* Stats Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {/* Total Users Card */}
-                    <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-800">
+                    <Card className="bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="p-3 bg-green-500 rounded-xl">
@@ -96,8 +96,8 @@ const AdminDashboard = () => {
                                     +{calculateGrowth()}%
                                 </span>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Users</h3>
-                            <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats?.totalUsers || 0}</p>
+                            <h3 className="text-sm font-[middle] text-[#111111]/70 dark:text-[#EDEEE7]/70 uppercase tracking-widest mb-1">Total Users</h3>
+                            <p className="text-3xl font-[AeonikBold] text-[#111111] dark:text-[#EDEEE7]">{stats?.totalUsers || 0}</p>
                             <div className="mt-2 flex items-center text-xs text-green-600 dark:text-green-400">
                                 <FiArrowUp className="mr-1" />
                                 <span>{stats?.recentUsers || 0} new this week</span>
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
                     </Card>
 
                     {/* Total Products Card */}
-                    <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border-yellow-200 dark:border-yellow-800">
+                    <Card className="bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="p-3 bg-yellow-500 rounded-xl">
@@ -116,16 +116,16 @@ const AdminDashboard = () => {
                                     Active
                                 </span>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Products</h3>
-                            <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats?.totalProducts || 0}</p>
-                            <div className="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            <h3 className="text-sm font-[middle] text-[#111111]/70 dark:text-[#EDEEE7]/70 uppercase tracking-widest mb-1">Products</h3>
+                            <p className="text-3xl font-[AeonikBold] text-[#111111] dark:text-[#EDEEE7]">{stats?.totalProducts || 0}</p>
+                            <div className="mt-2 flex items-center text-xs text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle]">
                                 <span>In catalog</span>
                             </div>
                         </CardContent>
                     </Card>
 
                     {/* Average Rating Card */}
-                    <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-800">
+                    <Card className="bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="p-3 bg-purple-500 rounded-xl">
@@ -135,28 +135,28 @@ const AdminDashboard = () => {
                                     Avg
                                 </span>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Rating</h3>
-                            <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats?.avgRating || '0.0'}</p>
-                            <div className="mt-2 flex items-center text-xs text-gray-500 dark:text-gray-400">
+                            <h3 className="text-sm font-[middle] text-[#111111]/70 dark:text-[#EDEEE7]/70 uppercase tracking-widest mb-1">Rating</h3>
+                            <p className="text-3xl font-[AeonikBold] text-[#111111] dark:text-[#EDEEE7]">{stats?.avgRating || '0.0'}</p>
+                            <div className="mt-2 flex items-center text-xs text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle]">
                                 <span>From {stats?.totalReviews || 0} reviews</span>
                             </div>
                         </CardContent>
                     </Card>
 
                     {/* Monthly Progress Card */}
-                    <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800">
+                    <Card className="bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardContent className="p-5">
                             <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 bg-blue-500 rounded-xl">
+                                <div className="p-3 bg-[#111111] dark:bg-[#EDEEE7] rounded-xl">
                                     <FiTrendingUp className="text-white text-xl" />
                                 </div>
                             </div>
-                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Growth</h3>
-                            <p className="text-3xl font-bold text-gray-900 dark:text-white">{calculateGrowth()}%</p>
+                            <h3 className="text-sm font-[middle] text-[#111111]/70 dark:text-[#EDEEE7]/70 uppercase tracking-widest mb-1">Growth</h3>
+                            <p className="text-3xl font-[AeonikBold] text-[#111111] dark:text-[#EDEEE7]">{calculateGrowth()}%</p>
                             <div className="mt-2">
-                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div className="w-full bg-[#111111]/10 dark:bg-[#EDEEE7]/10 rounded-full h-2">
                                     <div 
-                                        className="bg-blue-500 h-2 rounded-full transition-all duration-500" 
+                                        className="bg-[#111111] dark:bg-[#EDEEE7] h-2 rounded-full transition-all duration-500" 
                                         style={{ width: `${Math.min(parseFloat(calculateGrowth()), 100)}%` }}
                                     ></div>
                                 </div>
@@ -168,12 +168,12 @@ const AdminDashboard = () => {
                 {/* Charts and Recent Activity */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* User Activity Chart */}
-                    <Card className="lg:col-span-2 bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800">
+                    <Card className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardHeader className="border-b border-gray-200 dark:border-zinc-800 pb-4">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">User Activity</h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Last 7 days</p>
+                                    <h3 className="text-sm font-[main] tracking-wider uppercase text-[#111111] dark:text-[#EDEEE7]">User Activity</h3>
+                                    <p className="text-sm text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle] mt-1">Last 7 days</p>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-2xl font-bold text-gray-900 dark:text-white">+{calculateGrowth()}%</p>
@@ -213,11 +213,11 @@ const AdminDashboard = () => {
                     </Card>
 
                     {/* Recent Reviews */}
-                    <Card className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800">
+                    <Card className="bg-white dark:bg-[#1A1A1A] border-[#111111]/10 dark:border-white/10 shadow-sm">
                         <CardHeader className="border-b border-gray-200 dark:border-zinc-800 pb-4">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Reviews</h3>
-                                <button className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                                <h3 className="text-sm font-[main] tracking-wider uppercase text-[#111111] dark:text-[#EDEEE7]">Recent Reviews</h3>
+                                <button className="text-sm text-[#111111] dark:text-[#EDEEE7] font-[middle] underline hover:underline">
                                     See All
                                 </button>
                             </div>
@@ -226,15 +226,15 @@ const AdminDashboard = () => {
                             <div className="space-y-4">
                                 {recentReviews.length > 0 ? (
                                     recentReviews.map((review) => (
-                                        <div key={review._id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                                        <div key={review._id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-[#111111]/5 dark:hover:bg-[#EDEEE7]/5 transition-colors">
+                                            <div className="w-10 h-10 rounded-full bg-[#111111] dark:bg-[#EDEEE7] text-white dark:text-[#111111] flex items-center justify-center text-white font-semibold flex-shrink-0">
                                                 {review.user?.name?.charAt(0) || 'U'}
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                                <p className="text-sm font-[middle] text-[#111111] dark:text-[#EDEEE7] truncate">
                                                     {review.user?.name || 'Anonymous'}
                                                 </p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                                <p className="text-xs text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle] truncate">
                                                     {review.product?.name || 'Product'}
                                                 </p>
                                                 <div className="flex items-center mt-1">
@@ -256,7 +256,7 @@ const AdminDashboard = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                                    <div className="text-center py-8 text-[#111111]/70 dark:text-[#EDEEE7]/70 font-[middle]">
                                         <FiStar className="mx-auto text-4xl mb-2 opacity-20" />
                                         <p className="text-sm">No reviews yet</p>
                                     </div>

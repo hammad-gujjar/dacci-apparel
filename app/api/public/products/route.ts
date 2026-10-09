@@ -24,21 +24,71 @@ export async function GET(req: NextRequest) {
         if (category) {
             const foundCategory = await Category.findOne({ slug: category });
             if (foundCategory) {
-                query.category = foundCategory._id;
+                if (type) {
+                    query.$or = [
+                        { category: foundCategory._id, productType: type },
+                        { productCategoryAssignments: { $elemMatch: { category: foundCategory._id, subcategory: type, assignmentType: 'specific' } } },
+                        { productCategoryAssignments: { $elemMatch: { subcategory: type, assignmentType: 'all' } } }
+                    ];
+                } else {
+                    query.$or = [
+                        { category: foundCategory._id },
+                        { productCategoryAssignments: { $elemMatch: { category: foundCategory._id, assignmentType: 'specific' } } },
+                        { productCategoryAssignments: { $elemMatch: { subcategory: { $in: foundCategory.types }, assignmentType: 'all' } } }
+                    ];
+                }
+            } else {
+                const catLower = category.toLowerCase();
+                const b2bCategoryKeywords: Record<string, RegExp> = {
+                    'teamwear': /team|polo|jersey|uniform|t-shirt|shirt|hoodie|shorts|cap/i,
+                    'golfwear': /golf|glove|polo|sleeve|towel|skirt/i,
+                    'fitness-apparel': /fitness|gym|tank|compression|short/i,
+                    'activewear': /active|hoodie|short|tank|tee|shirt|running/i,
+                    'running-wear': /running|run|tank|tee|short|compression/i,
+                    'training-wear': /training|train|compression|gym|hoodie|short/i,
+                };
+                const regex = b2bCategoryKeywords[catLower] || new RegExp(category.replace(/-/g, ' '), 'i');
+                if (type) {
+                    query.$and = [
+                        { $or: [{ name: { $regex: regex } }, { tags: { $regex: regex } }, { productType: { $regex: regex } }] },
+                        { $or: [{ productType: type }, { productCategoryAssignments: { $elemMatch: { subcategory: type } } }] }
+                    ];
+                } else {
+                    query.$or = [
+                        { name: { $regex: regex } },
+                        { tags: { $regex: regex } },
+                        { productType: { $regex: regex } }
+                    ];
+                }
             }
+        } else if (type) {
+            query.$or = [
+                { productType: type },
+                { productCategoryAssignments: { $elemMatch: { subcategory: type } } }
+            ];
         }
 
         if (onSale) {
             query.discountPercentage = { $gt: 0 };
         }
 
-        if (type) {
-            query.productType = type;
-        }
-
         if (tags) {
-            const tagArray = tags.split(',').map(tag => tag.trim());
-            query.tags = { $in: tagArray };
+            const tagArray = tags.split(',').map(tag => tag.trim()).filter(Boolean);
+            const tagConditions = tagArray.map(t => {
+                const tLower = t.toLowerCase();
+                if (tLower === 'sublimation') return { $or: [{ tags: { $regex: /sublima|print|color|pattern/i } }, { name: { $regex: /sublima|print/i } }] };
+                if (tLower === 'embroidery') return { $or: [{ tags: { $regex: /embroider|stitch|cap/i } }, { name: { $regex: /embroider|cap/i } }] };
+                if (tLower === 'screen printing') return { $or: [{ tags: { $regex: /print|screen/i } }, { name: { $regex: /print/i } }] };
+                if (tLower === 'private label') return { $or: [{ tags: { $regex: /label|custom|oem|basic/i } }, { name: { $regex: /custom|oem/i } }] };
+                return { tags: { $regex: new RegExp(t, 'i') } };
+            });
+
+            if (query.$or) {
+                query.$and = [{ $or: query.$or }, { $or: tagConditions }];
+                delete query.$or;
+            } else {
+                query.$or = tagConditions;
+            }
         }
 
         if (searchQuery) {

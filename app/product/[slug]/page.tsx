@@ -74,21 +74,24 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     const product = await getProductData(slug);
     if (!product) return { title: 'Product Not Found' };
 
-    const description = product.description?.substring(0, 160) || '';
-    const imageUrl = product.media?.[0]?.secure_url || 'https://slotssportswear.com/images/daccilogosvg.png';
+    const title = `${product.name} Manufacturer | Custom OEM Sportswear Supplier`;
+    const description = `Custom ${product.name} manufacturer offering OEM and private label sportswear production for global brands, teams and wholesale buyers.`;
+    const imageUrl = product.media?.[0]?.secure_url || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/images/logo.png`;
 
     return {
-        title: product.name,
+        title: {
+            absolute: title,
+        },
         description,
         openGraph: {
             type: 'website',
-            title: product.name,
+            title,
             description,
             images: [{ url: imageUrl, width: 800, height: 600, alt: product.name }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: product.name,
+            title,
             description,
             images: [imageUrl],
         },
@@ -118,7 +121,7 @@ export default async function Page({ params }: ProductPageProps) {
         category: productData.category?.name || '',
         offers: {
             '@type': 'Offer',
-            url: `https://slotssportswear.com/product/${productData.slug}`,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/product/${productData.slug}`,
             priceCurrency: 'PKR',
             price: productData.sellingPrice || productData.price || 0,
             availability: 'https://schema.org/InStock',

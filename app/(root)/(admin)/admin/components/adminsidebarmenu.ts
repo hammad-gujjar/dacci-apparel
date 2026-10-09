@@ -1,17 +1,40 @@
 import { AiOutlineDashboard } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
 import { IoShirtOutline } from "react-icons/io5";
-import { MdOutlineShoppingBag } from "react-icons/md";
+import { MdOutlineShoppingBag, MdOutlinePermMedia, MdOutlineManageSearch } from "react-icons/md";
 import { LuUserRound } from "react-icons/lu";
 import { IoMdStarOutline } from "react-icons/io";
-import { MdOutlinePermMedia } from "react-icons/md";
-import { RiCoupon2Line } from "react-icons/ri";
+import { RiCoupon2Line, RiContactsBookLine } from "react-icons/ri";
 
 export const adminSidebarMenu = [
     {
         label: "Dashboard",
         href: "/admin/dashboard",
         Icon: AiOutlineDashboard,
+    },
+    {
+        label: "B2B CRM Leads",
+        href: "/admin/leads",
+        Icon: RiContactsBookLine,
+    },
+    {
+        label: "SEO & Content CMS",
+        href: "#",
+        Icon: MdOutlineManageSearch,
+        submenu: [
+            {
+                label: "SEO Overview",
+                href: "/admin/seo",
+            },
+            {
+                label: "Solution Pages",
+                href: "/admin/seo/solutions",
+            },
+            {
+                label: "Knowledge Hub",
+                href: "/admin/seo/knowledge",
+            },
+        ],
     },
     {
         label: "Category",

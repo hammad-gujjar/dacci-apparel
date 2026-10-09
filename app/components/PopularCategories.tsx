@@ -15,57 +15,64 @@ gsap.registerPlugin(ScrollTrigger);
 
 const categories = [
   {
-    id: 'man',
-    type: 'detailed',
-    title: "men's top",
-    subtitle: "Designed to last",
-    image: "https://i.pinimg.com/736x/09/76/cf/0976cff2a137e7cefe03baada5ca6e74.jpg",
-    width: "w-[280px] md:w-[400px]",
-  },
-  {
-    id: 'women',
-    type: 'detailed',
-    title: "Women",
-    subtitle: "Elegance redefined",
-    image: "https://i.pinimg.com/736x/91/07/6a/91076a498ecc85a30091c6f500f378c4.jpg",
-    width: "w-[280px] md:w-[400px]",
-  },
-  {
-    id: 'autumn',
-    type: 'detailed',
-    title: "Autumn",
-    subtitle: "Warm layers",
-    image: "https://i.pinimg.com/1200x/f9/1b/38/f91b38b62b069ff7d769ab4311627d7b.jpg",
-    width: "w-[280px] md:w-[400px]",
-  },
-  {
-    id: 'shoes',
-    type: 'simple',
-    title: "Shoes",
-    image: "https://i.pinimg.com/1200x/64/25/ad/6425ad018953f7a520aa907496cd6b85.jpg",
-    width: "w-[280px] md:w-[400px]",
-  },
-  {
-    id: 'girls',
+    id: 'polo-shirts',
     type: 'detailed_with_btn',
-    title: "Girl's Top",
-    subtitle: "Mysterious everyday",
-    image: "https://i.pinimg.com/1200x/55/e5/29/55e5298261a13271488f08ed61488543.jpg",
+    title: "Polo Shirts",
+    subtitle: "Custom polo shirts",
+    alt: "Custom polo shirts sportswear",
+    image: "images/3-sub-categories-6-images/custom-polo-shirts-sportswear.webp",
     width: "w-[280px] md:w-[400px]",
+    url: "/shop?type=Polo Shirts",
   },
   {
-    id: 'acc',
-    type: 'simple',
-    title: "Acc.",
-    image: "https://i.pinimg.com/736x/a6/c3/3b/a6c33b26fdb8d433ac4dd1e0a5226d53.jpg",
+    id: 't-shirts',
+    type: 'detailed_with_btn',
+    title: "T-Shirts",
+    subtitle: "Custom sportswear t-shirts",
+    alt: "Custom T-shirts for sportswear",
+    image: "images/3-sub-categories-6-images/custom-t-shirts-sportswear.webp",
     width: "w-[280px] md:w-[400px]",
+    url: "/shop?type=T-Shirts",
   },
   {
-    id: 'essential',
-    type: 'simple',
-    title: "Basic",
-    image: "https://i.pinimg.com/1200x/eb/b6/7e/ebb67eaa0d380249978d690bd365da2a.jpg",
+    id: 'golf-gloves',
+    type: 'detailed_with_btn',
+    title: "Golf Gloves",
+    subtitle: "Performance golf gloves",
+    alt: "Golf gloves for performance apparel",
+    image: "images/3-sub-categories-6-images/golf-gloves-sportswear.webp",
     width: "w-[280px] md:w-[400px]",
+    url: "/shop?category=golfwear&type=Golf Gloves",
+  },
+  {
+    id: 'soccer-uniforms',
+    type: 'detailed_with_btn',
+    title: "Soccer Uniforms",
+    subtitle: "Custom soccer uniforms",
+    alt: "Custom soccer uniforms",
+    image: "images/3-sub-categories-6-images/custom-soccer-uniforms.webp",
+    width: "w-[280px] md:w-[400px]",
+    url: "/shop?category=teamwear&type=Soccer Uniforms",
+  },
+  {
+    id: 'compression-shirts',
+    type: 'detailed_with_btn',
+    title: "Compression Shirts",
+    subtitle: "Custom compression shirts",
+    alt: "Custom compression shirts",
+    image: "images/3-sub-categories-6-images/compression-shirts-sportswear.webp",
+    width: "w-[280px] md:w-[400px]",
+    url: "/shop?category=fitness-apparel&type=Compression Shirts",
+  },
+  {
+    id: 'hoodies',
+    type: 'detailed_with_btn',
+    title: "Hoodies",
+    subtitle: "Custom sportswear hoodies",
+    alt: "Custom sportswear hoodies",
+    image: "images/3-sub-categories-6-images/custom-sportswear-hoodies.webp",
+    width: "w-[280px] md:w-[400px]",
+    url: "/shop?category=activewear&type=Hoodies",
   }
 ];
 
@@ -107,7 +114,7 @@ const PopularCategories = () => {
 
   const renderCard = (cat: any, index: number, inView: boolean) => {
     const innerClasses = "category-card relative size-full overflow-hidden group cursor-pointer bg-neutral-100 flex flex-col justify-center";
-    const href = `/shop?tags=${cat.title}`;
+    const href = cat.url || `/shop`;
 
     let content;
 
@@ -127,7 +134,7 @@ const PopularCategories = () => {
       content = (
         <div onClick={() => transitionTo(href, { scroll: true })} className={`${innerClasses} block`}>
           <div className="absolute inset-0 size-full z-0 overflow-hidden">
-            <img src={cat.image} alt={cat.title} className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
+            <img src={cat.image} alt={cat.alt || cat.title} className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out" />
             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-700" />
           </div>
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 bg-black/20">
@@ -140,24 +147,24 @@ const PopularCategories = () => {
       content = (
         <div onClick={() => transitionTo(href, { scroll: true })} className={`${innerClasses} block`}>
           <div className="absolute inset-0 size-full z-0 overflow-hidden">
-            <img src={cat.image} alt={cat.title} className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out object-center" />
-            <div className="absolute inset-0 bg-black/15 group-hover:bg-black/40 transition-colors duration-700" />
+            <img src={cat.image} alt={cat.alt || cat.title} className="size-full object-cover scale-105 group-hover:scale-110 transition-transform duration-2000 ease-out object-center" />
+            <div className="absolute inset-0 bg-black/0 md:bg-black/15 md:group-hover:bg-black/40 transition-colors duration-700" />
           </div>
 
           <div className="absolute top-4 right-4 z-30 size-8 md:size-10 border border-white/30 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:bg-white group-hover:text-black transition-all duration-500">
             <IoMdArrowForward className="-rotate-45 text-white group-hover:text-black text-lg transition-colors" />
           </div>
 
-          <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8 z-20 space-y-1">
-            <div className="transition-all duration-700 ease-out translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+          <div className="absolute bottom-5 left-5 md:bottom-8 md:left-8 z-20 space-y-1 md:space-y-1 w-[80%] md:w-auto">
+            <div className="transition-all duration-700 ease-out translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
               <AnimatedSwapText text={cat.title} active={inView} className="text-[#EDEEE7] text-[20px] md:text-[28px] font-medium mb-1 font-[main]" stagger={0.02} delay={0.5} />
             </div>
-            <p className="text-[#EDEEE7] font-light text-xs md:text-sm transition-all duration-700 ease-out delay-100 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 mb-4">
+            <p className="text-[#EDEEE7] font-light text-xs md:text-sm transition-all duration-700 ease-out delay-100 translate-y-0 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 mb-4">
               {cat.subtitle}
             </p>
 
             {cat.type === 'detailed_with_btn' && (
-              <div className="transition-all duration-700 delay-200 rounded-full opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hidden md:inline-block mt-3 w-fit">
+              <div className="transition-all duration-700 delay-200 rounded-full translate-y-0 opacity-100 md:opacity-0 md:translate-y-4 md:group-hover:opacity-100 md:group-hover:translate-y-0 inline-block mt-2 md:mt-3 w-fit">
                 <div className="relative px-6 py-2.5 rounded-full overflow-hidden transition-transform duration-500 active:scale-95 group/btn inline-block">
                   <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] transition-colors group-hover/btn:bg-white/20" />
                   <div className="absolute -inset-x-full inset-y-0 bg-linear-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg] group-hover/btn:animate-[shimmer_2s_infinite]" />
@@ -184,25 +191,25 @@ const PopularCategories = () => {
       <div className="flex flex-col lg:flex-row justify-between items-start mb-10 gap-5 px-5">
         <div className="lg:w-1/2 space-y-5">
           <Heading
-            title='Discover Collections'
+            title='Golfwear Collection'
           />
           <div className="header-animate flex gap-4 pt-4">
             <TransitionButton
-              text="Shop now"
+              text="View Catalog"
               url="/shop"
               className="dark-button !bg-black !text-[#EDEEE7]"
               arrow
             />
             <TransitionButton
-              text="2023 Lookbook"
-              url="/shop"
+              text="Request Quote"
+              url="/contact#teckpack"
               className="light-button"
             />
           </div>
         </div>
         <div className="lg:w-1/3 header-animate">
           <p className="text-lg text-neutral-500 leading-relaxed font-light">
-            A contemporary fashion brand that focuses on designing and producing minimalist, high-quality clothing and accessories.
+            Comprehensive OEM, ODM, and private label production capabilities for sports teams, athletic clubs, and global apparel brands.
           </p>
         </div>
       </div>

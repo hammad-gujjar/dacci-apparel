@@ -3,9 +3,23 @@ import { databaseConnection } from '@/lib/database';
 import { Category } from '@/models/category.model';
 import ContactClient from './ContactClient';
 
-export const metadata = {
-    title: 'Contact & Tech Pack · Slots Sports Wear',
-    description: 'Reach out to Slots Sports Wear for bespoke tailoring, unique collections, or submit a Tech Pack for your custom manufacturing needs.',
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: {
+        absolute: 'Contact Us | Custom Sportswear Manufacturer',
+    },
+    description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+    openGraph: {
+        title: 'Contact Us | Custom Sportswear Manufacturer',
+        description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+        images: [{ url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/images/logo.png`, width: 800, height: 600, alt: 'Slots Sports Wear' }],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Contact Us | Custom Sportswear Manufacturer',
+        description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+    },
 };
 
 async function getCategories() {

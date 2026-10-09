@@ -7,6 +7,7 @@ import axios from 'axios';
 import { IoStar, IoStarOutline, IoStarHalf } from 'react-icons/io5';
 import { cn } from '@/lib/utils';
 import { useLoader } from '@/app/context/LoaderContext';
+import TransitionButton from './TransitionButton';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface ShowcaseUser {
@@ -54,13 +55,13 @@ const renderStars = (
 // ─── Text split helper ───────────────────────────────────────────────────────
 const splitText = (text: string) =>
   text.split(' ').map((word, wi) => (
-    <div key={wi} className="flex overflow-hidden">
+    <span key={wi} className="flex overflow-hidden">
       {word.split('').map((char, ci) => (
         <span key={ci} className="hero-char inline-block translate-y-full">
           {char}
         </span>
       ))}
-    </div>
+    </span>
   ));
 
 // ─── HeroSection ─────────────────────────────────────────────────────────────
@@ -126,7 +127,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
     }
   }, { dependencies: [isLoading, arrivalData] });
 
-  const marqueeText = <>LOW MOQs <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> FULLY CUSTOMIZABLE GOLF WEAR | EXPERT OEM <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> ODM SERVICES</>;
+  const marqueeText = <>LOW MOQs <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> FULLY CUSTOMIZABLE SPORTSWEAR | EXPERT OEM <span className="mx-2 font-[middle] text-[#EDEEE7]! font-extrabold">&</span> ODM SERVICES</>;
 
   // ── Hero entrance animations ──────────────────────────────────────────────
   useGSAP(() => {
@@ -154,10 +155,10 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
       <div ref={heroRef} className="w-screen h-[90vh] md:h-screen relative overflow-hidden">
         <div className='size-full absolute top-0 left-0 bg-linear-to-t from-black/40 via-black/10 to-transparent'></div>
         {/* Background video */}
-        {/* Background image — LCP element, load eagerly with high fetch priority */}
+        {/* Background image - LCP element, load eagerly with high fetch priority */}
         <img
           className='hidden md:block object-cover size-full'
-          src="images/hero.jpeg"
+          src="images/1-hero-section-image/custom-sportswear-manufacturer-hero.webp"
           alt="Slots Sports Wear premium clothing collection"
           loading="eager"
           fetchPriority="high"
@@ -165,7 +166,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
         />
         <img
           className='block md:hidden object-cover size-full'
-          src="images/mobilehero.jpeg"
+          src="images/1-hero-section-image/mobilehero.jpg"
           alt="Slots Sports Wear premium clothing collection"
           loading="eager"
           fetchPriority="high"
@@ -238,7 +239,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
                     />
                   ))}
                   <span className="text-[#EDEEE7] text-[10px] font-bold ml-1">
-                    {avgRating > 0 ? avgRating.toFixed(1) : '—'}
+                    {avgRating > 0 ? avgRating.toFixed(1) : '-'}
                   </span>
                 </div>
                 <span className="text-[#EDEEE7]/40 text-[10px] tracking-widest">
@@ -249,9 +250,9 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           </div>
 
           {/* ── Hero title ─────────────────────────────────────────────────── */}
-          <div className="w-full md:w-[65%]">
+          <div className="w-full md:w-[70%]">
             <h1 className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em]">
-              {splitText('YOUR CUSTOM GOLF APPAREL PARTNER | SCALE YOUR BRAND WITH FLEXIBLE MOQs')}
+              {splitText('Custom Sportswear Manufacturer For Global Brands')}
             </h1>
           </div>
 
@@ -259,9 +260,27 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           <div className="w-full md:w-[60%] md:mt-4 mt-2">
             <p className="text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]">
               {splitText(
-                'Bring your golf wear designs to life. From custom polos to premium headwear, we offer world-class manufacturing, low minimums, and global shipping to help your brand grow.'
+                'Full-service OEM, ODM & private label apparel manufacturing. Custom sportswear, teamwear, and high-performance garments produced with low MOQs and global shipping.'
               )}
             </p>
+          </div>
+
+          {/* ── Hero CTA buttons ───────────────────────────────────────────── */}
+          <div className="flex flex-wrap items-center gap-3 mt-4">
+            <TransitionButton
+              text="Request A Quote"
+              url="/contact#teckpack"
+              className="light-button !rounded-full px-7 py-3.5 bg-[#EDEEE7] !text-black font-semibold border-none"
+              arrow
+              rollingText
+            />
+            <TransitionButton
+              text="View Manufacturing Process"
+              url="/manufacturing-process"
+              className="dark-button !rounded-full px-7 py-3.5"
+              arrow
+              rollingText
+            />
           </div>
         </div>
 

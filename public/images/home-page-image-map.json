@@ -1,0 +1,226 @@
+[
+  {
+    "source_filename": "1-hero-section-image/hero-image.jpg",
+    "seo_filename": "1-hero-section-image/custom-sportswear-manufacturer-hero.webp",
+    "section": "Hero Section",
+    "order": 1,
+    "recommended_component": "app/components/HeroSection.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Custom sportswear manufacturer and custom apparel production",
+    "original_dimensions": [
+      2752,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "2-categories-4-images/1-golfwear.jpg",
+    "seo_filename": "2-categories-4-images/golfwear-custom-golf-apparel.webp",
+    "section": "Four Category Showcase",
+    "order": 1,
+    "recommended_component": "app/components/HorizontalCategories.tsx",
+    "seo_alt_text": "Golfwear custom sportswear collection",
+    "original_dimensions": [
+      2752,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "2-categories-4-images/2-teamwear.jpg",
+    "seo_filename": "2-categories-4-images/teamwear-custom-sports-uniforms.webp",
+    "section": "Four Category Showcase",
+    "order": 2,
+    "recommended_component": "app/components/HorizontalCategories.tsx",
+    "seo_alt_text": "Teamwear custom sportswear collection",
+    "original_dimensions": [
+      2752,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "2-categories-4-images/3-fitness.jpg",
+    "seo_filename": "2-categories-4-images/fitness-apparel-custom-sportswear.webp",
+    "section": "Four Category Showcase",
+    "order": 3,
+    "recommended_component": "app/components/HorizontalCategories.tsx",
+    "seo_alt_text": "Fitness custom sportswear collection",
+    "original_dimensions": [
+      2752,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "2-categories-4-images/4-activewear.jpg",
+    "seo_filename": "2-categories-4-images/activewear-custom-athleisure.webp",
+    "section": "Four Category Showcase",
+    "order": 4,
+    "recommended_component": "app/components/HorizontalCategories.tsx",
+    "seo_alt_text": "Activewear custom sportswear collection",
+    "original_dimensions": [
+      2752,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/1-polo-shirts.jpg",
+    "seo_filename": "3-sub-categories-6-images/custom-polo-shirts-sportswear.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 1,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom polo shirts sportswear",
+    "original_dimensions": [
+      600,
+      900
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/2-t-shirts.jpg",
+    "seo_filename": "3-sub-categories-6-images/custom-t-shirts-sportswear.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 2,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom t-shirts sportswear",
+    "original_dimensions": [
+      1792,
+      2400
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/3-golf-gloves.jpg",
+    "seo_filename": "3-sub-categories-6-images/golf-gloves-sportswear.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 3,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom golf gloves sportswear",
+    "original_dimensions": [
+      1792,
+      2400
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/4-soccer-uniforms.jpg",
+    "seo_filename": "3-sub-categories-6-images/custom-soccer-uniforms.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 4,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom soccer uniforms sportswear",
+    "original_dimensions": [
+      735,
+      975
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/5-compression-shirts.jpg",
+    "seo_filename": "3-sub-categories-6-images/compression-shirts-sportswear.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 5,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom compression shirts sportswear",
+    "original_dimensions": [
+      1792,
+      2400
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "3-sub-categories-6-images/6-hoodies.png",
+    "seo_filename": "3-sub-categories-6-images/custom-sportswear-hoodies.webp",
+    "section": "Six Subcategory Showcase",
+    "order": 6,
+    "recommended_component": "app/components/PopularCategories.tsx",
+    "seo_alt_text": "Custom hoodies sportswear",
+    "original_dimensions": [
+      1024,
+      1536
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "4-our-services-images/1-fabric-sourcing.png",
+    "seo_filename": "4-our-services-images/sportswear-fabric-sourcing.webp",
+    "section": "Our Services",
+    "order": 1,
+    "recommended_component": "app/components/OurServices.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Fabric Sourcing for custom sportswear manufacturing",
+    "original_dimensions": [
+      3001,
+      3001
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "4-our-services-images/2-custom-pattern-development.png",
+    "seo_filename": "4-our-services-images/custom-sportswear-pattern-development.webp",
+    "section": "Our Services",
+    "order": 2,
+    "recommended_component": "app/components/OurServices.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Custom Pattern Development for custom sportswear manufacturing",
+    "original_dimensions": [
+      3001,
+      3001
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "4-our-services-images/3-printing-&-embroidery.png",
+    "seo_filename": "4-our-services-images/sportswear-printing-embroidery.webp",
+    "section": "Our Services",
+    "order": 3,
+    "recommended_component": "app/components/OurServices.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Printing & Embroidery for custom sportswear manufacturing",
+    "original_dimensions": [
+      3001,
+      3001
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "4-our-services-images/4-quality-control.png",
+    "seo_filename": "4-our-services-images/sportswear-quality-control.webp",
+    "section": "Our Services",
+    "order": 4,
+    "recommended_component": "app/components/OurServices.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Quality Control for custom sportswear manufacturing",
+    "original_dimensions": [
+      3001,
+      3001
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  },
+  {
+    "source_filename": "4-our-services-images/5-packaging.png",
+    "seo_filename": "4-our-services-images/sportswear-packaging.webp",
+    "section": "Our Services",
+    "order": 5,
+    "recommended_component": "app/components/OurServices.tsx (verify in repo before implementation)",
+    "seo_alt_text": "Packaging for custom sportswear manufacturing",
+    "original_dimensions": [
+      3001,
+      3001
+    ],
+    "output_format": "WebP",
+    "dimensions_preserved": true
+  }
+]

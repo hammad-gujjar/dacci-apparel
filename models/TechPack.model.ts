@@ -13,6 +13,12 @@ const TechPackSchema = new mongoose.Schema({
     company: {
         type: String,
     },
+    country: {
+        type: String,
+    },
+    website: {
+        type: String,
+    },
     productType: {
         type: String,
         required: true,
@@ -24,14 +30,39 @@ const TechPackSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    estimatedQuantity: {
+        type: String,
+    },
     deadline: {
         type: Date,
         required: true,
+    },
+    customizationOptions: {
+        type: [String],
+        default: [],
     },
     customizationDetails: {
         type: String,
         required: true,
     },
+    items: [{
+        name: { type: String },
+        slug: { type: String },
+        category: { type: String },
+        image: { type: String },
+        quantity: { type: Number },
+        color: { type: String },
+        sizeRange: { type: String },
+        customizationOptions: { type: [String], default: [] },
+        notes: { type: String },
+    }],
+    files: [{
+        fileName: { type: String, required: true },
+        fileUrl: { type: String, required: true },
+        fileType: { type: String },
+        fileSize: { type: Number },
+        uploadedAt: { type: Date, default: Date.now },
+    }],
     isNewStatus: {
         type: Boolean,
         default: true,

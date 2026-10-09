@@ -106,6 +106,8 @@ const Footer = () => {
                             {[
                                 { label: 'Our Story', href: '/story' },
                                 { label: 'About Us', href: '/about' },
+                                { label: 'Manufacturing Process', href: '/manufacturing-process' },
+                                { label: 'Knowledge Hub', href: '/knowledge' },
                                 { label: 'Shipping Info', href: '/shipping' },
                                 { label: 'Policies', href: '/policy' },
                                 { label: 'Returns & Refunds', href: '/refund' },

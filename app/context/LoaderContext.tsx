@@ -27,7 +27,7 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
     gsap.registerPlugin(useGSAP);
 
 
-    // GSAP-driven progress animation — called from animateIn/animateOut directly
+    // GSAP-driven progress animation - called from animateIn/animateOut directly
     const animateProgress = (from: number, to: number, duration: number, onDone?: () => void) => {
         const obj = { val: from };
         gsap.to(obj, {

@@ -6,12 +6,21 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Heading from '../components/Heading';
+import TransitionButton from '../components/TransitionButton';
+import TechPackUploadZone, { TechPackUploadedFile } from '../components/TechPackUploadZone';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { trackEvent } from '@/lib/analytics';
 import Icon from '../components/Icon';
-import { IoLogoInstagram, IoLogoFacebook, IoLogoPinterest } from 'react-icons/io5';
+import {
+    IoLogoInstagram,
+    IoLogoFacebook,
+    IoLogoPinterest,
+    IoShirtOutline,
+    IoLayersOutline,
+    IoGlobeOutline
+} from 'react-icons/io5';
 import { FaMedium } from 'react-icons/fa';
-
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -21,6 +30,44 @@ interface ContactClientProps {
     categories: { _id: string; name: string; slug: string }[];
 }
 
+const SPECIFIED_CATEGORIES = [
+    "Teamwear",
+    "Golfwear",
+    "Fitness Apparel",
+    "Activewear",
+    "Custom Clothing"
+];
+
+const QUANTITY_OPTIONS = [
+    "50-100 pcs",
+    "100-500 pcs",
+    "500-1000 pcs",
+    "1000+ pcs"
+];
+
+const CUSTOMIZATION_OPTIONS = [
+    "Sublimation",
+    "Embroidery",
+    "Screen Printing",
+    "Private Label",
+    "Custom Packaging"
+];
+
+const TRUST_METRICS = [
+    {
+        number: "50",
+        label: "MOQ Starting"
+    },
+    {
+        number: "7-14",
+        label: "Days Sampling"
+    },
+    {
+        number: "Worldwide",
+        label: "Shipping"
+    }
+];
+
 export default function ContactClient({ categories }: ContactClientProps) {
     const searchParams = useSearchParams();
     const routerType = searchParams.get('type') || '';
@@ -29,30 +76,46 @@ export default function ContactClient({ categories }: ContactClientProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Merge specified categories with any dynamic database categories
+    const allCategories = Array.from(new Set([
+        ...SPECIFIED_CATEGORIES,
+        ...categories.map(c => c.name)
+    ]));
+
+    // Match routerType if passed
+    const initialCategory = allCategories.find(
+        c => c.toLowerCase() === routerType.toLowerCase() || c.toLowerCase().includes(routerType.toLowerCase())
+    ) || SPECIFIED_CATEGORIES[0];
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         company: '',
-        productType: routerType,
+        country: '',
+        website: '',
+        productType: initialCategory,
         productSlug: routerSlug,
-        quantity: '',
+        quantity: QUANTITY_OPTIONS[0],
         deadline: '',
+        customizationOptions: ['Sublimation', 'Private Label'] as string[],
         customizationDetails: ''
     });
 
+    const [uploadedFiles, setUploadedFiles] = useState<TechPackUploadedFile[]>([]);
+
     const LINKS = {
         quickLinks: [
-            { label: 'Instagram', href: '#', icon: <IoLogoInstagram /> },
-            { label: 'Facebook', href: '#', icon: <IoLogoFacebook /> },
+            { label: 'Instagram', href: 'https://www.instagram.com/slotssportswear2025/', icon: <IoLogoInstagram /> },
+            { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61579978311422', icon: <IoLogoFacebook /> },
             { label: 'Medium', href: '#', icon: <FaMedium /> },
-            { label: 'Pinterest', href: '#', icon: <IoLogoPinterest /> },
+            { label: 'Pinterest', href: 'https://www.pinterest.com/slotssportswear/', icon: <IoLogoPinterest /> },
         ]
     };
 
     useGSAP(() => {
         if (!containerRef.current) return;
 
-        // Intro Animation
+        // Hero and Intro Animation
         gsap.from('.fade-up', {
             y: 40,
             opacity: 0,
@@ -74,6 +137,26 @@ export default function ContactClient({ categories }: ContactClientProps) {
                 }
             });
         });
+
+        // Stat items reveal animation matching CompanyStats
+        const statItems = containerRef.current.querySelectorAll('.stat-item');
+        if (statItems.length > 0) {
+            gsap.fromTo(statItems,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.15,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: statItems[0],
+                        start: 'top 85%',
+                        once: true,
+                    }
+                }
+            );
+        }
     }, { scope: containerRef });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -81,23 +164,51 @@ export default function ContactClient({ categories }: ContactClientProps) {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleToggleCustomization = (option: string) => {
+        setFormData(prev => {
+            const exists = prev.customizationOptions.includes(option);
+            const updated = exists
+                ? prev.customizationOptions.filter(item => item !== option)
+                : [...prev.customizationOptions, option];
+            return { ...prev, customizationOptions: updated };
+        });
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const { data } = await axios.post('/api/contact/submit', formData);
+            const payload = {
+                ...formData,
+                files: uploadedFiles,
+            };
+            const { data } = await axios.post('/api/contact/submit', payload);
             if (data.success) {
-                toast.success('Tech Pack successfully submitted to Slots Sports Wear.');
+                // Record the RFQ Submission Conversion
+                trackEvent('rfq_submitted', {
+                    source: 'Contact Page',
+                    company: formData.company,
+                    country: formData.country,
+                    productType: formData.productType,
+                    quantity: formData.quantity,
+                    hasFiles: uploadedFiles.length > 0
+                });
+
+                toast.success('Manufacturing quote request successfully submitted. Our technical team will review your specifications.');
                 setFormData({
                     name: '',
                     email: '',
                     company: '',
-                    productType: '',
+                    country: '',
+                    website: '',
+                    productType: SPECIFIED_CATEGORIES[0],
                     productSlug: '',
-                    quantity: '',
+                    quantity: QUANTITY_OPTIONS[0],
                     deadline: '',
+                    customizationOptions: ['Sublimation', 'Private Label'],
                     customizationDetails: ''
                 });
+                setUploadedFiles([]);
             }
         } catch (error: any) {
             toast.error(error.response?.data?.message || 'Something went wrong');
@@ -108,41 +219,134 @@ export default function ContactClient({ categories }: ContactClientProps) {
 
     return (
         <div ref={containerRef} className="min-h-screen">
+            <div className="space-y-16 md:space-y-24">
 
-            <div className="space-y-20">
+                {/* SECTION 1: CENTERED HERO SECTION */}
+                <section className="pt-20 md:pt-28 pb-10 px-6 sm:px-12 max-w-4xl mx-auto flex flex-col items-center text-center gap-6 fade-up" id="contact-form">
+                    <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40">
+                        OEM / ODM Manufacturing
+                    </span>
+                    
+                    <Heading title="Start Your Custom Sportswear Project" className="justify-center text-center" />
+                    
+                    <p className="text-sm md:text-base text-neutral-700 leading-relaxed max-w-2xl mx-auto">
+                        Share your designs, tech packs or manufacturing requirements with our team and receive a customized production solution.
+                    </p>
+                </section>
 
-                {/* SECTION 1: HEADER & INFO */}
-                <section className="grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
-                    <div className="space-y-5 fade-up py-20 px-15">
-                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40">Say Hello</span>
-                        <Heading title="Get In Touch" />
-                        <p className='w-full md:w-[70%]'>
-                            For bespoke collaborations, tech pack inquiries, or minimalist collections dialogue, we are at your disposal.
-                        </p>
-                        <div className="flex flex-col sm:flex-row lg:flex-col gap-10 fade-up lg:pb-5">
-                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
-                                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">New Projects</span>
-                                <p className='pt-2'>
-                                    info@slotssportswear.com
-                                </p>
-                                <p>
-                                    +92 308 6762 402
-                                </p>
+                {/* SECTION 2: BALANCED CONTACT CARDS */}
+                <section className="px-6 sm:px-12 lg:px-16 max-w-6xl mx-auto w-full fade-up">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                        {/* Card 1: Production Inquiry */}
+                        <div className="h-full p-8 rounded-2xl bg-white/40 border border-neutral-900/10 backdrop-blur-sm flex flex-col justify-between hover:border-neutral-900/30 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 group">
+                            <div className="flex flex-col gap-5">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-xl bg-black text-[#EDEEE7] flex items-center justify-center text-xl group-hover:scale-105 transition-transform duration-300">
+                                        <IoShirtOutline />
+                                    </div>
+                                    <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-neutral-400">
+                                        Channel 01
+                                    </span>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-neutral-900">
+                                        Production Inquiry
+                                    </h3>
+                                    <span className="text-xs uppercase tracking-wider font-semibold text-neutral-400 block">
+                                        Bespoke OEM & ODM Orders
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    {["OEM Orders", "Private Label", "Teamwear Production"].map((item) => (
+                                        <span key={item} className="px-3 py-1 bg-black/5 text-black/80 text-[10px] uppercase tracking-wider font-semibold rounded-sm border border-black/10">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
-                                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">Headquarters</span>
-                                <p className='pt-2'>
-                                    Slots Sports Wear Studio
-                                </p>
-                                <p>
-                                    Punjab, Pakistan
-                                </p>
+
+                            <p className="text-xs text-neutral-600 pt-5 mt-6 border-t border-neutral-900/10 tracking-wide">
+                                Direct Line: {process.env.NEXT_PUBLIC_EMAIL_ADDRESS || 'slotssportswear@gmail.com'} • +92 331 9165413
+                            </p>
+                        </div>
+
+                        {/* Card 2: Technical Support */}
+                        <div className="h-full p-8 rounded-2xl bg-white/40 border border-neutral-900/10 backdrop-blur-sm flex flex-col justify-between hover:border-neutral-900/30 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 group">
+                            <div className="flex flex-col gap-5">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-xl bg-black text-[#EDEEE7] flex items-center justify-center text-xl group-hover:scale-105 transition-transform duration-300">
+                                        <IoLayersOutline />
+                                    </div>
+                                    <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-neutral-400">
+                                        Channel 02
+                                    </span>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-neutral-900">
+                                        Technical Support
+                                    </h3>
+                                    <span className="text-xs uppercase tracking-wider font-semibold text-neutral-400 block">
+                                        Design & Specification Lab
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    {["Tech Pack Review", "Sampling", "Fabric Selection"].map((item) => (
+                                        <span key={item} className="px-3 py-1 bg-black/5 text-black/80 text-[10px] uppercase tracking-wider font-semibold rounded-sm border border-black/10">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="space-y-2 group cursor-pointer border-b border-neutral-900/20 pb-3 w-fit">
-                                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-400 group-hover:text-neutral-900 transition-colors duration-300">Headquarters</span>
-                                <div className="flex gap-4">
+
+                            <p className="text-xs text-neutral-600 pt-5 mt-6 border-t border-neutral-900/10 tracking-wide">
+                                CAD Prototyping & Pattern Engineering Lab
+                            </p>
+                        </div>
+
+                        {/* Card 3: Global Sales */}
+                        <div className="h-full p-8 rounded-2xl bg-white/40 border border-neutral-900/10 backdrop-blur-sm flex flex-col justify-between hover:border-neutral-900/30 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] transition-all duration-500 group">
+                            <div className="flex flex-col gap-5">
+                                <div className="flex items-center justify-between">
+                                    <div className="size-12 rounded-xl bg-black text-[#EDEEE7] flex items-center justify-center text-xl group-hover:scale-105 transition-transform duration-300">
+                                        <IoGlobeOutline />
+                                    </div>
+                                    <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-neutral-400">
+                                        Channel 03
+                                    </span>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <h3 className="text-xl md:text-2xl font-bold tracking-tight text-neutral-900">
+                                        Global Sales
+                                    </h3>
+                                    <span className="text-xs uppercase tracking-wider font-semibold text-neutral-400 block">
+                                        Worldwide Export Accounts
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    {["International Buyers", "Wholesale Partnerships"].map((item) => (
+                                        <span key={item} className="px-3 py-1 bg-black/5 text-black/80 text-[10px] uppercase tracking-wider font-semibold rounded-sm border border-black/10">
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-5 mt-6 border-t border-neutral-900/10">
+                                <span className="text-xs text-neutral-600 tracking-wide">Connect With Us</span>
+                                <div className="flex items-center gap-2.5">
                                     {LINKS.quickLinks.map((link, i) => (
-                                        <a key={i} href={link.href} aria-label={link.label} className="size-10 rounded-full border border-white/10 flex items-center justify-center text-lg hover:bg-white hover:text-black transition-all duration-500">
+                                        <a
+                                            key={i}
+                                            href={link.href}
+                                            aria-label={link.label}
+                                            className="size-8 rounded-full border border-black/15 flex items-center justify-center text-xs hover:bg-black hover:text-white transition-all duration-300"
+                                        >
                                             {link.icon}
                                         </a>
                                     ))}
@@ -150,95 +354,312 @@ export default function ContactClient({ categories }: ContactClientProps) {
                             </div>
                         </div>
                     </div>
-                    <div className='hidden md:block'>
-                        <img src="https://i.pinimg.com/originals/e9/44/59/e94459230601ba8b642e784ea1420457.png" alt="connect" className='object-cover h-full w-full' />
-                    </div>
                 </section>
 
-                <div className="w-full h-px bg-neutral-900/10 fade-up" />
+                <div className="w-full h-px bg-neutral-900/10 max-w-6xl mx-auto" />
 
-                {/* SECTION 2: TECH PACK FORM */}
-                <section className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 scroll-fade p-15" id='teckpack'>
-                    <div className="space-y-5">
-                        <Heading title="Tech Pack Submission" />
-                        <p>
+                {/* SECTION 3: READABLE & SYMMETRICAL B2B FORM */}
+                <section className="px-6 sm:px-12 lg:px-16 max-w-4xl mx-auto w-full scroll-fade" id="teckpack">
+                    <div className="text-center space-y-4 mb-14">
+                        <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40 block">
+                            Inquiry Form
+                        </span>
+                        <Heading title="Request Your Manufacturing Quote" className="justify-center text-center" />
+                        <p className="text-neutral-600 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
                             Submit your detailed specifications. We streamline the initial phase of design to ensure absolute clarity before production begins.
                         </p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-12">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-                            {/* Name */}
-                            <div className="relative group">
-                                <input required type="text" name="name" value={formData.name} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Full Name *</label>
-                            </div>
+                        {/* 01 / Company Information */}
+                        <div className="space-y-6">
+                            <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70 pb-2 border-b border-black/10">
+                                01 / Company Information
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 pt-2">
+                                {/* Company Name */}
+                                <div className="relative group">
+                                    <input
+                                        required
+                                        type="text"
+                                        name="company"
+                                        value={formData.company}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Company Name *
+                                    </label>
+                                </div>
 
-                            {/* Email */}
-                            <div className="relative group">
-                                <input required type="email" name="email" value={formData.email} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Email Address *</label>
-                            </div>
+                                {/* Contact Person */}
+                                <div className="relative group">
+                                    <input
+                                        required
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Contact Person *
+                                    </label>
+                                </div>
 
-                            {/* Company */}
-                            <div className="relative group">
-                                <input type="text" name="company" value={formData.company} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Company Name</label>
-                            </div>
+                                {/* Business Email */}
+                                <div className="relative group">
+                                    <input
+                                        required
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Business Email *
+                                    </label>
+                                </div>
 
-                            {/* Product Type (Select) */}
-                            <div className="relative group flex flex-col justify-end pt-[10px]">
-                                <select required name="productType" value={formData.productType} onChange={handleChange} className="w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium appearance-none cursor-pointer">
-                                    <option value="" disabled>Select Product Type *</option>
-                                    {categories.map((cat) => (
-                                        <option key={cat._id} value={cat.slug} className="uppercase text-neutral-900">
-                                            {cat.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <Icon name="arrow" className="absolute right-0 bottom-4 w-3 h-3 text-neutral-900 pointer-events-none" />
-                            </div>
+                                {/* Country */}
+                                <div className="relative group">
+                                    <input
+                                        required
+                                        type="text"
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Country *
+                                    </label>
+                                </div>
 
-                            {/* Product Slug (ReadOnly if from Wardrobe button) */}
-                            <div className="relative group">
-                                <input type="text" name="productSlug" value={formData.productSlug} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Product Title / Slug (Optional)</label>
-                            </div>
-
-                            {/* Quantity */}
-                            <div className="relative group">
-                                <input required type="number" min="1" name="quantity" value={formData.quantity} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Estimated Quantity *</label>
-                            </div>
-
-                            {/* Deadline */}
-                            <div className="relative group md:col-span-2">
-                                <input required type="date" name="deadline" value={formData.deadline} onChange={handleChange} className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium text-neutral-900" />
-                                <label className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">Target Deadline *</label>
-                            </div>
-
-                            {/* Customization Details */}
-                            <div className="relative group md:col-span-2 mt-4">
-                                <textarea required rows={4} name="customizationDetails" value={formData.customizationDetails} onChange={handleChange} placeholder=" " className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent resize-none" />
-                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">Customization Specs & Material Need *</label>
+                                {/* Website */}
+                                <div className="relative group md:col-span-2">
+                                    <input
+                                        type="text"
+                                        name="website"
+                                        value={formData.website}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors tracking-wider font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Website (Optional)
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex justify-end pt-4">
-                            <button
+                        {/* 02 / Project Details */}
+                        <div className="space-y-6">
+                            <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70 pb-2 border-b border-black/10">
+                                02 / Project Details
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 pt-2">
+                                {/* Product Category */}
+                                <div className="relative group flex flex-col justify-end">
+                                    <select
+                                        required
+                                        name="productType"
+                                        value={formData.productType}
+                                        onChange={handleChange}
+                                        className="w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium appearance-none cursor-pointer"
+                                    >
+                                        <option value="" disabled>Select Product Category *</option>
+                                        {allCategories.map((cat) => (
+                                            <option key={cat} value={cat} className="uppercase text-neutral-900">
+                                                {cat}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <label className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">
+                                        Product Category *
+                                    </label>
+                                    <Icon name="arrow" className="absolute right-0 bottom-4 w-3 h-3 text-neutral-900 pointer-events-none -rotate-45deg" />
+                                </div>
+
+                                {/* Estimated Quantity */}
+                                <div className="relative group flex flex-col justify-end">
+                                    <select
+                                        required
+                                        name="quantity"
+                                        value={formData.quantity}
+                                        onChange={handleChange}
+                                        className="w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium appearance-none cursor-pointer"
+                                    >
+                                        {QUANTITY_OPTIONS.map((opt) => (
+                                            <option key={opt} value={opt} className="uppercase text-neutral-900">
+                                                {opt}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <label className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">
+                                        Estimated Quantity *
+                                    </label>
+                                    <Icon name="arrow" className="absolute right-0 bottom-4 w-3 h-3 text-neutral-900 pointer-events-none -rotate-45deg" />
+                                </div>
+
+                                {/* Target Delivery Date */}
+                                <div className="relative group">
+                                    <input
+                                        required
+                                        type="date"
+                                        name="deadline"
+                                        value={formData.deadline}
+                                        onChange={handleChange}
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium text-neutral-900"
+                                    />
+                                    <label className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">
+                                        Target Delivery Date *
+                                    </label>
+                                </div>
+
+                                {/* Reference Product Slug (Optional) */}
+                                <div className="relative group">
+                                    <input
+                                        type="text"
+                                        name="productSlug"
+                                        value={formData.productSlug}
+                                        onChange={handleChange}
+                                        placeholder=" "
+                                        className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent"
+                                    />
+                                    <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                        Reference Product Slug (Optional)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 03 / Customization Options */}
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center pb-2 border-b border-black/10">
+                                <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70">
+                                    03 / Customization Options
+                                </h4>
+                                <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-medium">
+                                    Select all that apply
+                                </span>
+                            </div>
+                            <div className="flex flex-wrap gap-3 pt-2">
+                                {CUSTOMIZATION_OPTIONS.map((opt) => {
+                                    const isSelected = formData.customizationOptions.includes(opt);
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={opt}
+                                            onClick={() => handleToggleCustomization(opt)}
+                                            className={`px-5 py-3 rounded-full text-[10px] uppercase font-bold tracking-[0.2em] border transition-all duration-300 cursor-pointer active:scale-[0.97] ${
+                                                isSelected
+                                                    ? 'bg-neutral-900 text-[#EDEEE7] border-neutral-900 shadow-[0_10px_20px_-5px_rgba(0,0,0,0.25)]'
+                                                    : 'bg-white/50 text-neutral-700 border-neutral-900/10 hover:border-neutral-900 hover:bg-white'
+                                            }`}
+                                        >
+                                            {isSelected ? `✓ ${opt}` : `+ ${opt}`}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* 04 / Customization Specs & Technical Details */}
+                        <div className="space-y-4">
+                            <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70 pb-2 border-b border-black/10">
+                                04 / Customization Specs & Requirements
+                            </h4>
+                            <div className="relative group pt-2">
+                                <textarea
+                                    required
+                                    rows={4}
+                                    name="customizationDetails"
+                                    value={formData.customizationDetails}
+                                    onChange={handleChange}
+                                    placeholder=" "
+                                    className="peer w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium placeholder-transparent resize-none"
+                                />
+                                <label className="absolute left-0 top-3 text-xs uppercase tracking-widest text-neutral-400 transition-all peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-neutral-900 peer-focus:font-bold peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:[font-size:9px] peer-[:not(:placeholder-shown)]:font-bold peer-[:not(:placeholder-shown)]:text-neutral-900 pointer-events-none">
+                                    Customization Specs & Material Need (Fabric GSM, Print Technique, Sizing) *
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* 05 / Attach Tech Pack & Technical Files */}
+                        <div className="space-y-4">
+                            <div className="flex justify-between items-center pb-2 border-b border-black/10">
+                                <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70">
+                                    05 / Attach Tech Pack & Vector Files (Optional)
+                                </h4>
+                                <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-medium">
+                                    PDF, AI, EPS, PSD, DXF, ZIP (Max 25MB)
+                                </span>
+                            </div>
+                            <div className="pt-2">
+                                <TechPackUploadZone
+                                    files={uploadedFiles}
+                                    onFilesChange={setUploadedFiles}
+                                    title="Upload Garment Specifications"
+                                    description="Directly attach your vector artwork, measurement charts, tech pack ZIP, or CAD patterns."
+                                />
+                            </div>
+                        </div>
+
+                        {/* CTA Button: TransitionButton with Rolling Text */}
+                        <div className="pt-6">
+                            <TransitionButton
+                                text={isSubmitting ? "Transmitting Request..." : "SUBMIT MANUFACTURING REQUEST"}
+                                type="submit"
                                 disabled={isSubmitting}
-                                className="group w-full relative flex items-center justify-center gap-4 px-12 py-5 bg-neutral-900 text-[#EDEEE7] cursor-pointer overflow-hidden disabled:opacity-50"
-                            >
-                                <div className="absolute inset-0 bg-neutral-800 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                                <span className="relative z-10 text-[10px] uppercase font-bold tracking-[0.4em]">{isSubmitting ? 'Transmitting...' : 'Submit Tech Pack'}</span>
-                                {!isSubmitting && <Icon name="arrow" className="relative z-10 -rotate-45deg scale-75 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
-                            </button>
+                                rollingText={!isSubmitting}
+                                arrow={!isSubmitting}
+                                className="w-full bg-neutral-900 hover:bg-neutral-800 text-[#EDEEE7] py-6 rounded-full text-[11px] uppercase tracking-[0.35em] md:tracking-[0.45em] font-bold transition-all duration-300 active:scale-[0.97] flex items-center justify-center gap-4 cursor-pointer shadow-[0_20px_45px_-10px_rgba(0,0,0,0.35)]"
+                            />
                         </div>
                     </form>
                 </section>
 
-                {/* SECTION 3: LOCATION MAP */}
-                <section className="scroll-fade relative aspect-[21/9] lg:aspect-[3/1] bg-neutral-200 overflow-hidden group mb-10 mt-10">
+                {/* SECTION 4: TRUST SECTION (MATCHING HOMEPAGE COMPANYSTATS DESIGN) */}
+                <section className="scroll-fade py-20 px-6 sm:px-12 border-t border-neutral-900/10">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-16 items-center">
+                            <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-4">
+                                <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-neutral-900/40">
+                                    Manufacturing Credibility
+                                </span>
+                                <Heading title="Why Brands Choose Our Manufacturing" className="text-center lg:text-left" />
+                                <p className="text-neutral-600 text-sm md:text-base leading-relaxed max-w-md">
+                                    As an established custom sportswear manufacturer, we power global apparel brands with scalable OEM and ODM production lines, precision craftsmanship, and low minimum order quantities.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-between">
+                                {TRUST_METRICS.map((item, index) => (
+                                    <div key={index} className="stat-item flex flex-col items-center justify-center text-center space-y-3 p-6 bg-white/30 rounded-2xl border border-black/5 backdrop-blur-xs">
+                                        <div className="relative flex items-center justify-center">
+                                            <h2 className="stat-value !font-[middle] text-5xl md:text-6xl font-bold tracking-tight text-neutral-900">
+                                                {item.number}
+                                            </h2>
+                                        </div>
+                                        <div className="w-12 h-[1px] bg-black/10 rounded-full" />
+                                        <p className="uppercase text-xs md:text-sm font-semibold tracking-wider text-neutral-700">
+                                            {item.label}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* SECTION 5: LOCATION MAP & HQ BANNER */}
+                <section className="scroll-fade relative aspect-[21/9] lg:aspect-[3/1] bg-neutral-200 overflow-hidden group mb-10">
                     <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-[3s] ease-out brightness-90 grayscale bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center" />
 
                     {/* Location Pin */}
@@ -249,8 +670,12 @@ export default function ContactClient({ categories }: ContactClientProps) {
                     </div>
 
                     <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 bg-white/10 backdrop-blur-md px-6 py-4 rounded-xl border border-white/20">
-                        <span className="block text-[10px] uppercase font-bold tracking-[0.4em] text-white opacity-80 mb-1">HQ Location</span>
-                        <span className="text-sm font-medium tracking-wide text-white">Punjab, PK — Global Reach</span>
+                        <span className="block text-[10px] uppercase font-bold tracking-[0.4em] text-white opacity-80 mb-1">
+                            HQ Location
+                        </span>
+                        <span className="text-sm font-medium tracking-wide text-white">
+                            Punjab, PK - Global Reach
+                        </span>
                     </div>
                 </section>
 
