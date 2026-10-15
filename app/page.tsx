@@ -9,11 +9,11 @@ export const metadata: Metadata = {
     absolute: 'Private Label Sportswear Manufacturer in Sialkot, Pakistan',
   },
   description:
-    'Slots Sportswear manufactures custom golf polos, team uniforms and private label activewear in Sialkot, Pakistan. OEM/ODM bulk production, custom branding and worldwide shipping for apparel brands, clubs and teams.',
+    'Private label sportswear manufacturer in Sialkot, Pakistan. Custom golf polos, team uniforms and activewear for small, growing brands. Low MOQ from 30 pieces, OEM/ODM and worldwide shipping.',
   openGraph: {
     title: 'Private Label Sportswear Manufacturer in Sialkot, Pakistan',
     description:
-      'Slots Sportswear manufactures custom golf polos, team uniforms and private label activewear in Sialkot, Pakistan. OEM/ODM bulk production, custom branding and worldwide shipping for apparel brands, clubs and teams.',
+      'Private label sportswear manufacturer in Sialkot, Pakistan. Custom golf polos, team uniforms and activewear for small, growing brands. Low MOQ from 30 pieces, OEM/ODM and worldwide shipping.',
     type: 'website',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app',
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Private Label Sportswear Manufacturer in Sialkot, Pakistan',
     description:
-      'Slots Sportswear manufactures custom golf polos, team uniforms and private label activewear in Sialkot, Pakistan. OEM/ODM bulk production, custom branding and worldwide shipping for apparel brands, clubs and teams.',
+      'Private label sportswear manufacturer in Sialkot, Pakistan. Custom golf polos, team uniforms and activewear for small, growing brands. Low MOQ from 30 pieces, OEM/ODM and worldwide shipping.',
   },
 };
 

@@ -57,13 +57,14 @@ const renderStars = (
 
 // ─── Text split helper ───────────────────────────────────────────────────────
 const splitText = (text: string) =>
-  text.split(' ').map((word, wi) => (
+  text.split(' ').map((word, wi, arr) => (
     <span key={wi} className="inline-flex whitespace-nowrap overflow-hidden shrink-0">
       {word.split('').map((char, ci) => (
         <span key={ci} className="hero-char inline-block translate-y-full">
           {char}
         </span>
       ))}
+      {wi < arr.length - 1 && <span className="sr-only">{' '}</span>}
     </span>
   ));
 
@@ -350,8 +351,11 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
 
           {/* ── Hero title ─────────────────────────────────────────────────── */}
           <div className="w-full md:w-[70%]">
-            <h1 className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[main] leading-tight">
-              {splitText('Private Label Sportswear Manufacturing for Growing Brands')}
+            <h1
+              aria-label="Private Label Sportswear Manufacturing for Small, Growing Brands"
+              className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[main] leading-tight"
+            >
+              {splitText('Private Label Sportswear Manufacturing for Small, Growing Brands')}
             </h1>
           </div>
 
