@@ -51,12 +51,12 @@ const ProductInfo = ({
             name: product.name,
             category: product.category?.name || product.productType || 'Custom Sportswear',
             image: imageUrl,
-            quantity: 50,
+            quantity: 30,
             color: selectedVariant?.color || 'Default',
             sizeRange: selectedVariant?.size ? `Sample Size: ${selectedVariant.size} (Full Grading Available)` : 'Full Size Range (XS–5XL)',
             customizationOptions: ['Sublimation', 'Private Label'],
         });
-        toast.success(`Added ${product.name} to Tech Pack Request (50 Pcs MOQ)`);
+        toast.success(`Added ${product.name} to Tech Pack Request (30 Pcs MOQ)`);
     };
 
     return (
@@ -78,7 +78,7 @@ const ProductInfo = ({
                 </div>
 
                 {/* Dynamic Product Title */}
-                <Heading title={product.name} className="text-left" />
+                <Heading as="h1" title={product.name} className="text-left" />
 
                 {/* Short Description */}
                 <p className="text-black/75 text-sm md:text-[15px] leading-relaxed font-normal">
@@ -100,7 +100,7 @@ const ProductInfo = ({
             <div className="grid grid-cols-3 gap-2 md:gap-3 py-4 px-4 bg-white/40 rounded-xl border border-black/10 backdrop-blur-xs">
                 <div className="flex flex-col gap-1">
                     <span className="text-[9px] uppercase font-bold tracking-[0.25em] text-black/40">Minimum Order</span>
-                    <span className="text-sm md:text-base font-bold text-black tracking-tight">50 Pcs / Style</span>
+                    <span className="text-sm md:text-base font-bold text-black tracking-tight">30 Pcs / Style</span>
                 </div>
                 <div className="flex flex-col gap-1 border-x border-black/10 px-2 md:px-3">
                     <span className="text-[9px] uppercase font-bold tracking-[0.25em] text-black/40">Sample Lead Time</span>

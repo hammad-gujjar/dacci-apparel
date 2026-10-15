@@ -65,7 +65,7 @@ export default function RFQCTA({
                 <div className="w-full border-t border-neutral-800 pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-neutral-400 font-[middle] text-xs">
                     <div className="flex flex-col items-center space-y-1.5">
                         <IoRocketOutline className="text-xl text-emerald-400" />
-                        <span className="font-bold text-white uppercase text-[11px]">50 Pcs Low MOQ</span>
+                        <span className="font-bold text-white uppercase text-[11px]">30 Pcs Low MOQ</span>
                         <span className="text-[10px] text-neutral-400">Accessible sampling</span>
                     </div>
                     <div className="flex flex-col items-center space-y-1.5">

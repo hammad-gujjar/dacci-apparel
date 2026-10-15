@@ -35,17 +35,17 @@ export async function GET(req: Request) {
                             website: tp.website || '',
                             productType: tp.productType,
                             productSlug: tp.productSlug || '',
-                            quantity: tp.quantity || 50,
-                            estimatedQuantity: tp.estimatedQuantity || `${tp.quantity || 50} pcs`,
+                            quantity: tp.quantity || 30,
+                            estimatedQuantity: tp.estimatedQuantity || `${tp.quantity || 30} pcs`,
                             deadline: tp.deadline || new Date(),
                             customizationOptions: tp.customizationOptions || [],
                             customizationDetails: tp.customizationDetails || '',
                             items: tp.items || [],
                             files: tp.files || [],
                             status: tp.isNewStatus ? 'New' : 'Contacted',
-                            priority: (tp.quantity || 50) >= 500 ? 'High' : 'Medium',
+                            priority: (tp.quantity || 30) >= 500 ? 'High' : 'Medium',
                             leadSource: 'Website RFQ (Synced)',
-                            estimatedValue: (tp.quantity || 50) * 18,
+                            estimatedValue: (tp.quantity || 30) * 18,
                             techPackRef: tp._id,
                             createdAt: tp.createdAt || new Date(),
                         });
@@ -168,7 +168,7 @@ export async function POST(req: Request) {
 
         await databaseConnection();
 
-        const numQty = typeof body.quantity === 'number' ? body.quantity : parseInt(String(body.quantity || '50').replace(/[^\d]/g, ''), 10) || 50;
+        const numQty = typeof body.quantity === 'number' ? body.quantity : parseInt(String(body.quantity || '30').replace(/[^\d]/g, ''), 10) || 30;
 
         const newLead = await Lead.create({
             name: body.name,

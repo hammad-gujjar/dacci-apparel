@@ -71,7 +71,7 @@ export async function sendBuyerConfirmationEmail(lead: LeadEmailData) {
                         </tr>
                         <tr>
                             <td style="padding: 6px 0; color: #666666;">Requested Quantity:</td>
-                            <td style="padding: 6px 0; font-weight: 600; color: #111111;">${lead.quantity} units (Low 50 MOQ eligible)</td>
+                            <td style="padding: 6px 0; font-weight: 600; color: #111111;">${lead.quantity} units (Low 30 MOQ eligible)</td>
                         </tr>
                         <tr>
                             <td style="padding: 6px 0; color: #666666;">Target Delivery Date:</td>

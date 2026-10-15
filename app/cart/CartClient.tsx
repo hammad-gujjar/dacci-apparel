@@ -34,6 +34,101 @@ const CUSTOMIZATION_OPTIONS_LIST = [
     'Custom Labels'
 ];
 
+function CartQuantityInput({
+    itemId,
+    initialQuantity,
+    onUpdateQuantity,
+}: {
+    itemId: string;
+    initialQuantity: number;
+    onUpdateQuantity: (id: string, qty: number) => void;
+}) {
+    const [val, setVal] = React.useState<string>(String(initialQuantity));
+
+    React.useEffect(() => {
+        setVal(String(initialQuantity));
+    }, [initialQuantity]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value;
+        setVal(raw);
+        const trimmed = raw.trim();
+        if (/^\d+$/.test(trimmed)) {
+            const num = parseInt(trimmed, 10);
+            if (num >= 30) {
+                onUpdateQuantity(itemId, num);
+            }
+        }
+    };
+
+    const handleBlur = () => {
+        const trimmed = val.trim();
+        if (!trimmed || !/^\d+$/.test(trimmed)) {
+            toast.error('Quantity must be a valid whole number (minimum 30 pieces).');
+            setVal(String(initialQuantity));
+            return;
+        }
+        const num = parseInt(trimmed, 10);
+        if (num < 30) {
+            toast.error('Minimum order quantity is 30 pieces per style.');
+            setVal(String(initialQuantity));
+        } else {
+            onUpdateQuantity(itemId, num);
+        }
+    };
+
+    const handleStep = (delta: number) => {
+        const current = parseInt(val, 10) || initialQuantity;
+        const next = Math.max(30, current + delta);
+        setVal(String(next));
+        onUpdateQuantity(itemId, next);
+    };
+
+    return (
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+            <label htmlFor={`cart-qty-${itemId}`} className="text-xs font-[middle] font-semibold text-neutral-600">
+                Quantity (pieces):
+            </label>
+            <div className="flex items-center gap-1 bg-white border border-black/10 rounded-full px-2 py-1 shadow-xs">
+                <button
+                    type="button"
+                    onClick={() => handleStep(-1)}
+                    disabled={(parseInt(val, 10) || initialQuantity) <= 30}
+                    className="size-6 rounded-full hover:bg-black/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                    title="Decrease (minimum 30 pcs)"
+                    aria-label="Decrease quantity"
+                >
+                    <IoRemoveOutline className="text-sm" />
+                </button>
+                <input
+                    id={`cart-qty-${itemId}`}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={val}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    placeholder="30"
+                    aria-label="Quantity (pieces)"
+                    className="w-14 text-center font-bold text-xs sm:text-sm font-[middle] tabular-nums bg-transparent outline-none border-none p-0 text-neutral-900"
+                />
+                <button
+                    type="button"
+                    onClick={() => handleStep(1)}
+                    className="size-6 rounded-full hover:bg-black/10 flex items-center justify-center cursor-pointer"
+                    title="Increase quantity"
+                    aria-label="Increase quantity"
+                >
+                    <IoAddOutline className="text-sm" />
+                </button>
+            </div>
+            <span className="text-[10px] uppercase font-bold tracking-wider text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
+                MOQ 30+
+            </span>
+        </div>
+    );
+}
+
 export default function CartClient() {
     const { items, removeItem, updateItem, clearItems, itemCount, totalQuantity } = useTechPack();
     const router = useRouter();
@@ -78,10 +173,10 @@ export default function CartClient() {
 
     const handleQuantityChange = (id: string, current: number, delta: number) => {
         const next = current + delta;
-        if (next >= 50) {
+        if (next >= 30) {
             updateItem(id, { quantity: next });
         } else {
-            toast.error('Minimum order quantity is 50 pieces per style');
+            toast.error('Minimum order quantity is 30 pieces per style');
         }
     };
 
@@ -116,7 +211,7 @@ export default function CartClient() {
             // Construct formatted specs summary for the Tech Pack document
             const itemizedSummary = items.map((item, index) => (
                 `[Item ${index + 1}]: ${item.name} (${item.category})\n` +
-                `• Quantity: ${item.quantity} pcs (MOQ 50+)\n` +
+                `• Quantity: ${item.quantity} pcs (MOQ 30+)\n` +
                 `• Color: ${item.color || 'Default'}\n` +
                 `• Size Breakdown: ${item.sizeRange || 'Full Range XS–5XL'}\n` +
                 `• Customizations: ${item.customizationOptions.join(', ') || 'Standard'}\n` +
@@ -242,7 +337,7 @@ export default function CartClient() {
                 <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40 font-[middle]">
                     OEM / ODM Wholesale Manufacturing
                 </span>
-                <Heading title="Tech Pack Specification & RFQ" className="justify-center text-center" />
+                <Heading as="h1" title="Tech Pack Specification & RFQ" className="justify-center text-center" />
                 <p className="text-sm sm:text-base font-[middle] text-neutral-700 leading-relaxed">
                     Review your selected manufacturing archetypes, configure size grading, colors, and branding techniques, and submit your wholesale inquiry directly to our engineering team.
                 </p>
@@ -279,7 +374,7 @@ export default function CartClient() {
                             <div className="flex items-center gap-2.5">
                                 <IoShieldCheckmarkOutline className="text-xl text-neutral-300" />
                                 <span className="text-xs font-bold uppercase tracking-wider">
-                                    MOQ: 50 Pcs Per Style
+                                    MOQ: 30 Pcs Per Style
                                 </span>
                             </div>
                             <div className="flex items-center gap-2.5">
@@ -337,37 +432,11 @@ export default function CartClient() {
                                                 {item.name}
                                             </h3>
 
-                                            {/* Quantity Selector with MOQ pill */}
-                                            <div className="mt-3 flex flex-wrap items-center gap-3">
-                                                <span className="text-xs font-[middle] font-semibold text-neutral-600">
-                                                    Production Volume:
-                                                </span>
-                                                <div className="flex items-center bg-white border border-black/10 rounded-full px-2 py-1 shadow-xs">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleQuantityChange(item.id, item.quantity, -25)}
-                                                        disabled={item.quantity <= 50}
-                                                        className="size-6 rounded-full hover:bg-black/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
-                                                        title="Decrease (minimum 50 pcs)"
-                                                    >
-                                                        <IoRemoveOutline className="text-sm" />
-                                                    </button>
-                                                    <span className="px-3 font-bold text-xs sm:text-sm font-[middle] tabular-nums">
-                                                        {item.quantity} pcs
-                                                    </span>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleQuantityChange(item.id, item.quantity, 25)}
-                                                        className="size-6 rounded-full hover:bg-black/10 flex items-center justify-center cursor-pointer"
-                                                        title="Increase quantity"
-                                                    >
-                                                        <IoAddOutline className="text-sm" />
-                                                    </button>
-                                                </div>
-                                                <span className="text-[10px] uppercase font-bold tracking-wider text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200">
-                                                    MOQ 50 Valid
-                                                </span>
-                                            </div>
+                                            <CartQuantityInput
+                                                itemId={item.id}
+                                                initialQuantity={item.quantity}
+                                                onUpdateQuantity={(id, qty) => updateItem(id, { quantity: qty })}
+                                            />
                                         </div>
                                     </div>
 

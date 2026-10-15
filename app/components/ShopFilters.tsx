@@ -127,8 +127,6 @@ const ShopFilters = ({ categories, brandingTags }: ShopFiltersProps) => {
 
     const SORT_OPTIONS = [
         { label: 'Newest Production Designs', value: 'newest' },
-        { label: 'Sample Price: Low to High', value: 'price-asc' },
-        { label: 'Sample Price: High to Low', value: 'price-desc' },
         { label: 'Popular OEM Styles', value: 'sale-desc' },
     ];
 

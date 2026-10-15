@@ -93,8 +93,8 @@ const OurServices = () => {
             }, 100);
         });
 
-        if (document.body) {
-            ro.observe(document.body);
+        if (wrapperRef.current) {
+            ro.observe(wrapperRef.current);
         }
 
         let mm = gsap.matchMedia();
@@ -210,7 +210,7 @@ const OurServices = () => {
     return (
         <div className='w-full bg-[#111111] mt-15'>
             <div className="w-full flex flex-col items-center gap-10 py-15 px-10">
-                <Heading title='Our Services' className='w-fit !text-[#EDEEE7]' />
+                <Heading as="h2" title='Our Services' className='w-fit !text-[#EDEEE7]' />
             </div>
 
             <div ref={wrapperRef} className="w-full relative">

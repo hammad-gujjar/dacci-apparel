@@ -6,19 +6,22 @@ import ContactClient from './ContactClient';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: {
-        absolute: 'Contact Us | Custom Sportswear Manufacturer',
+    alternates: {
+        canonical: '/contact',
     },
-    description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+    title: {
+        absolute: 'Contact a Private Label Sportswear Manufacturer | SLOTS SPORTSWEAR',
+    },
+    description: 'Contact SLOTS SPORTSWEAR, an experienced private label sportswear manufacturer. Request a custom apparel manufacturing quote or submit a wholesale sportswear inquiry.',
     openGraph: {
-        title: 'Contact Us | Custom Sportswear Manufacturer',
-        description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+        title: 'Contact a Private Label Sportswear Manufacturer | SLOTS SPORTSWEAR',
+        description: 'Contact SLOTS SPORTSWEAR, an experienced private label sportswear manufacturer. Request a custom apparel manufacturing quote or submit a wholesale sportswear inquiry.',
         images: [{ url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/images/logo.png`, width: 800, height: 600, alt: 'Slots Sports Wear' }],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Contact Us | Custom Sportswear Manufacturer',
-        description: 'Contact our custom sportswear manufacturing team for OEM, ODM and private label apparel production. Submit your tech pack and start your project.',
+        title: 'Contact a Private Label Sportswear Manufacturer | SLOTS SPORTSWEAR',
+        description: 'Contact SLOTS SPORTSWEAR, an experienced private label sportswear manufacturer. Request a custom apparel manufacturing quote or submit a wholesale sportswear inquiry.',
     },
 };
 

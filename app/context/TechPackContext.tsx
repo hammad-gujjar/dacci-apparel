@@ -8,7 +8,7 @@ export interface TechPackItem {
     name: string;
     category: string;
     image: string;
-    quantity: number; // Minimum 50 pcs (MOQ)
+    quantity: number; // Minimum 30 pcs (MOQ)
     color: string;
     sizeRange: string;
     customizationOptions: string[];
@@ -33,7 +33,7 @@ const BASE_STORAGE_KEY = 'slots_tech_pack';
 const GUEST_KEY = `${BASE_STORAGE_KEY}_guest`;
 const getUserKey = (userId: string) => `${BASE_STORAGE_KEY}_user_${userId}`;
 
-const DEFAULT_MOQ = 50;
+const DEFAULT_MOQ = 30;
 
 const TechPackContext = createContext<TechPackContextType | undefined>(undefined);
 

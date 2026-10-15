@@ -1,13 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import FormattedTitle from '../components/FormattedTitle';
+import JsonLd from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-    title: 'FAQs',
-    description: 'Find answers to the most common questions about Slots Sports Wear - including MOQ, lead times, sampling, shipping, custom orders, and payment.',
+    title: {
+        absolute: 'Private Label Sportswear Manufacturing FAQs | SLOTS SPORTSWEAR',
+    },
+    description: 'Find answers to common questions about private label sportswear manufacturing, apparel MOQ, custom sportswear samples, production process, and worldwide shipping.',
+    alternates: {
+        canonical: '/faq',
+    },
     openGraph: {
-        title: 'Frequently Asked Questions - Slots Sports Wear',
-        description: 'Everything you need to know about working with Slots Sports Wear. MOQ, sampling, lead times, and more answered here.',
+        title: 'Private Label Sportswear Manufacturing FAQs | SLOTS SPORTSWEAR',
+        description: 'Find answers to common questions about private label sportswear manufacturing, apparel MOQ, custom sportswear samples, production process, and worldwide shipping.',
+        url: '/faq',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Private Label Sportswear Manufacturing FAQs | SLOTS SPORTSWEAR',
+        description: 'Find answers to common questions about private label sportswear manufacturing, apparel MOQ, custom sportswear samples, production process, and worldwide shipping.',
     },
 };
 
@@ -15,9 +28,9 @@ const faqs = [
     {
         category: 'Ordering & MOQ',
         items: [
-            { q: 'What is your minimum order quantity (MOQ)?', a: 'Our standard MOQ is 50 pieces per style. For repeat orders, we can discuss lower quantities based on your relationship history with us.' },
-            { q: 'Do you accept custom orders from small brands?', a: 'Absolutely. We are built specifically to support emerging and independent brands. Starting with just 50 units means you can test the market before scaling.' },
-            { q: 'Can I mix different styles in one order?', a: 'Yes. You can mix styles as long as each individual style meets the 50-piece MOQ. Combined orders often qualify for better per-unit pricing.' },
+            { q: 'What is your minimum order quantity (MOQ)?', a: 'Our standard MOQ is 30 pieces per style. For repeat orders, we can discuss lower quantities based on your relationship history with us.' },
+            { q: 'Do you accept custom orders from small brands?', a: 'Absolutely. We are built specifically to support emerging and independent brands. Starting with just 30 units means you can test the market before scaling.' },
+            { q: 'Can I mix different styles in one order?', a: 'Yes. You can mix styles as long as each individual style meets the 30-piece MOQ. Combined orders often qualify for better per-unit pricing.' },
         ]
     },
     {
@@ -55,16 +68,32 @@ const faqs = [
 ];
 
 export default function FaqPage() {
+    const faqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.flatMap(section =>
+            section.items.map(item => ({
+                '@type': 'Question',
+                name: item.q,
+                acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: item.a,
+                },
+            }))
+        ),
+    };
+
     return (
         <main className="w-full bg-[#EDEEE7] min-h-screen">
+            <JsonLd data={faqSchema} />
 
             {/* Hero */}
             <section className="w-full pt-[12vh] pb-16 px-5 md:px-10 border-b border-black/10">
                 <div className="max-w-screen-xl mx-auto flex flex-col gap-5">
                     <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Help Center</span>
-                    <h1 className="uppercase"><FormattedTitle>Frequently Asked Questions</FormattedTitle></h1>
+                    <h1 className="uppercase"><FormattedTitle>Private Label Sportswear Manufacturing FAQs</FormattedTitle></h1>
                     <p className="md:w-[50%] w-full">
-                        Everything you need to know about partnering with Slots Sports Wear - from your first inquiry to final delivery.
+                        Find clear answers about private label apparel MOQ, custom sportswear samples, production timelines, and worldwide shipping.
                     </p>
                 </div>
             </section>

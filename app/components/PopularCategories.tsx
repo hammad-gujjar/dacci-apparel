@@ -191,6 +191,7 @@ const PopularCategories = () => {
       <div className="flex flex-col lg:flex-row justify-between items-start mb-10 gap-5 px-5">
         <div className="lg:w-1/2 space-y-5">
           <Heading
+            as="h2"
             title='Golfwear Collection'
           />
           <div className="header-animate flex gap-4 pt-4">
@@ -219,7 +220,7 @@ const PopularCategories = () => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div ref={marqueeRef} className="flex flex-nowrap w-max">
+          <div ref={marqueeRef} className="flex flex-nowrap w-max will-change-transform">
             {categories.map((cat, i) => renderCard(cat, i, inView))}
             {categories.map((cat, i) => renderCard(cat, i + categories.length, inView))}
           </div>

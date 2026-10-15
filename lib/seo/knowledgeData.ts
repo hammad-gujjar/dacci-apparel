@@ -167,7 +167,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
             },
             {
                 question: 'What is the minimum yardage required for custom Pantone color dyeing?',
-                answer: 'Our standard custom dye lot minimum is 300 to 500 meters of fabric. For orders below this threshold (50 to 100 pcs per style), we offer dozens of stock factory pantones or all-over sublimation printing.'
+                answer: 'Our standard custom dye lot minimum is 300 to 500 meters of fabric. For orders below this threshold (30 to 100 pcs per style), we offer dozens of stock factory pantones or all-over sublimation printing.'
             }
         ],
         relatedSolutions: [
@@ -388,7 +388,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
         slug: 'private-label-sportswear-guide',
         title: 'Private Label Sportswear Manufacturing: Complete Launch Guide for Brand Founders',
         metaTitle: 'Private Label Sportswear Manufacturing | Step-by-Step Launch Guide',
-        metaDescription: 'Master guide to launching a private label sportswear brand. Learn cut-and-sew vs blanks, tech packs, custom trims, budgeting, and 50 MOQ scaling.',
+        metaDescription: 'Master guide to launching a private label sportswear brand. Learn cut-and-sew vs blanks, tech packs, custom trims, budgeting, and 30 MOQ scaling.',
         category: 'Brand Launch',
         readTime: '11 min read',
         publishDate: '2026-09-20',
@@ -401,7 +401,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
         introText: [
             'The global athleisure and activewear market is projected to exceed $500 billion by 2030. Yet, more than 70% of emerging fitness apparel brands fail within their first 18 months—not due to poor marketing, but due to catastrophic supply chain missteps.',
             'Relying on off-the-shelf catalog blanks with screen-printed chest logos immediately restricts your brand to budget status. To command luxury retail prices ($70 to $120+ per garment), brands must transition to bespoke cut-and-sew private label manufacturing.',
-            'In this strategic guide, Slots Sports Wear outlines the step-by-step roadmap to taking an apparel concept from a tech pack sketch to retail-ready, barcoded inventory with low 50-piece minimums.'
+            'In this strategic guide, Slots Sports Wear outlines the step-by-step roadmap to taking an apparel concept from a tech pack sketch to retail-ready, barcoded inventory with low 30-piece minimums.'
         ],
         sections: [
             {
@@ -410,7 +410,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
                 content: [
                     'Print-on-Demand (POD) and catalog blanks offer low upfront risk, but severely limit long-term brand equity. Blanks force your brand to conform to generic boxy fits, generic polyester blends, and scratchy tear-away neck labels.',
                     'Cut-and-Sew Private Label manufacturing gives you absolute creative sovereignty. You specify the exact garment drape, curved hem lengths, dropped shoulder drops, proprietary pocket placements, and custom-dyed Pantone colorways.',
-                    'With Slots Sports Wear’s 50-piece minimum order quantity per style, emerging founders can access authentic cut-and-sew manufacturing with capital commitments as low as $1,500 to $2,500 per collection.'
+                    'With Slots Sports Wear’s 30-piece minimum order quantity per style, emerging founders can access authentic cut-and-sew manufacturing with capital commitments as low as $1,500 to $2,500 per collection.'
                 ]
             },
             {
@@ -426,13 +426,13 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
                 heading: '3. Developing Bespoke Trims, Hardware & Packaging',
                 content: [
                     'Brand value is perceived in the details. Consumers evaluate luxury through custom hardware: matte black engraved aglets on hood cords, tonal embossed silicone chest badges, and soft woven damask collar labels.',
-                    'We recommend manufacturing a batch of 1,000 to 2,000 custom woven labels and silicone patches upfront. These can be held in factory inventory and applied across multiple 50-piece product drops over 12 months, reducing per-unit trim costs.'
+                    'We recommend manufacturing a batch of 1,000 to 2,000 custom woven labels and silicone patches upfront. These can be held in factory inventory and applied across multiple 30-piece product drops over 12 months, reducing per-unit trim costs.'
                 ]
             }
         ],
         technicalSpecs: {
             title: 'Private Label Production Budgeting Breakdown',
-            subtitle: 'Typical cost allocation for a 150-unit activewear collection (3 styles x 50 pcs)',
+            subtitle: 'Typical cost allocation for a 90-unit activewear collection (3 styles x 30 pcs)',
             headers: ['Expenditure Category', 'Estimated Allocation', 'Key Deliverables', 'Cost Reduction Tip'],
             rows: [
                 ['Sampling & Prototyping', '15–20%', '3 Physical Fit Samples + Express Air Freight', 'Provide precise CAD tech packs to avoid re-samples'],
@@ -462,7 +462,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
         faqs: [
             {
                 question: 'How much capital do I need to launch a private label sportswear collection?',
-                answer: 'With our 50-piece MOQ per style, founders can launch a capsule collection of 3 styles (e.g., 50 Hoodies, 50 Joggers, 50 Tees = 150 units total) for approximately $2,500 to $4,500 including samples, custom branding, and shipping.'
+                answer: 'With our 30-piece MOQ per style, founders can launch a capsule collection of 3 styles (e.g., 30 Hoodies, 30 Joggers, 30 Tees = 90 units total) for approximately $1,800 to $3,200 including samples, custom branding, and shipping.'
             },
             {
                 question: 'Can you help if I don’t know how to create a technical CAD tech pack?',
@@ -517,7 +517,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
                 heading: '2. Comparative Advantage: Pakistan vs. China vs. Vietnam',
                 content: [
                     'While China and Vietnam excel at monolithic mega-orders (5,000+ pieces per colorway), their massive state-backed factories routinely turn away emerging brands or impose rigid 1,000-piece minimums with 90-day lead times.',
-                    'Sialkot’s manufacturing culture is built around high-dexterity agile production. Factories specialize in low 50-piece minimums, intricate cut-and-sew customization, and direct engineering collaboration with international founders.',
+                    'Sialkot’s manufacturing culture is built around high-dexterity agile production. Factories specialize in low 30-piece minimums, intricate cut-and-sew customization, and direct engineering collaboration with international founders.',
                     'Additionally, Pakistan is the world’s 5th largest producer of raw cotton, granting local mills preferential access to premium long-staple combed cotton yarns for heavyweight fleece and French terry athleisure.'
                 ]
             },
@@ -540,7 +540,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
                 ['Export Infrastructure', 'Sialkot Int Airport (SIAL)', 'Daily Dedicated Air Cargo Flights', '3–5 Day Express Delivery to USA/EU'],
                 ['Domestic Cotton Base', '5th Largest Cotton Producer', 'Long-Staple Premium Yarns', 'Superior Hand-Feel & Low Greige Costs'],
                 ['Customs Clearance', 'Direct Customs Port at SIAL', 'Pre-Cleared Export Documents', 'Zero Transshipment Border Delays'],
-                ['Standard MOQ Culture', '50–100 Pcs per Style', 'Agile Batch Manufacturing', 'Low Capital Entry for Independent Brands']
+                ['Standard MOQ Culture', '30–100 Pcs per Style', 'Agile Batch Manufacturing', 'Low Capital Entry for Independent Brands']
             ]
         },
         buyerConsiderations: [
@@ -665,7 +665,7 @@ export const KNOWLEDGE_ARTICLES: Record<string, KnowledgeArticleData> = {
             },
             {
                 question: 'What is your minimum order for club teamwear?',
-                answer: 'Our club MOQ is 50 complete kits (jersey and shorts), which can be distributed across different squads, age groups, and sizes.'
+                answer: 'Our club MOQ is 30 complete kits (jersey and shorts), which can be distributed across different squads, age groups, and sizes.'
             },
             {
                 question: 'Can you match our historical club pantone colors accurately?',

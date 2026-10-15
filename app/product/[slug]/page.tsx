@@ -74,8 +74,18 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     const product = await getProductData(slug);
     if (!product) return { title: 'Product Not Found' };
 
-    const title = `${product.name} Manufacturer | Custom OEM Sportswear Supplier`;
-    const description = `Custom ${product.name} manufacturer offering OEM and private label sportswear production for global brands, teams and wholesale buyers.`;
+    const isGolf = product.slug?.includes('golf') ||
+                   product.name?.toLowerCase().includes('golf') ||
+                   product.category?.name?.toLowerCase().includes('golf');
+
+    const title = isGolf
+        ? `${product.name} | Custom Golf Polo & Apparel Manufacturer | SLOTS SPORTSWEAR`
+        : `${product.name} | Private Label Sportswear Manufacturer | SLOTS SPORTSWEAR`;
+
+    const description = isGolf
+        ? `Custom ${product.name} manufacturing by SLOTS SPORTSWEAR. High-performance private label golf apparel, custom golf polo shirts, and wholesale production for USA brands and golf clubs.`
+        : `Custom ${product.name} manufacturing by SLOTS SPORTSWEAR. Wholesale custom apparel and private label sportswear production for USA and global athletic brands and teams.`;
+
     const imageUrl = product.media?.[0]?.secure_url || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/images/logo.png`;
 
     return {
@@ -83,10 +93,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
             absolute: title,
         },
         description,
+        alternates: {
+            canonical: `/product/${slug}`,
+        },
         openGraph: {
             type: 'website',
             title,
             description,
+            url: `/product/${slug}`,
             images: [{ url: imageUrl, width: 800, height: 600, alt: product.name }],
         },
         twitter: {
@@ -106,7 +120,9 @@ export default async function Page({ params }: ProductPageProps) {
         notFound();
     }
 
-    // Build Product JSON-LD for Google rich results (star ratings, price, availability)
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app';
+
+    // Build Product JSON-LD for B2B RFQ (No fixed retail price or false availability offers)
     const productJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Product',
@@ -116,17 +132,14 @@ export default async function Page({ params }: ProductPageProps) {
         sku: productData.slug,
         brand: {
             '@type': 'Brand',
-            name: 'Slots Sports Wear',
+            name: 'SLOTS SPORTSWEAR',
+        },
+        manufacturer: {
+            '@type': 'Organization',
+            name: 'SLOTS SPORTSWEAR',
+            url: siteUrl,
         },
         category: productData.category?.name || '',
-        offers: {
-            '@type': 'Offer',
-            url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://slotssportswear.vercel.app'}/product/${productData.slug}`,
-            priceCurrency: 'PKR',
-            price: productData.sellingPrice || productData.price || 0,
-            availability: 'https://schema.org/InStock',
-            seller: { '@type': 'Organization', name: 'Slots Sports Wear' },
-        },
         ...(productData.averageRating > 0 && productData.reviews?.length > 0
             ? {
                 aggregateRating: {
@@ -140,9 +153,53 @@ export default async function Page({ params }: ProductPageProps) {
             : {}),
     };
 
+    // Build BreadcrumbList JSON-LD for rich snippet navigation
+    const breadcrumbJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Home',
+                item: `${siteUrl}/`,
+            },
+            {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Catalog',
+                item: `${siteUrl}/shop`,
+            },
+            ...(productData.category?.name
+                ? [
+                    {
+                        '@type': 'ListItem',
+                        position: 3,
+                        name: productData.category.name,
+                        item: `${siteUrl}/shop?category=${productData.category.slug || encodeURIComponent(productData.category.name)}`,
+                    },
+                    {
+                        '@type': 'ListItem',
+                        position: 4,
+                        name: productData.name,
+                        item: `${siteUrl}/product/${productData.slug}`,
+                    },
+                  ]
+                : [
+                    {
+                        '@type': 'ListItem',
+                        position: 3,
+                        name: productData.name,
+                        item: `${siteUrl}/product/${productData.slug}`,
+                    },
+                  ]),
+        ],
+    };
+
     return (
         <>
             <JsonLd data={productJsonLd} />
+            <JsonLd data={breadcrumbJsonLd} />
             <ProductClient initialData={productData} />
         </>
     );

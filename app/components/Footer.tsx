@@ -16,28 +16,7 @@ const LINKS = {
     ]
 };
 
-interface Category {
-    _id: string;
-    name: string;
-    slug: string;
-}
-
 const Footer = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const { data } = await axios.get('/api/public/categories');
-                if (data.success && Array.isArray(data.data)) {
-                    setCategories(data.data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch categories for footer:", err);
-            }
-        };
-        fetchCategories();
-    }, []);
 
     return (
         <footer className="w-full bg-[#111111] text-[#EDEEE7] py-10 px-5 md:px-10 overflow-hidden">
@@ -62,40 +41,24 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    {/* Sitemap: Collections */}
+                    {/* Collections: Canonical Shop Categories */}
                     <div className="flex flex-col gap-6">
                         <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30">Collections</span>
                         <ul className="flex flex-col gap-3">
-                            <li>
-                                <Link href="/shop?sort=newest" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
-                                    New Arrivals
-                                </Link>
-                            </li>
-                            {categories.length > 0 ? (
-                                categories.map((cat) => (
-                                    <li key={cat._id}>
-                                        <Link href={`/shop?category=${cat.slug}`} className="hover:opacity-50 transition-all tracking-wide font-[middle]">
-                                            {cat.name}
-                                        </Link>
-                                    </li>
-                                ))
-                            ) : (
-                                <>
-                                    <li><Link href="/shop?category=sport" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Sports Collection</Link></li>
-                                    <li><Link href="/shop?category=casual" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Casuals Collection</Link></li>
-                                    <li><Link href="/shop?category=team" className="hover:opacity-50 transition-all tracking-wide font-[middle]">Team Collection</Link></li>
-                                </>
-                            )}
-                            <li>
-                                <Link href="/shop?tags=limited" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
-                                    Limited Edition
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/faq" className="hover:opacity-50 transition-all tracking-wide font-[middle]">
-                                    FAQs
-                                </Link>
-                            </li>
+                            {[
+                                { label: 'Golfwear', href: '/shop?category=golfwear' },
+                                { label: 'Teamwear', href: '/shop?category=teamwear' },
+                                { label: 'Fitness Apparel', href: '/shop?category=fitness-apparel' },
+                                { label: 'Activewear', href: '/shop?category=activewear' },
+                                { label: 'Running Wear', href: '/shop?category=running-wear' },
+                                { label: 'Training Wear', href: '/shop?category=training-wear' },
+                            ].map((item) => (
+                                <li key={item.label}>
+                                    <Link href={item.href} className="hover:opacity-50 transition-all tracking-wide font-[middle] text-sm">
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -104,9 +67,13 @@ const Footer = () => {
                         <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30">Company</span>
                         <ul className="flex flex-col gap-3">
                             {[
+                                { label: 'All Products Catalog', href: '/shop' },
+                                { label: 'Private Label Sportswear', href: '/solutions/private-label-sportswear-manufacturer' },
+                                { label: 'Custom Sportswear OEM', href: '/solutions/custom-sportswear-manufacturer' },
                                 { label: 'Our Story', href: '/story' },
                                 { label: 'About Us', href: '/about' },
                                 { label: 'Manufacturing Process', href: '/manufacturing-process' },
+                                { label: 'Manufacturing FAQs', href: '/faq' },
                                 { label: 'Knowledge Hub', href: '/knowledge' },
                                 { label: 'Shipping Info', href: '/shipping' },
                                 { label: 'Policies', href: '/policy' },
@@ -140,7 +107,7 @@ const Footer = () => {
 
                 {/* Massive Branding */}
                 <div className="relative pointer-events-none select-none w-full h-fit flex justify-center py-5">
-                    <Heading title="SLOTS SPORTS WEAR" className='text-[#EDEEE7]!' />
+                    <Heading title="SLOTS SPORTS WEAR" className='text-[#EDEEE7]! text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter justify-center text-center' />
                 </div>
 
                 {/* Bottom Meta */}

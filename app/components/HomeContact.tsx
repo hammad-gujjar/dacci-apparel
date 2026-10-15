@@ -68,9 +68,9 @@ const HomeContact = () => {
                 {/* Header - Heading component removed, plain centered h1 */}
                 <div className="flex flex-col gap-5 max-w-2xl reveal-up items-center">
                     <span className="text-black/30 text-[10px] uppercase tracking-[0.6em] font-bold">The Journal</span>
-                    <h1 className="text-center text-3xl md:text-5xl font-bold uppercase tracking-tight text-black">
+                    <h2 className="text-center text-3xl md:text-5xl font-bold uppercase tracking-tight text-black">
                         Subscribe To Our Minimalist Dialogue.
-                    </h1>
+                    </h2>
                     <p className='text-center'>
                         Join our exclusive circle for tech-pack insights, manufacturing updates, and new collection reveals.
                     </p>

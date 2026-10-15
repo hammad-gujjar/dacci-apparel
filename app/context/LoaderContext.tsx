@@ -183,7 +183,7 @@ export const LoaderProvider = ({ children }: { children: ReactNode }) => {
                         <div ref={marqueeRef} className="flex gap-16 items-center py-4">
                             {[...Array(12)].map((_, i) => (
                                 <div key={i} className="flex items-center gap-16">
-                                    <h1 className="text-[#EDEEE7]!">SLOTS SPORTS WEAR</h1>
+                                    <span className="font-[main] text-[40px] uppercase text-[#EDEEE7]! leading-none">SLOTS SPORTS WEAR</span>
                                     <span className="size-4 md:size-8 rounded-full bg-[#EDEEE7]! opacity-40"></span>
                                 </div>
                             ))}

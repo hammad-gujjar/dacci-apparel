@@ -115,35 +115,35 @@ const AboutClient = () => {
         <div ref={containerRef}>
             <div className='w-full pt-[10vh] px-5'>
                 <div className='about-hero-text w-full flex flex-col items-center justify-between gap-5 pt-15'>
-                    <Heading title="Custom Sportswear Manufacturing Excellence" className="w-full justify-center text-center" />
+                    <Heading as="h1" title="Sportswear Manufacturer For Private-Label Brands" className="w-full justify-center text-center" />
                     <p className='md:w-[60%] w-[80%] text-center'>
-                        From concept development to final production, we help global brands create high-performance apparel through advanced OEM &amp; ODM manufacturing solutions.
+                        Based in Sialkot, Pakistan, SLOTS SPORTSWEAR is an export-ready custom sportswear manufacturer and private label apparel supplier engineered for emerging and established athletic brands across the USA and worldwide.
                     </p>
                 </div>
-                <img 
-                    src="https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg" 
-                    alt="Manufacturing Banner" 
-                    className='about-main-img w-full h-[90vh] object-cover py-10' 
+                <img
+                    src="https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg"
+                    alt="SLOTS SPORTSWEAR athletic apparel manufacturing facility"
+                    className='about-main-img w-full h-[90vh] object-cover py-10'
                 />
                 <div className='py-15 grid grid-cols-1 md:grid-cols-[1fr_2fr_2fr] gap-5'>
-                    <img 
-                        src="https://i.pinimg.com/originals/e9/a1/95/e9a195242f14c700aec400a3490b8d4b.jpg" 
-                        alt="Expertise" 
-                        className='manufact-animate object-cover' 
+                    <img
+                        src="https://i.pinimg.com/originals/e9/a1/95/e9a195242f14c700aec400a3490b8d4b.jpg"
+                        alt="Precision pattern cutting and athletic garment tailoring"
+                        className='manufact-animate object-cover'
                     />
                     <div className='manufact-animate flex flex-col gap-2'>
-                        <Heading title='Advanced OEM & ODM Sportswear Production' className='!text-[25px] font-semibold' />
+                        <Heading as="h2" title='Advanced OEM & ODM Sportswear Production' className='!text-[25px] font-semibold' />
                         <p>
-                            With state-of-the-art cut-and-sew facilities and modern textile machinery, we engineer high-performance sportswear, teamwear, and activewear for international brands. Our end-to-end manufacturing infrastructure supports automated pattern drafting, precision laser cutting, sublimation, and high-density embroidery.
+                            As a specialized custom sportswear manufacturer in Pakistan, our modern facility combines precision pattern drafting, laser cutting, sublimation, and high-density embroidery to serve private label apparel brands with export-grade craftsmanship.
                         </p>
                         <p>
-                            Operating with an agile production model, we deliver scalable manufacturing from low 50-piece minimum order quantities to bulk volume orders exceeding 5,000+ units monthly. Every production run is backed by rigorous multi-point AQL quality inspection and comprehensive global door-to-door logistics.
+                            Operating with an agile production model, we deliver scalable manufacturing from low 30-piece minimum order quantities to bulk volume orders exceeding 5,000+ units monthly. Every production run is backed by rigorous multi-point AQL quality inspection and comprehensive global door-to-door logistics.
                         </p>
                     </div>
-                    <img 
-                        src="https://i.pinimg.com/1200x/4f/ef/fc/4feffc865f39f7b3f6484265c81e1fa5.jpg" 
-                        alt="Export Quality" 
-                        className='manufact-animate row-span-2 object-cover' 
+                    <img
+                        src="https://i.pinimg.com/1200x/4f/ef/fc/4feffc865f39f7b3f6484265c81e1fa5.jpg"
+                        alt="Sportswear quality inspection and garment finishing"
+                        className='manufact-animate row-span-2 object-cover'
                     />
                     <div className='stats-grid col-span-2 grid grid-cols-2 gap-5'>
                         {[
@@ -163,7 +163,7 @@ const AboutClient = () => {
 
             <div className='p-5 flex flex-col items-center justify-center gap-5 pb-10'>
                 <div className='why-choose-header w-full flex flex-col items-center gap-5'>
-                    <Heading title="Our Manufacturing Ethos" />
+                    <Heading as="h2" title="Our Manufacturing Ethos" />
                     <p className='md:w-1/2 w-full text-center'>
                         Empowering athletic apparel brands with advanced sportswear engineering, agile low-MOQ production, and uncompromising factory-direct standards.
                     </p>
@@ -192,7 +192,7 @@ const AboutClient = () => {
                         },
                     ].map((item, index) => (
                         <ul key={index} className='feature-card ios-card flex flex-col items-center gap-4 h-full'>
-                            <img src={item.img} alt="" className='w-10 h-10 object-cover mb-3' />
+                            <img src={item.img} alt={item.title} className='w-10 h-10 object-cover mb-3' />
                             <p className='font-semibold text-center'>{item.title}</p>
                             <p className='text-center text-sm'>{item.des}</p>
                         </ul>

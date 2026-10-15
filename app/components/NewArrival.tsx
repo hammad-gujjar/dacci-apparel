@@ -16,7 +16,7 @@ const NewArrival = ({ products }: NewArrivalProps) => {
             {products && products.length > 0 && (
                 <section className="w-full flex flex-col items-center gap-10">
                     <div className='w-full flex flex-col items-center gap-2 px-5'>
-                        <Heading title='NEW ARRIVALS' className="w-fit" />
+                        <Heading as="h2" title='NEW ARRIVALS' className="w-fit" />
                         <p className='w-full text-center'>Discover our latest collection of new arrivals.</p>
                     </div>
 

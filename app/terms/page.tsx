@@ -3,9 +3,21 @@ import Link from 'next/link';
 import FormattedTitle from '../components/FormattedTitle';
 
 export const metadata: Metadata = {
-    title: 'Terms & Conditions',
+    title: {
+        absolute: 'Terms & Conditions | Slots Sports Wear',
+    },
     description: 'Read the Terms and Conditions of Slots Sports Wear. Understand your rights and obligations when placing orders, using our website, or engaging our manufacturing services.',
+    alternates: {
+        canonical: '/terms',
+    },
     openGraph: {
+        title: 'Terms & Conditions - Slots Sports Wear',
+        description: 'The complete terms governing use of the Slots Sports Wear website and manufacturing services.',
+        url: '/terms',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
         title: 'Terms & Conditions - Slots Sports Wear',
         description: 'The complete terms governing use of the Slots Sports Wear website and manufacturing services.',
     },
@@ -23,7 +35,7 @@ const clauses = [
     },
     {
         title: 'Orders & Minimum Order Quantities',
-        body: 'All orders are subject to a minimum order quantity (MOQ) of 50 pieces per style unless otherwise agreed in writing. Orders are considered confirmed only upon receipt of the signed purchase order or written confirmation, along with the required deposit payment. Any changes to confirmed orders must be communicated in writing within 48 hours of order confirmation; changes requested after production commencement may incur additional charges.',
+        body: 'All orders are subject to a minimum order quantity (MOQ) of 30 pieces per style unless otherwise agreed in writing. Orders are considered confirmed only upon receipt of the signed purchase order or written confirmation, along with the required deposit payment. Any changes to confirmed orders must be communicated in writing within 48 hours of order confirmation; changes requested after production commencement may incur additional charges.',
     },
     {
         title: 'Pricing & Payment',

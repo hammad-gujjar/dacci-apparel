@@ -71,7 +71,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Custom Sportswear Manufacturer For Global Brands',
         subtitle: 'Precision OEM & ODM athletic apparel manufacturing with low minimums, bespoke technical pattern making, and worldwide express logistics.',
         metaTitle: 'Custom Sportswear Manufacturer | OEM & ODM Athletic Apparel Factory',
-        metaDescription: 'Verified custom sportswear manufacturer powering global brands. In-house sublimation, custom patterns, 50 pcs MOQ, 7-14 days sampling & worldwide shipping.',
+        metaDescription: 'Verified custom sportswear manufacturer powering global brands. In-house sublimation, custom patterns, 30 pcs MOQ, 7-14 days sampling & worldwide shipping.',
         keywords: [
             'custom sportswear manufacturer',
             'sportswear OEM factory',
@@ -84,7 +84,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'From technical pattern drafting to bulk factory cutting, printing, and precision assembly, Slots Sports Wear provides end-to-end bespoke sportswear manufacturing engineered to client tech packs.',
         targetCategory: 'Activewear',
         stats: [
-            { value: '50 Pcs', label: 'Minimum Order Quantity (MOQ)' },
+            { value: '30 Pcs', label: 'Minimum Order Quantity (MOQ)' },
             { value: '7–14 Days', label: 'Prototyping & Sampling Turnaround' },
             { value: '50,000+', label: 'Monthly Factory Production Units' },
             { value: 'AQL 2.5', label: 'Certified Quality Audit Standard' }
@@ -92,13 +92,13 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         introHeading: 'Industrial Precision Meets High-Performance Athletic Engineering',
         introText: [
             'As an established sports apparel manufacturer based in Punjab, Pakistan, Slots Sports Wear partners with international sportswear startups, athletic retail chains, and established fitness labels across the USA, UK, Europe, and Australia.',
-            'We eliminate the barriers of traditional apparel manufacturing by offering accessible 50-piece minimum order quantities per style, enabling independent founders to test new collections without prohibitive inventory liabilities.',
+            'We eliminate the barriers of traditional apparel manufacturing by offering accessible 30-piece minimum order quantities per style, enabling independent founders to test new collections without prohibitive inventory liabilities.',
             'Every production run undergoes strict in-line inspection, fabric tensile testing, and final AQL 2.5 quality control before express international air cargo dispatch via DHL and FedEx.'
         ],
         benefits: [
             {
-                title: 'Low 50-Piece MOQ per Style',
-                description: 'Launch new silhouettes and test market demand without tied-up capital. Scale up seamlessly from 50 to 50,000 units.',
+                title: 'Low 30-Piece MOQ per Style',
+                description: 'Launch new silhouettes and test market demand without tied-up capital. Scale up seamlessly from 30 to 50,000 units.',
                 icon: 'layers'
             },
             {
@@ -141,15 +141,15 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Aero-Mesh Ventilation Knit', weight: '110–130 GSM', composition: '92% Poly / 8% Elastane', bestFor: 'Underarm Panels, Running Vests' }
         ],
         customization: [
-            { name: 'All-Over Sublimation Printing', description: 'Thermal transfer printing with zero weight addition to technical knit fabrics.', moq: '50 Pcs' },
-            { name: '3D High-Density Silicone Transfer', description: 'Raised textured silicone logos engineered to flex without cracking.', moq: '50 Pcs' },
-            { name: 'Precision Flatlock 4-Needle Seaming', description: 'Chafe-free ergonomic stitching for maximum endurance during high-intensity training.', moq: '50 Pcs' },
-            { name: 'Custom Private Label Packaging', description: 'Woven damask labels, custom hangtags, and frosted polybags.', moq: '50 Pcs' }
+            { name: 'All-Over Sublimation Printing', description: 'Thermal transfer printing with zero weight addition to technical knit fabrics.', moq: '30 Pcs' },
+            { name: '3D High-Density Silicone Transfer', description: 'Raised textured silicone logos engineered to flex without cracking.', moq: '30 Pcs' },
+            { name: 'Precision Flatlock 4-Needle Seaming', description: 'Chafe-free ergonomic stitching for maximum endurance during high-intensity training.', moq: '30 Pcs' },
+            { name: 'Custom Private Label Packaging', description: 'Woven damask labels, custom hangtags, and frosted polybags.', moq: '30 Pcs' }
         ],
         faqs: [
             {
                 question: 'What is your minimum order quantity (MOQ) for custom sportswear?',
-                answer: 'Our standard MOQ is 50 pieces per style/colorway. You can distribute this quantity across standard size ranges (e.g., S, M, L, XL, XXL).'
+                answer: 'Our standard MOQ is 30 pieces per style/colorway. You can distribute this quantity across standard size ranges (e.g., S, M, L, XL, XXL).'
             },
             {
                 question: 'How long does physical sample development take?',
@@ -179,7 +179,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Private Label Sportswear Manufacturer',
         subtitle: 'Turnkey private label apparel solutions for gym wear brands, fitness influencers, and athletic retail lines seeking bespoke silhouettes.',
         metaTitle: 'Private Label Sportswear Manufacturer | Custom Gym Wear Factory',
-        metaDescription: 'Premier private label sportswear manufacturer. Full custom branding, woven labels, custom neck tags, luxury fabric blends, and low 50 pcs MOQ.',
+        metaDescription: 'Premier private label sportswear manufacturer. Full custom branding, woven labels, custom neck tags, luxury fabric blends, and low 30 pcs MOQ.',
         keywords: [
             'private label sportswear manufacturer',
             'custom gym wear manufacturer',
@@ -191,7 +191,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'Transform your brand vision into premium athletic merchandise. We deliver white-glove private label manufacturing complete with custom woven neck labels, branded hangtags, and bespoke hardware.',
         targetCategory: 'Fitness Apparel',
         stats: [
-            { value: '50 Pcs', label: 'Low Private Label MOQ' },
+            { value: '30 Pcs', label: 'Low Private Label MOQ' },
             { value: '100%', label: 'Custom Brand Packaging' },
             { value: '7–14 Days', label: 'Bespoke Prototype Lead Time' },
             { value: 'Worldwide', label: 'Direct Door-to-Door Logistics' }
@@ -248,9 +248,9 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Lightweight Perforated Training Poly', weight: '130–150 GSM', composition: '95% Poly / 5% Spandex', bestFor: 'Marathon Vests, Gym Stringers' }
         ],
         customization: [
-            { name: 'Heat-Transfer Matte Neck Labels', description: 'Tagless interior branding with washing instructions and size specs.', moq: '50 Pcs' },
-            { name: 'Woven Damask Collar Labels', description: 'High-density micro-thread woven labels with soft folded edges.', moq: '50 Pcs' },
-            { name: 'Custom Embossed Frosted Polybags', description: 'Frosted ziplock polybags featuring client brand logo and barcode windows.', moq: '50 Pcs' },
+            { name: 'Heat-Transfer Matte Neck Labels', description: 'Tagless interior branding with washing instructions and size specs.', moq: '30 Pcs' },
+            { name: 'Woven Damask Collar Labels', description: 'High-density micro-thread woven labels with soft folded edges.', moq: '30 Pcs' },
+            { name: 'Custom Embossed Frosted Polybags', description: 'Frosted ziplock polybags featuring client brand logo and barcode windows.', moq: '30 Pcs' },
             { name: 'Custom Metal & Silicone Trims', description: 'Debossed metal drawcord tips and rubber chest badges.', moq: '100 Pcs' }
         ],
         faqs: [
@@ -286,7 +286,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Custom Football Jersey & Soccer Kit Manufacturer',
         subtitle: 'Pro-grade custom soccer jerseys, team kits, and goalkeeper apparel with all-over dye sublimation and breathable mesh technology.',
         metaTitle: 'Custom Football Jersey Manufacturer | Sublimated Soccer Kits Factory',
-        metaDescription: 'Leading custom football jersey manufacturer. Pro-grade soccer uniforms, moisture-wicking interlock, all-over dye sublimation, team names & numbers, 50 pcs MOQ.',
+        metaDescription: 'Leading custom football jersey manufacturer. Pro-grade soccer uniforms, moisture-wicking interlock, all-over dye sublimation, team names & numbers, 30 pcs MOQ.',
         keywords: [
             'custom football jersey manufacturer',
             'custom soccer kit supplier',
@@ -298,7 +298,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'Equip football clubs, youth academies, and sports retail brands with match-tested custom soccer uniforms featuring vibrant all-over dye sublimation, breathable micro-mesh, and reinforced flatlock stitching.',
         targetCategory: 'Teamwear',
         stats: [
-            { value: '50 Kits', label: 'Minimum Club Order' },
+            { value: '30 Kits', label: 'Minimum Club Order' },
             { value: '140–160 GSM', label: 'Pro-Grade Micro Interlock' },
             { value: 'Zero Fade', label: 'Swiss Sublimation Inks' },
             { value: '7–10 Days', label: 'Rush Sample Production' }
@@ -355,10 +355,10 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Heavy-Duty Twill Knit', weight: '220 GSM', composition: '100% Polyester', bestFor: 'Goalkeeper Trousers & Sideline Jackets' }
         ],
         customization: [
-            { name: 'All-Over Digital Sublimation', description: 'Complete custom background graphics, gradients, and watermark club emblems.', moq: '50 Pcs' },
-            { name: 'High-Definition Woven Club Badges', description: 'Merrowed border woven badges with iron-on or stitched perimeter.', moq: '50 Pcs' },
-            { name: 'Heat-Transfer Sponsor Graphics', description: 'Soft-touch polyurethane sponsor logos in single or multi-color.', moq: '50 Pcs' },
-            { name: 'Sublimated Player Names & Numbers', description: 'Custom typography matched to club fonts.', moq: '50 Pcs' }
+            { name: 'All-Over Digital Sublimation', description: 'Complete custom background graphics, gradients, and watermark club emblems.', moq: '30 Pcs' },
+            { name: 'High-Definition Woven Club Badges', description: 'Merrowed border woven badges with iron-on or stitched perimeter.', moq: '30 Pcs' },
+            { name: 'Heat-Transfer Sponsor Graphics', description: 'Soft-touch polyurethane sponsor logos in single or multi-color.', moq: '30 Pcs' },
+            { name: 'Sublimated Player Names & Numbers', description: 'Custom typography matched to club fonts.', moq: '30 Pcs' }
         ],
         faqs: [
             {
@@ -393,7 +393,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Custom Basketball Uniforms & Apparel Manufacturer',
         subtitle: 'Pro-cut basketball jerseys, reversible practice kits, shooting shirts, and warm-up tracksuits with double-knit performance mesh.',
         metaTitle: 'Custom Basketball Uniforms Manufacturer | Pro Mesh Jerseys Factory',
-        metaDescription: 'Premier custom basketball uniform manufacturer. Pro-cut jerseys, reversible mesh uniforms, sublimated graphics, tackle twill embroidery, 50 pcs MOQ.',
+        metaDescription: 'Premier custom basketball uniform manufacturer. Pro-cut jerseys, reversible mesh uniforms, sublimated graphics, tackle twill embroidery, 30 pcs MOQ.',
         keywords: [
             'custom basketball uniform manufacturer',
             'custom basketball jerseys wholesale',
@@ -405,7 +405,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'Supply basketball brands, amateur tournaments, and professional leagues with athletic cut uniforms crafted from open-hole mesh, heavy interlock, and tackle twill embroidery.',
         targetCategory: 'Teamwear',
         stats: [
-            { value: '50 Sets', label: 'Minimum Team Order' },
+            { value: '30 Sets', label: 'Minimum Team Order' },
             { value: '180–220 GSM', label: 'Heavyweight Pro Mesh' },
             { value: 'Reversible', label: 'Double-Layer Options' },
             { value: '7–14 Days', label: 'Rapid Sample Delivery' }
@@ -462,10 +462,10 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Four-Way Stretch Woven Ripstop', weight: '140 GSM', composition: '92% Poly / 8% Elastane', bestFor: 'Warm-Up Breakaway Pants' }
         ],
         customization: [
-            { name: 'All-Over Digital Sublimation', description: 'Full coverage sublimated team colors, numbers, and graphic panels.', moq: '50 Sets' },
-            { name: 'Multi-Layer Tackle Twill Lettering', description: 'Embroidered fabric tackle twill numbers and arch lettering.', moq: '50 Sets' },
-            { name: 'Custom Striped Ribbing', description: 'Bespoke knitted collar and armhole stripes matching team pantones.', moq: '50 Sets' },
-            { name: 'Sublimated Warm-Up Tracksuits', description: 'Full zip jacket and breakaway tear-away pants.', moq: '50 Sets' }
+            { name: 'All-Over Digital Sublimation', description: 'Full coverage sublimated team colors, numbers, and graphic panels.', moq: '30 Sets' },
+            { name: 'Multi-Layer Tackle Twill Lettering', description: 'Embroidered fabric tackle twill numbers and arch lettering.', moq: '30 Sets' },
+            { name: 'Custom Striped Ribbing', description: 'Bespoke knitted collar and armhole stripes matching team pantones.', moq: '30 Sets' },
+            { name: 'Sublimated Warm-Up Tracksuits', description: 'Full zip jacket and breakaway tear-away pants.', moq: '30 Sets' }
         ],
         faqs: [
             {
@@ -500,7 +500,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Custom Sublimation Sportswear Manufacturer',
         subtitle: 'High-definition full-dye sublimation printing for sports jerseys, performance hoodies, leggings, and esports apparel.',
         metaTitle: 'Custom Sublimation Sportswear Manufacturer | Full Dye Printing Factory',
-        metaDescription: 'Industrial sublimation sportswear manufacturer. Japanese sublimation printers, Swiss inks, vibrant non-fading colors, full-cut cut & sew, 50 pcs MOQ.',
+        metaDescription: 'Industrial sublimation sportswear manufacturer. Japanese sublimation printers, Swiss inks, vibrant non-fading colors, full-cut cut & sew, 30 pcs MOQ.',
         keywords: [
             'sublimation sportswear manufacturer',
             'custom sublimated jerseys',
@@ -514,7 +514,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         stats: [
             { value: '1440 DPI', label: 'Ultra HD Print Resolution' },
             { value: 'Zero Fade', label: 'Swiss Certified Inks' },
-            { value: '50 Pcs', label: 'Low Sublimation MOQ' },
+            { value: '30 Pcs', label: 'Low Sublimation MOQ' },
             { value: '100%', label: 'Breathability Preserved' }
         ],
         introHeading: 'Industrial All-Over Dye Sublimation Printing Technology',
@@ -569,10 +569,10 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Air-Flow Honeycomb Mesh', weight: '135 GSM', composition: '100% Breathable Poly', bestFor: 'Jersey Back Panels, Esports Kits' }
         ],
         customization: [
-            { name: 'Full-Coverage Edge-to-Edge Print', description: '100% garment coverage including collar, sleeves, body, and waistband.', moq: '50 Pcs' },
-            { name: 'Neon Fluorescent Inks', description: 'High-visibility safety and tournament colors that glow under UV light.', moq: '50 Pcs' },
-            { name: 'Hybrid Sublimation + Embroidery', description: 'Sublimated background graphics topped with raised 3D embroidery.', moq: '50 Pcs' },
-            { name: 'Sublimated Microfiber Towels & Caps', description: 'Accessories printed to match the primary team uniform suite.', moq: '50 Pcs' }
+            { name: 'Full-Coverage Edge-to-Edge Print', description: '100% garment coverage including collar, sleeves, body, and waistband.', moq: '30 Pcs' },
+            { name: 'Neon Fluorescent Inks', description: 'High-visibility safety and tournament colors that glow under UV light.', moq: '30 Pcs' },
+            { name: 'Hybrid Sublimation + Embroidery', description: 'Sublimated background graphics topped with raised 3D embroidery.', moq: '30 Pcs' },
+            { name: 'Sublimated Microfiber Towels & Caps', description: 'Accessories printed to match the primary team uniform suite.', moq: '30 Pcs' }
         ],
         faqs: [
             {
@@ -607,7 +607,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'Custom Teamwear & Sports Uniforms Manufacturer',
         subtitle: 'Comprehensive OEM teamwear solutions for sports academies, universities, rugby clubs, and corporate athletic leagues.',
         metaTitle: 'Custom Teamwear Manufacturer | Sports Uniforms & Kits Factory',
-        metaDescription: 'Complete custom teamwear manufacturer. Pro sports uniforms, sideline tracksuits, warm-ups, kit bags, 50 pcs MOQ, factory direct turnaround.',
+        metaDescription: 'Complete custom teamwear manufacturer. Pro sports uniforms, sideline tracksuits, warm-ups, kit bags, 30 pcs MOQ, factory direct turnaround.',
         keywords: [
             'custom teamwear manufacturer',
             'sports team uniforms factory',
@@ -619,7 +619,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'Outfit entire sporting organizations with matching match day kits, sideline warm-up tracksuits, coaches polos, and athletic travel gear manufactured under one roof.',
         targetCategory: 'Teamwear',
         stats: [
-            { value: '50 Units', label: 'Minimum Team Kit Order' },
+            { value: '30 Units', label: 'Minimum Team Kit Order' },
             { value: 'Multi-Sport', label: 'Soccer, Rugby, Basketball & Track' },
             { value: '7–14 Days', label: 'Sample Turnaround' },
             { value: 'Direct Delivery', label: 'Packaged Per Player / Squad' }
@@ -676,10 +676,10 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'High-Density Rugby Cotton-Poly Twill', weight: '280 GSM', composition: '65% Cotton / 35% Poly', bestFor: 'Rugby Jerseys & Contact Wear' }
         ],
         customization: [
-            { name: 'Woven Crest with Merrowed Edge', description: 'Traditional club crest with metallic thread and heavy embroidery.', moq: '50 Pcs' },
-            { name: 'Sublimated Club Gradient Panels', description: 'Custom pattern and chevron artwork integrated into jerseys.', moq: '50 Pcs' },
-            { name: 'Reflective Player Numbers', description: 'Hi-vis silver reflective numbers for evening practice and track sessions.', moq: '50 Pcs' },
-            { name: 'Individualized Player Kit Bagging', description: 'Kits sorted into labeled polybags per player roster name.', moq: '50 Pcs' }
+            { name: 'Woven Crest with Merrowed Edge', description: 'Traditional club crest with metallic thread and heavy embroidery.', moq: '30 Pcs' },
+            { name: 'Sublimated Club Gradient Panels', description: 'Custom pattern and chevron artwork integrated into jerseys.', moq: '30 Pcs' },
+            { name: 'Reflective Player Numbers', description: 'Hi-vis silver reflective numbers for evening practice and track sessions.', moq: '30 Pcs' },
+            { name: 'Individualized Player Kit Bagging', description: 'Kits sorted into labeled polybags per player roster name.', moq: '30 Pcs' }
         ],
         faqs: [
             {
@@ -688,7 +688,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             },
             {
                 question: 'How do you handle youth and adult sizes in the same team order?',
-                answer: 'You can mix youth (YXS–YXL) and adult (XS–4XL) sizes within the 50-piece minimum quantity threshold.'
+                answer: 'You can mix youth (YXS–YXL) and adult (XS–4XL) sizes within the 30-piece minimum quantity threshold.'
             },
             {
                 question: 'Can we reorder 5 to 10 additional kits if new players join mid-season?',
@@ -714,7 +714,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         title: 'OEM Fitness Apparel & Gym Wear Manufacturer',
         subtitle: 'Engineered gym wear manufacturing: squat-proof seamless leggings, oversized pump covers, drop-arm tanks, and sports bras.',
         metaTitle: 'Fitness Apparel Manufacturer | OEM Gym Clothing Factory',
-        metaDescription: 'Specialist OEM fitness apparel manufacturer. Squat-proof seamless leggings, oversized pump covers, sports bras, 50 pcs MOQ, luxury fabric blends.',
+        metaDescription: 'Specialist OEM fitness apparel manufacturer. Squat-proof seamless leggings, oversized pump covers, sports bras, 30 pcs MOQ, luxury fabric blends.',
         keywords: [
             'fitness apparel manufacturer',
             'custom gym wear manufacturer',
@@ -726,7 +726,7 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
         heroDescription: 'From high-compression squat-proof leggings to heavyweight 100% cotton pump covers, we build elite fitness apparel for gym brands, athletes, and fitness influencers.',
         targetCategory: 'Fitness Apparel',
         stats: [
-            { value: '50 Pcs', label: 'Low Brand Entry MOQ' },
+            { value: '30 Pcs', label: 'Low Brand Entry MOQ' },
             { value: '100% Squat Proof', label: 'Interlock Dense Knit' },
             { value: '4-Way Stretch', label: 'High Spandex Retention' },
             { value: '7–14 Days', label: 'Rapid Fit Prototyping' }
@@ -783,9 +783,9 @@ export const SOLUTIONS_DATA: Record<string, SolutionPageData> = {
             { name: 'Breathable Cotton-Modal Lycra Blend', weight: '200 GSM', composition: '50% Cotton / 45% Modal / 5% Spandex', bestFor: 'Drop-Arm Stringers & Tanks' }
         ],
         customization: [
-            { name: 'High-Density Raised Silicone Logos', description: 'Tactile rubber chest and hip logos that stretch seamlessly with technical fabrics.', moq: '50 Pcs' },
-            { name: 'Distressed Vintage & Acid Washing', description: 'Garment dyed vintage wash finishes for streetwear-inspired gym wear.', moq: '50 Pcs' },
-            { name: 'Tear-Away & Heat Seal Branding', description: 'Tagless neck printing and custom woven hem clips.', moq: '50 Pcs' },
+            { name: 'High-Density Raised Silicone Logos', description: 'Tactile rubber chest and hip logos that stretch seamlessly with technical fabrics.', moq: '30 Pcs' },
+            { name: 'Distressed Vintage & Acid Washing', description: 'Garment dyed vintage wash finishes for streetwear-inspired gym wear.', moq: '30 Pcs' },
+            { name: 'Tear-Away & Heat Seal Branding', description: 'Tagless neck printing and custom woven hem clips.', moq: '30 Pcs' },
             { name: 'Custom Jacquard Branded Elastic', description: 'Bespoke elastic bands with engineered typography for waistbands and bras.', moq: '100 Pcs' }
         ],
         faqs: [

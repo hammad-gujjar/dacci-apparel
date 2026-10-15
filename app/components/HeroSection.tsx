@@ -3,11 +3,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import axios from 'axios';
 import { IoStar, IoStarOutline, IoStarHalf } from 'react-icons/io5';
 import { cn } from '@/lib/utils';
 import { useLoader } from '@/app/context/LoaderContext';
 import TransitionButton from './TransitionButton';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 interface ShowcaseUser {
@@ -55,7 +58,7 @@ const renderStars = (
 // ─── Text split helper ───────────────────────────────────────────────────────
 const splitText = (text: string) =>
   text.split(' ').map((word, wi) => (
-    <span key={wi} className="flex overflow-hidden">
+    <span key={wi} className="inline-flex whitespace-nowrap overflow-hidden shrink-0">
       {word.split('').map((char, ci) => (
         <span key={ci} className="hero-char inline-block translate-y-full">
           {char}
@@ -72,6 +75,8 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
   const productCardRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const showcaseContentRef = useRef<HTMLDivElement>(null);
+  const showcaseInnerRef = useRef<HTMLDivElement>(null);
 
 
   // Showcase state
@@ -146,6 +151,86 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
     }
   }, { dependencies: [isLoading], scope: heroRef });
 
+  // ── Customer Showcase Pill Animation ─────────────────────────────────────
+  useGSAP(() => {
+    if (isLoading || !showcaseContentRef.current || !showcaseInnerRef.current) return;
+
+    // Accessibility: Respect prefers-reduced-motion
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      gsap.set(showcaseContentRef.current, { width: 'auto', opacity: 1 });
+      gsap.set(showcaseInnerRef.current, { x: 0 });
+      return;
+    }
+
+    // Initial collapsed state: only profile avatars visible
+    gsap.set(showcaseContentRef.current, { width: 0, opacity: 0 });
+    gsap.set(showcaseInnerRef.current, { x: -20 });
+
+    // Measure target width once to avoid forced synchronous layout flushes during animation loops
+    const targetWidth = showcaseInnerRef.current?.offsetWidth || 230;
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    tl
+      // 1. Wait 2.5 seconds in the collapsed state
+      .to({}, { duration: 2.5 })
+      // 2. Smoothly expand from left to right to exact original full width
+      .to(showcaseContentRef.current, {
+        width: targetWidth,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.inOut',
+      })
+      .to(
+        showcaseInnerRef.current,
+        {
+          x: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+        },
+        '<'
+      )
+      // 3. Keep fully expanded for 2 seconds
+      .to({}, { duration: 2.0 })
+      // 4. Smoothly collapse back to 3-profile state
+      .to(showcaseContentRef.current, {
+        width: 0,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut',
+      })
+      .to(
+        showcaseInnerRef.current,
+        {
+          x: -20,
+          duration: 0.8,
+          ease: 'power2.in',
+        },
+        '<'
+      );
+
+    // Performance: Pause timeline when hero scrolls out of view to avoid offscreen backdrop blur repaints
+    const trigger = ScrollTrigger.create({
+      trigger: heroRef.current,
+      start: 'top bottom',
+      end: 'bottom top',
+      onEnter: () => tl.play(),
+      onLeave: () => tl.pause(),
+      onEnterBack: () => tl.play(),
+      onLeaveBack: () => tl.pause(),
+    });
+
+    return () => {
+      trigger.kill();
+      tl.kill();
+    };
+  }, { dependencies: [isLoading, userCount, avgRating], scope: heroRef });
+
   // ─── Render ────────────────────────────────────────────────────────────────
   const latest = arrivalData[0];
   const latestImg = latest?.media?.[0]?.secure_url;
@@ -159,7 +244,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
         <img
           className='hidden md:block object-cover size-full'
           src="images/1-hero-section-image/custom-sportswear-manufacturer-hero.webp"
-          alt="Slots Sports Wear premium clothing collection"
+          alt="Slots Sportswear custom sportswear and private label manufacturing showcase"
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -167,7 +252,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
         <img
           className='block md:hidden object-cover size-full'
           src="images/1-hero-section-image/mobilehero.jpg"
-          alt="Slots Sports Wear premium clothing collection"
+          alt="Slots Sportswear athletic apparel production and private label sportswear"
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -179,15 +264,16 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           {/* ── User Showcase ───────────────────────────────────────────────── */}
           <div className="w-full md:w-[90%] mb-3">
             <div
-              className="flex items-center w-fit px-3 py-1.5 rounded-full border border-white/10"
+              className="flex items-center w-fit px-3 py-1.5 rounded-full border border-white/10 overflow-hidden"
               style={{
                 background: 'rgba(255,255,255,0.08)',
                 backdropFilter: 'blur(16px)',
                 WebkitBackdropFilter: 'blur(16px)',
+                transform: 'translateZ(0)',
               }}
             >
               {/* Overlapping profile images */}
-              <div className="flex items-center">
+              <div className="flex items-center relative z-10 shrink-0">
                 {(showcaseUsers.length > 0 ? showcaseUsers : new Array(3).fill(null)).map(
                   (user, idx) => (
                     <div
@@ -211,48 +297,61 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
                 )}
               </div>
 
-              {/* User count */}
-              <div className="flex flex-col ml-3 gap-1">
-                <span className="text-[#EDEEE7] text-xs font-semibold leading-tight">
-                  {userCount > 0 ? `${userCount.toLocaleString()}+` : '...'} customers
-                </span>
-                <span className="text-[#EDEEE7]/40 text-[9px] uppercase tracking-widest">
-                  happy &amp; growing
-                </span>
-              </div>
+              {/* Collapsible details container */}
+              <div
+                ref={showcaseContentRef}
+                className="flex items-center overflow-hidden shrink-0 relative z-0"
+                style={{ width: 0, opacity: 0, willChange: 'width, opacity' }}
+              >
+                <div
+                  ref={showcaseInnerRef}
+                  className="flex items-center shrink-0 w-max"
+                  style={{ transform: 'translateX(-20px)' }}
+                >
+                  {/* User count */}
+                  <div className="flex flex-col ml-3 gap-1 shrink-0">
+                    <span className="text-[#EDEEE7] text-xs font-semibold leading-tight whitespace-nowrap">
+                      {userCount > 0 ? `${userCount.toLocaleString()}+` : '...'} customers
+                    </span>
+                    <span className="text-[#EDEEE7]/40 text-[9px] uppercase tracking-widest whitespace-nowrap">
+                      happy &amp; growing
+                    </span>
+                  </div>
 
-              {/* Divider */}
-              <div className="w-px h-6 bg-white/10 mx-3" />
+                  {/* Divider */}
+                  <div className="w-px h-6 bg-white/10 mx-3 shrink-0" />
 
-              {/* Avg. Rating */}
-              <div className="flex flex-col items-start gap-1">
-                <div className="flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <IoStar
-                      key={s}
-                      className={cn(
-                        'text-[11px]',
-                        avgRating > 0 && s <= Math.round(avgRating)
-                          ? 'text-[#facc15]'
-                          : 'text-white/20'
-                      )}
-                    />
-                  ))}
-                  <span className="text-[#EDEEE7] text-[10px] font-bold ml-1">
-                    {avgRating > 0 ? avgRating.toFixed(1) : '-'}
-                  </span>
+                  {/* Avg. Rating */}
+                  <div className="flex flex-col items-start gap-1 shrink-0">
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <IoStar
+                          key={s}
+                          className={cn(
+                            'text-[11px]',
+                            avgRating > 0 && s <= Math.round(avgRating)
+                              ? 'text-[#facc15]'
+                              : 'text-white/20'
+                          )}
+                        />
+                      ))}
+                      <span className="text-[#EDEEE7] text-[10px] font-bold ml-1">
+                        {avgRating > 0 ? avgRating.toFixed(1) : '-'}
+                      </span>
+                    </div>
+                    <span className="text-[#EDEEE7]/40 text-[10px] tracking-widest whitespace-nowrap">
+                      Avg. Rating
+                    </span>
+                  </div>
                 </div>
-                <span className="text-[#EDEEE7]/40 text-[10px] tracking-widest">
-                  Avg. Rating
-                </span>
               </div>
             </div>
           </div>
 
           {/* ── Hero title ─────────────────────────────────────────────────── */}
           <div className="w-full md:w-[70%]">
-            <h1 className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em]">
-              {splitText('Custom Sportswear Manufacturer For Global Brands')}
+            <h1 className="text-[#EDEEE7]! w-full uppercase flex flex-wrap gap-x-[0.3em] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-[main] leading-tight">
+              {splitText('Private Label Sportswear Manufacturing for Growing Brands')}
             </h1>
           </div>
 
@@ -260,7 +359,7 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
           <div className="w-full md:w-[60%] md:mt-4 mt-2">
             <p className="text-[#EDEEE7]! w-full flex flex-wrap gap-x-[0.3em]">
               {splitText(
-                'Full-service OEM, ODM & private label apparel manufacturing. Custom sportswear, teamwear, and high-performance garments produced with low MOQs and global shipping.'
+                'Full-service OEM & private label apparel manufacturing. Custom sportswear produced with low MOQ options and international export for growing athletic brands.'
               )}
             </p>
           </div>
@@ -324,11 +423,11 @@ const HeroSection = ({ arrivalData }: HeroSectionProps) => {
       {/* Marquee Section */}
       <div ref={sectionRef} className='w-full bg-black mt-10 p-5 overflow-hidden relative z-10'>
         <div className="flex whitespace-nowrap">
-          <div ref={marqueeRef} className="flex">
+          <div ref={marqueeRef} className="flex will-change-transform">
             {[...Array(4)].map((_, i) => (
-              <h1 key={i} className="inline-block text-[#EDEEE7]!">
+              <span key={i} className="inline-block text-[#EDEEE7]! font-[main] text-[35px] uppercase">
                 {marqueeText} <span className="mx-10 text-[#EDEEE7]!">•</span>
-              </h1>
+              </span>
             ))}
           </div>
         </div>

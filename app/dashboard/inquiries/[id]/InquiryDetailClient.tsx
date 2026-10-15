@@ -274,7 +274,7 @@ export default function InquiryDetailClient({ id }: InquiryDetailClientProps) {
                     {/* Direct WhatsApp Concierge Trigger */}
                     <div className="pt-4 border-t border-black/5">
                         <a
-                            href={`https://wa.me/923000000000?text=${whatsappMessage}`}
+                            href={`https://wa.me/923319165413?text=${whatsappMessage}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition text-xs font-bold uppercase tracking-wider font-[middle] shadow-2xs"

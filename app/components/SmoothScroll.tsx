@@ -11,28 +11,43 @@ const SmoothScroll = ({ children }: { children: ReactNode }) => {
     let locomotiveScroll: any;
 
     const initLocomotive = async () => {
+      // Respect prefers-reduced-motion accessibility preference
+      if (
+        typeof window !== 'undefined' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        return;
+      }
+
       // Import dynamically to avoid SSR issues
       const LocomotiveScroll = (await import('locomotive-scroll')).default;
-      
+
+      // Prevent GSAP lag smoothing from pausing or stuttering smooth scrolling
+      gsap.ticker.lagSmoothing(0);
+
       locomotiveScroll = new LocomotiveScroll({
         lenisOptions: {
           wrapper: window,
           content: document.documentElement,
-          lerp: 0.001, // Adjusted for smooth lerpness (0.1 is standard smooth, lower is smoother)
+          lerp: 0.1, // 0.1 provides fluid, responsive momentum (0.001 caused 99.9% scroll resistance)
           duration: 1.2,
           orientation: 'vertical',
           gestureOrientation: 'vertical',
           smoothWheel: true,
           wheelMultiplier: 1,
-          touchMultiplier: 2,
+          touchMultiplier: 1,
+          syncTouch: false, // Preserve hardware-accelerated native momentum on touch screens
           infinite: false,
         },
+        scrollCallback: () => ScrollTrigger.update(),
+        initCustomTicker: (render: () => void) => {
+          gsap.ticker.add(render);
+        },
+        destroyCustomTicker: (render: () => void) => {
+          gsap.ticker.remove(render);
+        },
       });
-
-      // Locomotive v5 uses Lenis under the hood for smoothness
-      // and automatically syncs with ScrollTrigger and others.
-      // We can access the lenis instance if needed:
-      // locomotiveScroll.lenis
     };
 
     initLocomotive();

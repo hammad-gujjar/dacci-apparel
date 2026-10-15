@@ -169,7 +169,7 @@ const ShopClient = ({
                         {[
                             { title: "Fabrication", desc: "Technical knits, moisture-wicking blends, and custom lab-dips engineered for commercial durability." },
                             { title: "Technique", desc: "Advanced sublimation, high-density embroidery, and automated CAD pattern grading for a perfect fit." },
-                            { title: "Scalability", desc: "From flexible 50-piece pilot runs to full-scale 5,000+ unit production logistics shipped worldwide." }
+                            { title: "Scalability", desc: "From flexible 30-piece pilot runs to full-scale 5,000+ unit production logistics shipped worldwide." }
                         ].map((item, i) => (
                             <div key={i} className="bg-black p-10 flex flex-col gap-4 group hover:bg-[#EDEEE7]/5 transition-colors duration-500">
                                 <span className="text-[#EDEEE7] text-2xl font-[main] uppercase tracking-tight">{item.title}</span>

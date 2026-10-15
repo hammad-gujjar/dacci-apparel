@@ -63,7 +63,7 @@ const ManufacturingProcess = () => {
                 <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-black/40">
                     OEM Production Workflow
                 </span>
-                <Heading title="From Design To Delivery" className="text-left" />
+                <Heading as="h2" title="From Design To Delivery" className="text-left" />
                 <p className="text-black/60 max-w-2xl text-sm md:text-base leading-relaxed">
                     Our streamlined 6-stage manufacturing protocol guarantees consistent international export quality, rapid turnaround times, and complete transparency from initial concept to your doorstep.
                 </p>

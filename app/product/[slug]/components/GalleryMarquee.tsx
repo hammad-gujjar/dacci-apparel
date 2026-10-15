@@ -54,10 +54,10 @@ const GalleryMarquee = ({
                         <div key={groupIdx} className="flex gap-10">
                             {allImages.map((img, i) => (
                                 <div key={i} className="w-[70vw] md:w-[45vw] h-[60vh] md:h-[85vh] relative rounded-[2vw] overflow-hidden shrink-0 shadow-[0_100px_100px_-50px_rgba(0,0,0,0.8)] bg-zinc-900 border border-white/5">
-                                    <Image 
-                                        src={img.secure_url} 
-                                        alt={`Overlay Image ${i}`} 
-                                        fill 
+                                    <Image
+                                        src={img.secure_url}
+                                        alt={`Custom apparel gallery detail ${i + 1}`}
+                                        fill
                                         className="size-full object-cover"
                                     />
                                 </div>

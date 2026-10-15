@@ -4,21 +4,23 @@ import Heading from '../components/Heading';
 import TransitionButton from '../components/TransitionButton';
 
 export const metadata: Metadata = {
-    title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
-    description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. From a local workshop to a trusted custom sportswear factory for global brands.',
+    title: {
+        absolute: 'Custom Sportswear Manufacturing for Brands | SLOTS SPORTSWEAR',
+    },
+    description: 'Discover our heritage in custom sportswear manufacturing for brands. Precision private label sportswear and custom apparel production from Sialkot, Pakistan to global athletic labels.',
     alternates: {
-        canonical: 'https://slotssportswear.vercel.app/story'
+        canonical: '/story',
     },
     openGraph: {
-        title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
-        description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. A trusted custom sportswear factory for global brands.',
+        title: 'Custom Sportswear Manufacturing for Brands | SLOTS SPORTSWEAR',
+        description: 'Discover our heritage in custom sportswear manufacturing for brands. Precision private label sportswear and custom apparel production from Sialkot, Pakistan to global athletic labels.',
         url: 'https://slotssportswear.vercel.app/story',
         images: [{ url: 'https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg', width: 1200, height: 630, alt: 'Slots Sports Wear Manufacturing Facility' }],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Our Manufacturing Story | SLOTS SPORTSWEAR',
-        description: 'Discover the OEM/ODM manufacturing heritage of SLOTS SPORTSWEAR. A trusted custom sportswear factory for global brands.',
+        title: 'Custom Sportswear Manufacturing for Brands | SLOTS SPORTSWEAR',
+        description: 'Discover our heritage in custom sportswear manufacturing for brands. Precision private label sportswear and custom apparel production from Sialkot, Pakistan to global athletic labels.',
         images: ['https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg'],
     }
 };
@@ -37,7 +39,7 @@ const principles = [
     { title: 'Total Customization', desc: 'End-to-end OEM/ODM capabilities including sublimation, high-density screen printing, tackle twill embroidery, and custom bespoke trims.' },
     { title: 'Quality Control', desc: 'Rigorous inline and final QA inspections following strict AQL guidelines to guarantee zero compromises on seam strength, sizing, and color accuracy.' },
     { title: 'Reliable Communication', desc: 'Direct, transparent factory-to-brand communication providing complete visibility over your production timeline, sampling, and exact cost breakdowns.' },
-    { title: 'Global Partnerships', desc: 'Built to scale with your brand - from flexible 50-piece low MOQs for startups to high-volume container shipments for established global retailers.' },
+    { title: 'Global Partnerships', desc: 'Built to scale with your brand - from flexible 30-piece low MOQs for startups to high-volume container shipments for established global retailers.' },
 ];
 
 const capabilities = [
@@ -55,9 +57,9 @@ export default function StoryPage() {
             <section className="w-full pt-[15vh] pb-20 px-5 md:px-10">
                 <div className="max-w-screen-xl mx-auto flex flex-col items-center gap-6 text-center">
                     <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Est. 2018 · Sialkot, Pakistan</span>
-                    <Heading title="Our Manufacturing Story" className="uppercase justify-center" />
+                    <Heading as="h1" title="Custom Sportswear Manufacturing For Brands" className="uppercase justify-center" />
                     <p className="md:w-[55%] w-full">
-                        From a specialized local workshop to a trusted global B2B partner. Discover the manufacturing heritage and production excellence that defines SLOTS SPORTSWEAR.
+                        From a dedicated workshop in Sialkot, Pakistan to an international factory-direct partner. Discover our heritage in custom apparel production and private label sportswear.
                     </p>
                 </div>
             </section>

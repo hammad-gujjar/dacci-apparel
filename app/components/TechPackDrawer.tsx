@@ -9,6 +9,97 @@ import { authClient } from '@/lib/auth-client';
 import TransitionButton from './TransitionButton';
 import { IoCloseOutline, IoTrashOutline, IoAddOutline, IoRemoveOutline, IoDocumentTextOutline, IoLayersOutline } from 'react-icons/io5';
 
+function DrawerQuantityInput({
+    itemId,
+    initialQuantity,
+    onUpdateQuantity,
+}: {
+    itemId: string;
+    initialQuantity: number;
+    onUpdateQuantity: (id: string, qty: number) => void;
+}) {
+    const [val, setVal] = React.useState<string>(String(initialQuantity));
+
+    React.useEffect(() => {
+        setVal(String(initialQuantity));
+    }, [initialQuantity]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const raw = e.target.value;
+        setVal(raw);
+        const trimmed = raw.trim();
+        if (/^\d+$/.test(trimmed)) {
+            const num = parseInt(trimmed, 10);
+            if (num >= 30) {
+                onUpdateQuantity(itemId, num);
+            }
+        }
+    };
+
+    const handleBlur = () => {
+        const trimmed = val.trim();
+        if (!trimmed || !/^\d+$/.test(trimmed)) {
+            setVal(String(initialQuantity));
+            return;
+        }
+        const num = parseInt(trimmed, 10);
+        if (num < 30) {
+            setVal(String(initialQuantity));
+        } else {
+            onUpdateQuantity(itemId, num);
+        }
+    };
+
+    const handleStep = (delta: number) => {
+        const current = parseInt(val, 10) || initialQuantity;
+        const next = Math.max(30, current + delta);
+        setVal(String(next));
+        onUpdateQuantity(itemId, next);
+    };
+
+    return (
+        <div className="flex items-center gap-1.5">
+            <label htmlFor={`drawer-qty-${itemId}`} className="sr-only">
+                Quantity (pieces)
+            </label>
+            <div className="flex items-center gap-1 bg-white border border-black/10 rounded-full px-2 py-1">
+                <button
+                    type="button"
+                    onClick={() => handleStep(-1)}
+                    disabled={(parseInt(val, 10) || initialQuantity) <= 30}
+                    className="size-5 rounded-full hover:bg-black/10 flex items-center justify-center disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
+                    title="Decrease quantity (min 30)"
+                    aria-label="Decrease quantity"
+                >
+                    <IoRemoveOutline className="text-xs" />
+                </button>
+                <input
+                    id={`drawer-qty-${itemId}`}
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={val}
+                    onChange={handleInputChange}
+                    onBlur={handleBlur}
+                    placeholder="30"
+                    aria-label="Quantity (pieces)"
+                    className="w-9 text-center text-xs font-bold font-[middle] tabular-nums bg-transparent outline-none border-none p-0 text-neutral-900"
+                />
+                <span className="text-[10px] font-bold font-[middle] text-neutral-400 select-none pr-1">pcs</span>
+                <button
+                    type="button"
+                    onClick={() => handleStep(1)}
+                    className="size-5 rounded-full hover:bg-black/10 flex items-center justify-center cursor-pointer"
+                    title="Increase quantity"
+                    aria-label="Increase quantity"
+                >
+                    <IoAddOutline className="text-xs" />
+                </button>
+            </div>
+        </div>
+    );
+}
+
 export default function TechPackDrawer() {
     const { items, isDrawerOpen, closeDrawer, removeItem, updateItem, totalQuantity, itemCount } = useTechPack();
     const router = useRouter();
@@ -31,7 +122,7 @@ export default function TechPackDrawer() {
 
     const handleQuantityChange = (id: string, current: number, delta: number) => {
         const next = current + delta;
-        if (next >= 50) {
+        if (next >= 30) {
             updateItem(id, { quantity: next });
         }
     };
@@ -92,7 +183,7 @@ export default function TechPackDrawer() {
 
                 {/* 2. Manufacturing Credibility Notice */}
                 <div className="bg-[#111111] text-[#EDEEE7] px-6 py-2.5 text-[10px] uppercase font-bold tracking-[0.25em] flex items-center justify-between shrink-0 font-[middle]">
-                    <span>MOQ: 50 Pieces / Style</span>
+                    <span>MOQ: 30 Pieces / Style</span>
                     <span className="text-neutral-400">7–14 Days Prototyping</span>
                 </div>
 
@@ -169,29 +260,14 @@ export default function TechPackDrawer() {
 
                                     {/* Quantity & Customization Badges */}
                                     <div className="mt-3 flex items-center justify-between pt-2 border-t border-black/5">
-                                        <div className="flex items-center gap-1.5 bg-white border border-black/10 rounded-full px-2 py-1">
-                                            <button
-                                                onClick={() => handleQuantityChange(item.id, item.quantity, -25)}
-                                                disabled={item.quantity <= 50}
-                                                className="size-5 rounded-full hover:bg-black/10 flex items-center justify-center disabled:opacity-30 disabled:hover:bg-transparent cursor-pointer"
-                                                title="Decrease quantity (min 50)"
-                                            >
-                                                <IoRemoveOutline className="text-xs" />
-                                            </button>
-                                            <span className="text-xs font-bold font-[middle] tabular-nums px-2">
-                                                {item.quantity} pcs
-                                            </span>
-                                            <button
-                                                onClick={() => handleQuantityChange(item.id, item.quantity, 25)}
-                                                className="size-5 rounded-full hover:bg-black/10 flex items-center justify-center cursor-pointer"
-                                                title="Increase quantity"
-                                            >
-                                                <IoAddOutline className="text-xs" />
-                                            </button>
-                                        </div>
+                                        <DrawerQuantityInput
+                                            itemId={item.id}
+                                            initialQuantity={item.quantity}
+                                            onUpdateQuantity={(id, qty) => updateItem(id, { quantity: qty })}
+                                        />
 
                                         <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-500 font-[middle]">
-                                            MOQ: 50+
+                                            MOQ: 30+
                                         </span>
                                     </div>
                                 </div>

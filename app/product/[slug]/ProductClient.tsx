@@ -202,7 +202,7 @@ const ProductClient = ({ initialData }: ProductClientProps) => {
                         <div className="flex flex-col lg:flex-row justify-between items-end gap-10">
                             <div className="flex flex-col gap-4">
                                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">Curated Affinity</span>
-                                <Heading title="Matches with this" className="" />
+                                <Heading as="h2" title="Matches with this" className="" />
                             </div>
                             <button onClick={() => transitionTo('/shop')} className="hidden lg:flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] font-bold group cursor-pointer hover:gap-2 transition-all duration-500">
                                 <span>Explore More</span>

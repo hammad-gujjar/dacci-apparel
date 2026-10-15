@@ -3,9 +3,21 @@ import Link from 'next/link';
 import FormattedTitle from '../components/FormattedTitle';
 
 export const metadata: Metadata = {
-    title: 'Privacy Policy',
+    title: {
+        absolute: 'Privacy Policy | Slots Sports Wear',
+    },
     description: 'Read the Slots Sports Wear Privacy Policy. Learn how we collect, use, and protect your personal data when you interact with our website and services.',
+    alternates: {
+        canonical: '/policy',
+    },
     openGraph: {
+        title: 'Privacy Policy - Slots Sports Wear',
+        description: 'How Slots Sports Wear collects, uses, and protects your personal information. Your privacy is our priority.',
+        url: '/policy',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
         title: 'Privacy Policy - Slots Sports Wear',
         description: 'How Slots Sports Wear collects, uses, and protects your personal information. Your privacy is our priority.',
     },

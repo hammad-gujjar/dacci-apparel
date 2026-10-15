@@ -56,11 +56,11 @@ const LeadSchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: true,
-        default: 50,
+        default: 30,
     },
     estimatedQuantity: {
         type: String,
-        default: '50 pcs',
+        default: '30 pcs',
     },
     deadline: {
         type: Date,

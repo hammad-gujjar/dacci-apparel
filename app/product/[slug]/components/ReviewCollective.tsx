@@ -64,7 +64,7 @@ const ReviewCollective = ({
         <div id='review' className="mt-15 flex flex-col gap-10 py-10 border-t border-black/5 scroll-reveal">
             <div className="flex flex-col gap-6">
                 <span className="text-black/30 text-[10px] uppercase font-bold tracking-[0.5em]">The Feedback</span>
-                <Heading title="Customer Collective" className="" />
+                <Heading as="h2" title="Customer Collective" className="" />
             </div>
             <div className="flex flex-col lg:flex-row gap-20 md:max-h-screen">
                 {/* Rating Summary Card */}

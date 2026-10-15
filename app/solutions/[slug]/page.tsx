@@ -174,12 +174,6 @@ export default async function Page({ params }: SolutionPageProps) {
         },
         areaServed: 'Worldwide',
         description: solution.metaDescription,
-        offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'USD',
-            description: 'Custom B2B wholesale quotation upon Tech Pack review (MOQ 50 pieces).',
-        },
     };
 
     // Schema 3: BreadcrumbList
@@ -196,12 +190,6 @@ export default async function Page({ params }: SolutionPageProps) {
             {
                 '@type': 'ListItem',
                 position: 2,
-                name: 'Solutions',
-                item: `${siteBase}/solutions`,
-            },
-            {
-                '@type': 'ListItem',
-                position: 3,
                 name: solution.title,
                 item: canonicalUrl,
             },

@@ -140,7 +140,7 @@ const HowItWorks = () => {
     return (
         <>
             <div className="my-10 w-full justify-center flex flex-col items-center gap-5 pb-10">
-                <Heading title="How It Works" />
+                <Heading as="h2" title="How It Works" />
                 <p className='md:w-1/2 w-full text-center'>
                     Our streamlined 4-step OEM and ODM manufacturing roadmap ensures precision, transparency, and reliable execution from initial concept to global delivery.
                 </p>

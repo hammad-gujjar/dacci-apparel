@@ -22,8 +22,8 @@ const Whychooseus = () => {
     ];
 
     return (
-        < div className="w-full flex flex-col items-center w-full w-full mx-auto px-[2vw] py-20" >
-            <h1 className='w-fit !text-[#EDEEE7] text-center' >WHY PARTNER WITH US</h1>
+        <div className="w-full flex flex-col items-center mx-auto px-[2vw] py-20">
+            <h2 className='w-fit !text-[#EDEEE7] text-center font-[main] text-[30px] md:text-[40px] uppercase'>WHY PARTNER WITH US</h2>
             <p className="mb-10 text-center max-w-2xl text-[#EDEEE7]/80">
                 Empowering global golf brands with premium manufacturing, flexible production, and reliable export services.
             </p>

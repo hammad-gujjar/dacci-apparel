@@ -57,7 +57,7 @@ export default function SolutionForm({ initialData, isEdit = false, solutionId }
         initialData?.stats && initialData.stats.length > 0 
             ? initialData.stats 
             : [
-                { value: '50 PCS', label: 'Low MOQ Flexibility' },
+                { value: '30 PCS', label: 'Low MOQ Flexibility' },
                 { value: '14 DAYS', label: 'Rapid Prototype Sampling' },
                 { value: '99.2%', label: 'On-Time Export Delivery' },
                 { value: 'ISO 9001', label: 'Certified Quality Control' },
@@ -454,7 +454,7 @@ export default function SolutionForm({ initialData, isEdit = false, solutionId }
                                 <div key={idx} className="flex items-center gap-2 p-3 rounded-xl border border-black/10 bg-white">
                                     <input
                                         type="text"
-                                        placeholder="Value (e.g. 50 PCS)"
+                                        placeholder="Value (e.g. 30 PCS)"
                                         value={stat.value}
                                         onChange={(e) => {
                                             const updated = [...stats];
@@ -736,7 +736,7 @@ export default function SolutionForm({ initialData, isEdit = false, solutionId }
                                 />
                                 <textarea
                                     rows={2}
-                                    placeholder="Our standard wholesale MOQ starts at 50 units per colorway..."
+                                    placeholder="Our standard wholesale MOQ starts at 30 units per colorway..."
                                     value={faq.answer}
                                     onChange={(e) => {
                                         const updated = [...faqs];

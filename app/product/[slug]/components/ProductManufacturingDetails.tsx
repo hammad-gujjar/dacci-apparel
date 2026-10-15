@@ -26,8 +26,8 @@ const manufacturingCards = [
         title: 'Production',
         subtitle: 'Full-Scale OEM / ODM Scalability',
         primaryTags: ['OEM', 'ODM', 'Private Label'],
-        secondaryTags: ['Low 50 MOQ', 'Tech Pack Support', 'Custom Packaging', 'Barcode & Polybag'],
-        description: 'End-to-end bespoke garment development with rapid sample creation, flexible 50-piece minimum order quantities, strict AQL quality audits, and custom branded packaging.'
+        secondaryTags: ['Low 30 MOQ', 'Tech Pack Support', 'Custom Packaging', 'Barcode & Polybag'],
+        description: 'End-to-end bespoke garment development with rapid sample creation, flexible 30-piece minimum order quantities, strict AQL quality audits, and custom branded packaging.'
     }
 ];
 
@@ -38,7 +38,7 @@ const ProductManufacturingDetails = () => {
                 <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-black/40">
                     Technical Specifications
                 </span>
-                <Heading title="Product Manufacturing Details" className="text-left" />
+                <Heading as="h2" title="Product Manufacturing Details" className="text-left" />
                 <p className="text-black/60 max-w-2xl text-sm md:text-base leading-relaxed">
                     Custom apparel manufacturing tailored to your exact brand specifications. From fiber selection to private label packaging, every step is executed with precision craftsmanship.
                 </p>

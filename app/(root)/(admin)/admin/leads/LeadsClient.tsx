@@ -1109,9 +1109,9 @@ export default function LeadsClient() {
                                 <label className="text-[10px] uppercase font-bold text-neutral-500 block mb-1">Estimated Units</label>
                                 <input
                                     type="number"
-                                    min={50}
+                                    min={30}
                                     value={newLeadForm.quantity}
-                                    onChange={(e) => setNewLeadForm({ ...newLeadForm, quantity: parseInt(e.target.value, 10) || 50 })}
+                                    onChange={(e) => setNewLeadForm({ ...newLeadForm, quantity: parseInt(e.target.value, 10) || 30 })}
                                     className="w-full p-2.5 bg-white border border-black/15 rounded-xl focus:outline-none focus:border-black"
                                 />
                             </div>

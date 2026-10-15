@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -10,6 +10,7 @@ import TransitionButton from '../components/TransitionButton';
 import TechPackUploadZone, { TechPackUploadedFile } from '../components/TechPackUploadZone';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { authClient } from '@/lib/auth-client';
 import { trackEvent } from '@/lib/analytics';
 import Icon from '../components/Icon';
 import {
@@ -35,15 +36,14 @@ const SPECIFIED_CATEGORIES = [
     "Golfwear",
     "Fitness Apparel",
     "Activewear",
+    "Running Wear",
+    "Training Wear",
     "Custom Clothing"
 ];
 
-const QUANTITY_OPTIONS = [
-    "50-100 pcs",
-    "100-500 pcs",
-    "500-1000 pcs",
-    "1000+ pcs"
-];
+const OUTDATED_CATEGORIES = new Set(['men', 'women', 'gloves', 'gears']);
+
+const MINIMUM_MOQ = 30;
 
 const CUSTOMIZATION_OPTIONS = [
     "Sublimation",
@@ -75,12 +75,26 @@ export default function ContactClient({ categories }: ContactClientProps) {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { data: session } = authClient.useSession();
 
-    // Merge specified categories with any dynamic database categories
-    const allCategories = Array.from(new Set([
-        ...SPECIFIED_CATEGORIES,
-        ...categories.map(c => c.name)
-    ]));
+    // Merge specified categories with any dynamic database categories, excluding outdated options without duplicates
+    const allCategories = (() => {
+        const seen = new Set<string>();
+        const result: string[] = [];
+
+        for (const cat of [...SPECIFIED_CATEGORIES, ...categories.map(c => c.name)]) {
+            if (!cat) continue;
+            const trimmed = cat.trim();
+            const lower = trimmed.toLowerCase();
+            if (OUTDATED_CATEGORIES.has(lower)) continue;
+            if (!seen.has(lower)) {
+                seen.add(lower);
+                const matchedSpec = SPECIFIED_CATEGORIES.find(s => s.toLowerCase() === lower);
+                result.push(matchedSpec || trimmed);
+            }
+        }
+        return result;
+    })();
 
     // Match routerType if passed
     const initialCategory = allCategories.find(
@@ -95,11 +109,23 @@ export default function ContactClient({ categories }: ContactClientProps) {
         website: '',
         productType: initialCategory,
         productSlug: routerSlug,
-        quantity: QUANTITY_OPTIONS[0],
+        quantity: '30',
         deadline: '',
         customizationOptions: ['Sublimation', 'Private Label'] as string[],
-        customizationDetails: ''
+        customizationDetails: '',
+        website_hp: ''
     });
+
+    // Auto-populate from authenticated session if available
+    useEffect(() => {
+        if (session?.user) {
+            setFormData(prev => ({
+                ...prev,
+                name: prev.name || session.user.name || '',
+                email: prev.email || session.user.email || '',
+            }));
+        }
+    }, [session]);
 
     const [uploadedFiles, setUploadedFiles] = useState<TechPackUploadedFile[]>([]);
 
@@ -176,10 +202,61 @@ export default function ContactClient({ categories }: ContactClientProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Client-side validations
+        const trimmedName = formData.name.trim();
+        const trimmedEmail = formData.email.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!trimmedName || trimmedName.length < 2) {
+            toast.error("Please enter a valid contact person's name (at least 2 characters).");
+            return;
+        }
+
+        if (!trimmedEmail || !emailRegex.test(trimmedEmail)) {
+            toast.error("Please enter a valid business email address.");
+            return;
+        }
+
+        if (!formData.company.trim()) {
+            toast.error("Please enter your company or brand name.");
+            return;
+        }
+
+        if (!formData.country.trim()) {
+            toast.error("Please enter your country.");
+            return;
+        }
+
+        if (!formData.productType) {
+            toast.error("Please select a product category.");
+            return;
+        }
+
+        // Validate whole-number quantity of at least 30 pieces
+        const qtyStr = String(formData.quantity ?? '').trim();
+        const parsedQty = Number(qtyStr);
+
+        if (!qtyStr) {
+            toast.error("Please enter a required production quantity.");
+            return;
+        }
+
+        if (isNaN(parsedQty) || !Number.isInteger(parsedQty) || !/^\d+$/.test(qtyStr)) {
+            toast.error("Quantity must be a valid whole number (no fractions or decimals).");
+            return;
+        }
+
+        if (parsedQty < MINIMUM_MOQ) {
+            toast.error(`Minimum order quantity is ${MINIMUM_MOQ} pieces per style.`);
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const payload = {
                 ...formData,
+                quantity: parsedQty,
                 files: uploadedFiles,
             };
             const { data } = await axios.post('/api/contact/submit', payload);
@@ -190,23 +267,24 @@ export default function ContactClient({ categories }: ContactClientProps) {
                     company: formData.company,
                     country: formData.country,
                     productType: formData.productType,
-                    quantity: formData.quantity,
+                    quantity: parsedQty,
                     hasFiles: uploadedFiles.length > 0
                 });
 
                 toast.success('Manufacturing quote request successfully submitted. Our technical team will review your specifications.');
                 setFormData({
-                    name: '',
-                    email: '',
+                    name: session?.user?.name || '',
+                    email: session?.user?.email || '',
                     company: '',
                     country: '',
                     website: '',
                     productType: SPECIFIED_CATEGORIES[0],
                     productSlug: '',
-                    quantity: QUANTITY_OPTIONS[0],
+                    quantity: '30',
                     deadline: '',
                     customizationOptions: ['Sublimation', 'Private Label'],
-                    customizationDetails: ''
+                    customizationDetails: '',
+                    website_hp: ''
                 });
                 setUploadedFiles([]);
             }
@@ -227,10 +305,10 @@ export default function ContactClient({ categories }: ContactClientProps) {
                         OEM / ODM Manufacturing
                     </span>
                     
-                    <Heading title="Start Your Custom Sportswear Project" className="justify-center text-center" />
+                    <Heading as="h1" title="Contact A Private Label Sportswear Manufacturer" className="justify-center text-center" />
                     
                     <p className="text-sm md:text-base text-neutral-700 leading-relaxed max-w-2xl mx-auto">
-                        Share your designs, tech packs or manufacturing requirements with our team and receive a customized production solution.
+                        Request a custom apparel manufacturing quote or submit your wholesale sportswear inquiry. Share your designs and tech packs with our production team for dedicated consultation.
                     </p>
                 </section>
 
@@ -364,13 +442,25 @@ export default function ContactClient({ categories }: ContactClientProps) {
                         <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-neutral-900/40 block">
                             Inquiry Form
                         </span>
-                        <Heading title="Request Your Manufacturing Quote" className="justify-center text-center" />
+                        <Heading as="h2" title="Request Your Manufacturing Quote" className="justify-center text-center" />
                         <p className="text-neutral-600 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
                             Submit your detailed specifications. We streamline the initial phase of design to ensure absolute clarity before production begins.
                         </p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-12">
+                        {/* Hidden honeypot field for bot protection */}
+                        <div className="hidden" aria-hidden="true">
+                            <input
+                                type="text"
+                                name="website_hp"
+                                value={formData.website_hp}
+                                onChange={handleChange}
+                                tabIndex={-1}
+                                autoComplete="off"
+                            />
+                        </div>
+
                         {/* 01 / Company Information */}
                         <div className="space-y-6">
                             <h4 className="text-xs uppercase tracking-[0.3em] font-bold text-neutral-900/70 pb-2 border-b border-black/10">
@@ -486,25 +576,26 @@ export default function ContactClient({ categories }: ContactClientProps) {
                                     <Icon name="arrow" className="absolute right-0 bottom-4 w-3 h-3 text-neutral-900 pointer-events-none -rotate-45deg" />
                                 </div>
 
-                                {/* Estimated Quantity */}
+                                {/* Quantity (pieces) */}
                                 <div className="relative group flex flex-col justify-end">
-                                    <select
+                                    <input
                                         required
+                                        type="text"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                         name="quantity"
+                                        id="contact-quantity"
                                         value={formData.quantity}
                                         onChange={handleChange}
-                                        className="w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors uppercase tracking-widest font-medium appearance-none cursor-pointer"
-                                    >
-                                        {QUANTITY_OPTIONS.map((opt) => (
-                                            <option key={opt} value={opt} className="uppercase text-neutral-900">
-                                                {opt}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <label className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">
-                                        Estimated Quantity *
+                                        placeholder="30"
+                                        className="w-full bg-transparent border-b border-neutral-900/20 py-3 text-sm focus:outline-none focus:border-neutral-900 transition-colors tracking-widest font-medium text-neutral-900"
+                                    />
+                                    <label htmlFor="contact-quantity" className="absolute left-0 -top-4 text-[9px] uppercase tracking-widest text-neutral-900 font-bold pointer-events-none">
+                                        Quantity (pieces) *
                                     </label>
-                                    <Icon name="arrow" className="absolute right-0 bottom-4 w-3 h-3 text-neutral-900 pointer-events-none -rotate-45deg" />
+                                    <span className="text-[10px] text-neutral-500 font-[middle] mt-1.5 block">
+                                        Minimum order is 30 pieces per style. Whole numbers only.
+                                    </span>
                                 </div>
 
                                 {/* Target Delivery Date */}
@@ -633,7 +724,7 @@ export default function ContactClient({ categories }: ContactClientProps) {
                                 <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-neutral-900/40">
                                     Manufacturing Credibility
                                 </span>
-                                <Heading title="Why Brands Choose Our Manufacturing" className="text-center lg:text-left" />
+                                <Heading as="h2" title="Why Brands Choose Our Manufacturing" className="text-center lg:text-left" />
                                 <p className="text-neutral-600 text-sm md:text-base leading-relaxed max-w-md">
                                     As an established custom sportswear manufacturer, we power global apparel brands with scalable OEM and ODM production lines, precision craftsmanship, and low minimum order quantities.
                                 </p>

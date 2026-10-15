@@ -43,7 +43,7 @@ const TechPackSchema = new mongoose.Schema({
     },
     customizationDetails: {
         type: String,
-        required: true,
+        default: '',
     },
     items: [{
         name: { type: String },

@@ -2,13 +2,16 @@ import { Metadata } from 'next';
 import ManufacturingProcessClient from './ManufacturingProcessClient';
 
 export const metadata: Metadata = {
-    title: {
-        absolute: 'Our Manufacturing Process | Custom Sportswear Manufacturer',
+    alternates: {
+        canonical: '/manufacturing-process',
     },
-    description: 'From concept development to final delivery, we follow a structured manufacturing process to produce premium custom sportswear for global brands.',
+    title: {
+        absolute: 'Private Label Clothing Manufacturer | Sportswear Production Process',
+    },
+    description: 'Learn how SLOTS SPORTSWEAR operates as a private label clothing manufacturer. Our end-to-end custom sportswear manufacturing and production process for global brands.',
     openGraph: {
-        title: 'Our Manufacturing Process | Custom Sportswear Manufacturer',
-        description: 'From concept development to final delivery, we follow a structured manufacturing process to produce premium custom sportswear for global brands.',
+        title: 'Private Label Clothing Manufacturer | Sportswear Production Process',
+        description: 'Learn how SLOTS SPORTSWEAR operates as a private label clothing manufacturer. Our end-to-end custom sportswear manufacturing and production process for global brands.',
         images: [
             {
                 url: 'https://i.pinimg.com/1200x/70/64/3f/70643f7a6e3937ce322314083d60ea8d.jpg',
@@ -20,8 +23,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Our Manufacturing Process | Custom Sportswear Manufacturer',
-        description: 'From concept development to final delivery, we follow a structured manufacturing process to produce premium custom sportswear for global brands.',
+        title: 'Private Label Clothing Manufacturer | Sportswear Production Process',
+        description: 'Learn how SLOTS SPORTSWEAR operates as a private label clothing manufacturer. Our end-to-end custom sportswear manufacturing and production process for global brands.',
     },
 };
 

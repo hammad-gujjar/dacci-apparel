@@ -104,7 +104,7 @@ The central memory file [`docs/memory.md`](file:///c:/Users/AXE/Desktop/Ecommerc
 ### 8. Strict Prohibition on Retail E-Commerce Cart & Checkout Mechanics
 - The `/cart` route and drawer must operate solely as a **B2B Tech Pack Specification & RFQ Builder**.
 - Never introduce consumer retail pricing, strikethrough MRPs, cart subtotals, consumer sales taxes, coupons, or payment processing gateways.
-- All quantities must respect the **50-piece Minimum Order Quantity (MOQ)** per style.
+- All quantities must respect the **30-piece Minimum Order Quantity (MOQ)** per style.
 
 ### 9. Secure File Upload Boundaries & Storage Protocols
 - Technical file uploads must stream directly to Cloudinary CDN (`tech_packs` folder) through secure server route [`/api/upload/tech-pack`](file:///c:/Users/AXE/Desktop/Ecommerce/dacciapparel/app/api/upload/tech-pack/route.ts).

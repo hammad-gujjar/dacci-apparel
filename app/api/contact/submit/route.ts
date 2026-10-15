@@ -13,7 +13,15 @@ export async function POST(req: Request) {
         
         await databaseConnection();
 
-        // Check for authenticated buyer session
+        // Honeypot anti-spam check
+        if (body.website_hp && typeof body.website_hp === 'string' && body.website_hp.trim() !== '') {
+            return NextResponse.json(
+                { success: false, message: 'Invalid submission detected.' },
+                { status: 400 }
+            );
+        }
+
+        // Check for authenticated buyer session (optional for guest RFQ submissions)
         let authenticatedUserId = '';
         let authenticatedUserEmail = '';
         try {
@@ -21,40 +29,108 @@ export async function POST(req: Request) {
             if (session?.user?.id && session?.user?.email) {
                 authenticatedUserId = session.user.id;
                 authenticatedUserEmail = session.user.email;
-            } else {
-                return NextResponse.json({ success: false, message: 'Unauthorized: You must be signed in to submit an RFQ.' }, { status: 401 });
             }
         } catch (error) {
-            return NextResponse.json({ success: false, message: 'Unauthorized: Authentication error.' }, { status: 401 });
+            // Non-blocking: continue as guest if session check fails or visitor is unauthenticated
         }
 
-        // Force the email to be the authenticated user's email
-        body.email = authenticatedUserEmail;
-        
-        // Safely parse numeric quantity if string like "50-100 pcs" is provided
-        let numQuantity = typeof body.quantity === 'number' ? body.quantity : parseInt(String(body.quantity || '').replace(/[^\d]/g, ''), 10);
-        if (isNaN(numQuantity) || numQuantity <= 0) {
-            numQuantity = 50;
+        // Bind verified session email if authenticated; otherwise validate provided guest email
+        if (authenticatedUserEmail) {
+            body.email = authenticatedUserEmail;
+        } else {
+            const rawEmail = typeof body.email === 'string' ? body.email.trim() : '';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!rawEmail || !emailRegex.test(rawEmail)) {
+                return NextResponse.json(
+                    { success: false, message: 'A valid business email address is required.' },
+                    { status: 400 }
+                );
+            }
+            body.email = rawEmail.toLowerCase();
         }
 
-        const targetDeadline = body.deadline ? new Date(body.deadline) : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+        // Validate contact person's name (minimum 2 characters)
+        const rawName = typeof body.name === 'string' ? body.name.trim() : '';
+        if (!rawName || rawName.length < 2) {
+            return NextResponse.json(
+                { success: false, message: "Contact person's name must be at least 2 characters." },
+                { status: 400 }
+            );
+        }
+        body.name = rawName;
 
-        // 1. Store in legacy TechPack model for full backwards compatibility
+        // Validate product category / type
+        const rawProductType = typeof body.productType === 'string' ? body.productType.trim() : '';
+        if (!rawProductType) {
+            return NextResponse.json(
+                { success: false, message: 'Product category is required.' },
+                { status: 400 }
+            );
+        }
+        body.productType = rawProductType;
+
+        // Strict whole-number quantity validation (MOQ >= 30, reject missing, fractional, or below-30)
+        if (body.quantity === undefined || body.quantity === null || String(body.quantity).trim() === '') {
+            return NextResponse.json(
+                { success: false, message: 'Quantity is required.' },
+                { status: 400 }
+            );
+        }
+
+        const rawQtyStr = String(body.quantity).trim();
+        const numQuantity = Number(rawQtyStr);
+
+        // Reject NaN, non-integer, fractional, or non-digit strings (e.g. '30.5', 'abc', '30e2')
+        if (isNaN(numQuantity) || !Number.isInteger(numQuantity) || !/^\d+$/.test(rawQtyStr)) {
+            return NextResponse.json(
+                { success: false, message: 'Quantity must be a valid whole number (no fractions or decimals).' },
+                { status: 400 }
+            );
+        }
+
+        if (numQuantity < 30) {
+            return NextResponse.json(
+                { success: false, message: 'Minimum order quantity is 30 pieces per style.' },
+                { status: 400 }
+            );
+        }
+
+        // Target delivery deadline
+        let targetDeadline = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+        if (body.deadline) {
+            const parsedDeadline = new Date(body.deadline);
+            if (!isNaN(parsedDeadline.getTime())) {
+                targetDeadline = parsedDeadline;
+            }
+        }
+
+        // Clean optional fields
+        const safeCompany = typeof body.company === 'string' ? body.company.trim() : '';
+        const safeCountry = typeof body.country === 'string' && body.country.trim() ? body.country.trim() : 'Global / Unspecified';
+        const safeWebsite = typeof body.website === 'string' ? body.website.trim() : '';
+        const safePhone = typeof body.phone === 'string' ? body.phone.trim() : '';
+        const safeProductSlug = typeof body.productSlug === 'string' ? body.productSlug.trim() : '';
+        const safeCustomizationOptions = Array.isArray(body.customizationOptions) ? body.customizationOptions : [];
+        const safeCustomizationDetails = typeof body.customizationDetails === 'string' ? body.customizationDetails.trim() : '';
+        const safeItems = Array.isArray(body.items) ? body.items : [];
+        const safeFiles = Array.isArray(body.files) ? body.files : [];
+
+        // 1. Store in TechPack model for full backwards compatibility
         const newTechPack = await TechPack.create({
             name: body.name,
             email: body.email,
-            company: body.company,
-            country: body.country,
-            website: body.website,
+            company: safeCompany,
+            country: safeCountry,
+            website: safeWebsite,
             productType: body.productType,
-            productSlug: body.productSlug,
+            productSlug: safeProductSlug,
             quantity: numQuantity,
-            estimatedQuantity: String(body.quantity || `${numQuantity} pcs`),
+            estimatedQuantity: `${numQuantity} pcs`,
             deadline: targetDeadline,
-            customizationOptions: Array.isArray(body.customizationOptions) ? body.customizationOptions : [],
-            customizationDetails: body.customizationDetails,
-            items: Array.isArray(body.items) ? body.items : [],
-            files: Array.isArray(body.files) ? body.files : [],
+            customizationOptions: safeCustomizationOptions,
+            customizationDetails: safeCustomizationDetails,
+            items: safeItems,
+            files: safeFiles,
             isNewStatus: true,
         });
 
@@ -64,23 +140,23 @@ export async function POST(req: Request) {
             newLead = await Lead.create({
                 name: body.name,
                 email: body.email,
-                userId: authenticatedUserId || body.userId || '',
-                company: body.company || '',
-                country: body.country || 'Global / Unspecified',
-                website: body.website || '',
-                phone: body.phone || '',
+                userId: authenticatedUserId || '',
+                company: safeCompany,
+                country: safeCountry,
+                website: safeWebsite,
+                phone: safePhone,
                 productType: body.productType,
-                productSlug: body.productSlug || '',
+                productSlug: safeProductSlug,
                 quantity: numQuantity,
-                estimatedQuantity: String(body.quantity || `${numQuantity} pcs`),
+                estimatedQuantity: `${numQuantity} pcs`,
                 deadline: targetDeadline,
-                customizationOptions: Array.isArray(body.customizationOptions) ? body.customizationOptions : [],
-                customizationDetails: body.customizationDetails || '',
-                items: Array.isArray(body.items) ? body.items : [],
-                files: Array.isArray(body.files) ? body.files : [],
+                customizationOptions: safeCustomizationOptions,
+                customizationDetails: safeCustomizationDetails,
+                items: safeItems,
+                files: safeFiles,
                 status: 'New',
                 priority: numQuantity >= 500 ? 'High' : numQuantity >= 150 ? 'Medium' : 'Medium',
-                leadSource: body.productSlug ? `Product: ${body.productSlug}` : 'Website RFQ',
+                leadSource: safeProductSlug ? `Product: ${safeProductSlug}` : 'Website RFQ',
                 estimatedValue: numQuantity * 18, // Preliminary USD estimate ($18 avg unit)
                 techPackRef: newTechPack._id,
             });
@@ -90,82 +166,18 @@ export async function POST(req: Request) {
                 leadId: newLead._id,
                 type: 'SYSTEM',
                 title: 'Inquiry Submitted via Website RFQ',
-                description: `Client requested ${numQuantity} units of ${body.productType}. ${Array.isArray(body.files) ? `${body.files.length} technical file(s) attached.` : ''}`,
+                description: `${authenticatedUserId ? 'Authenticated client' : 'Guest client'} requested ${numQuantity} units of ${body.productType}. ${safeFiles.length > 0 ? `${safeFiles.length} technical file(s) attached.` : ''}`,
                 performedBy: body.name || 'Website Client',
                 metadata: {
                     productType: body.productType,
                     quantity: numQuantity,
-                    hasFiles: Array.isArray(body.files) && body.files.length > 0,
+                    isGuest: !authenticatedUserId,
+                    hasFiles: safeFiles.length > 0,
                 },
             });
         } catch (leadErr) {
             console.error("Warning: Failed to create CRM Lead entry:", leadErr);
         }
-
-        const hasMultipleItems = Array.isArray(body.items) && body.items.length > 0;
-        const itemsTableHtml = hasMultipleItems ? `
-            <div style="margin-bottom: 30px;">
-                <h3 style="font-size: 14px; text-transform: uppercase; margin-top: 0; color: #333;">Itemized Garment Specifications</h3>
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px;">
-                    <thead>
-                        <tr style="background: #f4f4f4; text-align: left; text-transform: uppercase; font-size: 10px; color: #666;">
-                            <th style="padding: 8px; border: 1px solid #e0e0e0;">Style</th>
-                            <th style="padding: 8px; border: 1px solid #e0e0e0;">Category</th>
-                            <th style="padding: 8px; border: 1px solid #e0e0e0;">Color / Size Range</th>
-                            <th style="padding: 8px; border: 1px solid #e0e0e0;">Qty</th>
-                            <th style="padding: 8px; border: 1px solid #e0e0e0;">Customization</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${body.items.map((item: any) => `
-                            <tr style="border-bottom: 1px solid #eee;">
-                                <td style="padding: 8px; font-weight: bold; border: 1px solid #e0e0e0;">${item.name}</td>
-                                <td style="padding: 8px; border: 1px solid #e0e0e0;">${item.category}</td>
-                                <td style="padding: 8px; border: 1px solid #e0e0e0;">${item.color || 'Default'} / ${item.sizeRange || 'Full Range'}</td>
-                                <td style="padding: 8px; font-weight: bold; border: 1px solid #e0e0e0;">${item.quantity} pcs</td>
-                                <td style="padding: 8px; border: 1px solid #e0e0e0;">${Array.isArray(item.customizationOptions) ? item.customizationOptions.join(', ') : 'Standard'}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        ` : '';
-
-        const hasFiles = Array.isArray(body.files) && body.files.length > 0;
-        const filesHtml = hasFiles ? `
-            <div style="margin-bottom: 30px; background: #fafafa; border: 1px solid #e2e2e2; border-radius: 8px; padding: 20px;">
-                <h3 style="font-size: 14px; text-transform: uppercase; margin-top: 0; color: #111; letter-spacing: 0.05em;">
-                    Attached Tech Pack & CAD Files (${body.files.length})
-                </h3>
-                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
-                    The client has attached direct manufacturing specifications / vector artwork:
-                </p>
-                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                    <thead>
-                        <tr style="background: #ededed; text-align: left; text-transform: uppercase; font-size: 10px; color: #444;">
-                            <th style="padding: 8px 10px; border: 1px solid #ddd;">File Name</th>
-                            <th style="padding: 8px 10px; border: 1px solid #ddd;">Type</th>
-                            <th style="padding: 8px 10px; border: 1px solid #ddd;">Size</th>
-                            <th style="padding: 8px 10px; border: 1px solid #ddd; text-align: center;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${body.files.map((file: any) => `
-                            <tr style="border-bottom: 1px solid #e8e8e8; background: #fff;">
-                                <td style="padding: 8px 10px; font-weight: bold; border: 1px solid #ddd; word-break: break-all;">${file.fileName}</td>
-                                <td style="padding: 8px 10px; border: 1px solid #ddd; text-transform: uppercase; font-weight: bold; color: #444;">${file.fileType || 'N/A'}</td>
-                                <td style="padding: 8px 10px; border: 1px solid #ddd; color: #666;">${file.fileSize ? `${(file.fileSize / (1024 * 1024)).toFixed(2)} MB` : 'N/A'}</td>
-                                <td style="padding: 8px 10px; border: 1px solid #ddd; text-align: center;">
-                                    <a href="${file.fileUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #111; color: #fff; text-decoration: none; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">
-                                        Download File
-                                    </a>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        ` : '';
 
         // 3. Send enhanced notification to factory team with CRM direct deep link
         try {
@@ -173,18 +185,18 @@ export async function POST(req: Request) {
                 _id: newLead?._id,
                 name: body.name,
                 email: body.email,
-                company: body.company,
-                country: body.country,
-                website: body.website,
-                phone: body.phone,
+                company: safeCompany,
+                country: safeCountry,
+                website: safeWebsite,
+                phone: safePhone,
                 productType: body.productType,
-                productSlug: body.productSlug,
+                productSlug: safeProductSlug,
                 quantity: numQuantity,
                 deadline: targetDeadline,
-                customizationOptions: body.customizationOptions,
-                customizationDetails: body.customizationDetails,
-                items: body.items,
-                files: body.files,
+                customizationOptions: safeCustomizationOptions,
+                customizationDetails: safeCustomizationDetails,
+                items: safeItems,
+                files: safeFiles,
             });
         } catch (emailError) {
             console.error("Warning: Factory notification failed, but Tech Pack was stored successfully:", emailError);
@@ -195,12 +207,12 @@ export async function POST(req: Request) {
             await sendBuyerConfirmationEmail({
                 name: body.name,
                 email: body.email,
-                company: body.company,
+                company: safeCompany,
                 productType: body.productType,
                 quantity: numQuantity,
                 deadline: targetDeadline,
-                files: body.files,
-                items: body.items,
+                files: safeFiles,
+                items: safeItems,
             });
         } catch (buyerEmailErr) {
             console.warn("Warning: Buyer confirmation email failed:", buyerEmailErr);

@@ -36,7 +36,7 @@ export default function RFQCTA({
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-4 w-full max-w-3xl border-y border-white/10 text-neutral-300 text-xs font-[middle]">
                     <div className="flex items-center justify-center gap-2">
                         <IoCubeOutline className="text-lg text-emerald-400 shrink-0" />
-                        <span className="font-semibold">MOQ 50 Pcs/Style</span>
+                        <span className="font-semibold">MOQ 30 Pcs/Style</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                         <IoTimeOutline className="text-lg text-emerald-400 shrink-0" />

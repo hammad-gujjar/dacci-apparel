@@ -322,14 +322,15 @@ const ManufacturingProcessClient = () => {
                 {/* Animated Heading (character stagger) */}
                 <div className="w-full flex justify-center mb-6">
                     <Heading
-                        title="Our Manufacturing Process"
+                        as="h1"
+                        title="Private Label Clothing Manufacturer"
                         className="justify-center text-center text-3xl sm:text-5xl md:text-7xl font-[main] tracking-tight uppercase"
                     />
                 </div>
 
                 {/* Description */}
                 <p className="process-hero-fade max-w-3xl text-base sm:text-lg md:text-xl font-[middle] text-neutral-800 leading-relaxed font-normal">
-                    From concept development to final delivery, we follow a structured manufacturing process to produce premium custom sportswear for global brands.
+                    From initial concept to final delivery, explore our full-scale sportswear production process engineered for private label brands and custom apparel manufacturing.
                 </p>
 
                 {/* Quick Process Roadmap Badges */}

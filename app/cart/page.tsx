@@ -26,6 +26,10 @@ export const metadata: Metadata = {
         title: 'Tech Pack Specification & Wholesale RFQ | Slots Sports Wear',
         description: 'Review and customize your custom sportswear manufacturing specifications. Configure colors, size breakdowns, embellishments and submit your wholesale RFQ.',
     },
+    robots: {
+        index: false,
+        follow: false,
+    },
 };
 
 import { auth } from '@/lib/auth';

@@ -3,11 +3,23 @@ import Link from 'next/link';
 import FormattedTitle from '../components/FormattedTitle';
 
 export const metadata: Metadata = {
-    title: 'Shipping Information',
-    description: 'Learn about Slots Sports Wear shipping options, international delivery timelines, customs, and how we ensure safe delivery of your bulk apparel orders worldwide.',
+    title: {
+        absolute: 'International Shipping for Custom Sportswear Orders | SLOTS SPORTSWEAR',
+    },
+    description: 'Reliable international shipping for custom sportswear orders. Express air freight and wholesale apparel shipping to the USA, UK, Europe, and global destinations from Pakistan.',
+    alternates: {
+        canonical: '/shipping',
+    },
     openGraph: {
-        title: 'Shipping Information - Slots Sports Wear',
-        description: 'Fast, reliable international shipping from Pakistan. Air and sea freight options to the USA, UK, Europe, Australia, and beyond.',
+        title: 'International Shipping for Custom Sportswear Orders | SLOTS SPORTSWEAR',
+        description: 'Reliable international shipping for custom sportswear orders. Express air freight and wholesale apparel shipping to the USA, UK, Europe, and global destinations from Pakistan.',
+        url: '/shipping',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'International Shipping for Custom Sportswear Orders | SLOTS SPORTSWEAR',
+        description: 'Reliable international shipping for custom sportswear orders. Express air freight and wholesale apparel shipping to the USA, UK, Europe, and global destinations from Pakistan.',
     },
 };
 
@@ -19,9 +31,9 @@ export default function ShippingPage() {
             <section className="w-full pt-[12vh] pb-16 px-5 md:px-10 border-b border-black/10">
                 <div className="max-w-screen-xl mx-auto flex flex-col gap-5">
                     <span className="text-[10px] uppercase tracking-[0.5em] font-bold opacity-30">Logistics & Delivery</span>
-                    <h1 className="uppercase"><FormattedTitle>Shipping Information</FormattedTitle></h1>
+                    <h1 className="uppercase"><FormattedTitle>International Shipping For Custom Sportswear Orders</FormattedTitle></h1>
                     <p className="md:w-[50%] w-full">
-                        We ship globally from our facility in Punjab, Pakistan. Every order is packed with care, fully insured, and tracked from factory to your door.
+                        We manage end-to-end custom clothing export and wholesale apparel shipping to the USA, UK, Europe, and worldwide from our manufacturing facility in Pakistan.
                     </p>
                 </div>
             </section>

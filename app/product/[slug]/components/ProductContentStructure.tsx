@@ -50,7 +50,7 @@ const ProductContentStructure = ({ product }: ProductContentStructureProps) => {
     const faqs = [
         {
             q: 'What is the Minimum Order Quantity (MOQ)?',
-            a: 'Our standard production minimum is 50 pieces per style/design. You can split this quantity across standard size gradings (XS through 5XL).'
+            a: 'Our standard production minimum is 30 pieces per style/design. You can split this quantity across standard size gradings (XS through 5XL).'
         },
         {
             q: 'How fast can you produce and deliver samples?',
@@ -76,7 +76,7 @@ const ProductContentStructure = ({ product }: ProductContentStructureProps) => {
                 <span className="text-[10px] uppercase font-bold tracking-[0.5em] text-black/40">
                     B2B Client Information
                 </span>
-                <Heading title="Manufacturing Specifications & FAQ" className="text-left" />
+                <Heading as="h2" title="Manufacturing Specifications & FAQ" className="text-left" />
             </div>
 
             {/* Desktop Tabs / Mobile Scroll Header */}
@@ -220,7 +220,7 @@ const ProductContentStructure = ({ product }: ProductContentStructureProps) => {
                                 <span className="text-xs uppercase tracking-widest font-bold text-black/40">B2B Scalability</span>
                                 <h4 className="text-lg font-bold text-black">Smooth Growth Path</h4>
                                 <p className="text-sm text-black/70 leading-relaxed">
-                                    Start with 50 pieces to test a new launch, and scale up seamlessly to 5,000+ pieces with volume price advantages and dedicated production lines.
+                                    Start with 30 pieces to test a new launch, and scale up seamlessly to 5,000+ pieces with volume price advantages and dedicated production lines.
                                 </p>
                             </div>
                         </div>
@@ -245,7 +245,7 @@ const ProductContentStructure = ({ product }: ProductContentStructureProps) => {
                                 <span className="text-xs uppercase tracking-wider font-semibold text-black/50">Monthly Capacity</span>
                             </div>
                             <div className="p-6 bg-white/60 rounded-xl border border-black/5 flex flex-col gap-1">
-                                <span className="text-3xl md:text-4xl font-bold text-black">50 Pcs</span>
+                                <span className="text-3xl md:text-4xl font-bold text-black">30 Pcs</span>
                                 <span className="text-xs uppercase tracking-wider font-semibold text-black/50">Flexible Low MOQ</span>
                             </div>
                             <div className="p-6 bg-white/60 rounded-xl border border-black/5 flex flex-col gap-1">

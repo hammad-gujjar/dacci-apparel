@@ -5,10 +5,24 @@ import { Media } from "@/models/Media.model";
 import ShopClient from "../components/ShopClient";
 
 export const metadata = {
-    title: {
-        absolute: "Custom Sportswear Collection | OEM Apparel Manufacturer",
+    alternates: {
+        canonical: '/shop',
     },
-    description: "Explore custom sportswear collections including golfwear, teamwear, fitness apparel, activewear, running wear, and training wear manufactured for global brands and wholesale buyers.",
+    title: {
+        absolute: "Wholesale Custom Sportswear | Private Label Apparel Manufacturer",
+    },
+    description: "Source wholesale custom sportswear and bulk custom clothing from SLOTS SPORTSWEAR. Full-package private label sportswear manufacturing for global brands and teams.",
+    openGraph: {
+        title: "Wholesale Custom Sportswear | Private Label Apparel Manufacturer",
+        description: "Source wholesale custom sportswear and bulk custom clothing from SLOTS SPORTSWEAR. Full-package private label sportswear manufacturing for global brands and teams.",
+        url: '/shop',
+        type: 'website',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: "Wholesale Custom Sportswear | Private Label Apparel Manufacturer",
+        description: "Source wholesale custom sportswear and bulk custom clothing from SLOTS SPORTSWEAR. Full-package private label sportswear manufacturing for global brands and teams.",
+    },
 };
 
 const ShopPage = async () => {

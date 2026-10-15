@@ -94,13 +94,13 @@ const ProductItem = ({ product }: ProductItemProps) => {
                         src={img}
                         alt={product.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className={cn(
                             "object-cover transition-all duration-700 ease-in-out",
                             activeIndex === idx 
                                 ? "opacity-100 blur-0 scale-105" 
                                 : "opacity-0 blur-xl scale-110"
                         )}
-                        priority={idx === 0}
                     />
                 ))}
                 
@@ -109,7 +109,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
                     OEM / ODM Available
                 </div>
                 <div className="hidden sm:block absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-black text-[9px] uppercase tracking-wider px-2 py-1 z-10 font-bold border border-black/10">
-                    MOQ 50 PCS
+                    MOQ 30 PCS
                 </div>
 
                 {/* B2B Manufacturing Badges - Mobile (Stacked layout) */}
@@ -118,7 +118,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
                         OEM / ODM
                     </div>
                     <div className="bg-white/95 backdrop-blur-xs text-black text-[7px] uppercase tracking-wider px-1.5 py-1 font-bold border border-black/10">
-                        MOQ 50
+                        MOQ 30
                     </div>
                 </div>
 
